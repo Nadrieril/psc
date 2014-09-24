@@ -56,7 +56,7 @@
 Nous cherchons à mettre sur pied un analyseur syntaxique de documents rédigés en langue anglaise.
 
 \subsection{Motivation et enjeu}
-Nous vivons dans un \^{a}ge d'abondance d'information, qu'il convient de traiter efficacement pour en profiter. Dans ce contexte, les synthétiseurs automatiques de textes ont bénéficiés d'efforts importants de recherche au cours des années passées. Notre travail s'inscrira dans cette démarche.\cite{elhadad_natural_2010}\\
+Nous vivons dans un \^{a}ge d'abondance d'information, qu'il convient de traiter efficacement pour en profiter. Dans ce contexte, les synthétiseurs automatiques de textes ont bénéficié d'efforts importants de recherche au cours des années passées. Notre travail s'inscrira dans cette démarche.\cite{elhadad_natural_2010}\\
 
 Contrairement à un certain nombre de projets ayant abouti pour l'instant, nous espérons dépasser la simple sélection de phrases pertinentes dans un corpus plus volumineux (\textit{extractive summarization}) pour donner à notre programme une compréhension des idées présentes dans le texte (\textit{abstractive summarization}).
 
@@ -74,7 +74,7 @@ Nous ciblerons des textes d'actualité, dont la profusion permet d'envisager une
 
 Dans la mesure où des outils pour la transformation d'un texte en réseau sémantique exploitable par la machine existent, l'accent sera mis sur le traitement de l'information et la sélection de celles qui sont importantes ou sujettes à débat.
 
-Pour cela deux méthodes sont envisageables : la première reposera essentiellement sur une analyse statistique d'un grand nombre de textes pour déterminer où sont les unités de sens et comment elles s'accordent ; la seconde sur un réseau de concepts représentant le "bon sens" de notre programme. Dans la mesure où des outils d'extraction existent déjà, nous espérons aboutir à des résultats concret en choisissant la méthode statistique ; c'est cependant la seconde méthode qui laisse le plus de place à l'innovation et que nous explorerons dans un premier temps, m\^{e}me si elle sera plus difficile à mettre en place. 
+Pour cela deux méthodes sont envisageables : la première reposera essentiellement sur une analyse statistique d'un grand nombre de textes pour déterminer où sont les unités de sens et comment elles s'accordent ; la seconde sur un réseau de concepts représentant le "bon sens" de notre programme. Dans la mesure où des outils d'extraction existent déjà, nous espérons aboutir à des résultats concrets en choisissant la méthode statistique ; c'est cependant la seconde méthode qui laisse le plus de place à l'innovation et que nous explorerons dans un premier temps, m\^{e}me si elle sera plus difficile à mettre en place. 
 
 
 \section{Etat de l'art}%%Revue et analyse de l’état de l’art / des approches concurrentes ou alternatives
@@ -101,16 +101,16 @@ Différents outils existent et permettent de se concentrer sur les étapes-clés
 
 Nous nous concentrerons dans un premier temps sur l'analyse du texte à l'aide des outils déjà existants. Le texte sera subdivisé en unités syntaxiques liées par des verbes d'action, d'état ou diverses relations (propriété, caractéristique, nature).\\
 
-Il s'agira donc, d'une part, d'effectuer des recherches bibliographiques sur les divers outils à notre disposition, puis dans un second temps d'apprendre à les ma\^{i}triser.
+Il s'agira donc d'abord d'effectuer des recherches bibliographiques sur les divers outils à notre disposition, puis dans un second temps d'apprendre à les ma\^{i}triser.
 
 \subsubsection{Traitement des informations}
 
-Deux possibilités s'offrent à nous selon l'état d'avancée du projet :\\
+Deux possibilités s'offrent à nous selon l'état d'avancement du projet :\\
 \begin{itemize}
  \item Traduire immédiatement cette information en réseau sémantique, puis la traiter toujours sous cette forme (cela reviendra à retirer les nœuds les plus faibles en terme de poids ou de relations)
  \item Utiliser une architecture plus complexe faisant intervenir un réseau de concepts, sur lequel la lecture du texte agit avant de produire un réseau sémantique comme dans le point précédent 
 \end{itemize}
-La seconde possibilité sera explorée d'abord, s'il s'avère impossible de produire une avancée quelconque dans le temps imparti nous nous rabattrons sur la première.
+La seconde possibilité sera explorée d'abord, puis s'il s'avère impossible de produire une avancée quelconque dans le temps imparti, nous nous rabattrons sur la première.
 
 \subsection{Répartition des tâches}%Méthodes, organisation du travail,  répartition des tâches
 \begin{itemize}
