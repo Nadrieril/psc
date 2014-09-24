@@ -1,0 +1,144 @@
+\documentclass{article}           %% ceci est un commentaire (apres le caractere %)
+\usepackage[utf8]{inputenc}     
+%%on me dit : usepackage avec l'option [latin1] mais ça foire... donc je prends utf8, du moment que c beau
+\usepackage[T1]{fontenc}          %% permet d'utiliser les caractères accentués
+\usepackage[french]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage{graphics}
+
+\usepackage{graphics}
+\usepackage{fancybox}		   %% package utiliser pour avoir un encadré 3D des images
+\usepackage{fancyhdr}
+%\usepackage{makeidx}              %% permet de générer un index automatiquement
+\usepackage[style=numeric,backend=bibtex]{biblatex}				%% Utilisé pour la biblio
+
+
+\pagestyle{fancy}
+\renewcommand\headrulewidth{1pt}
+\fancyhead[L]{Proposition détaillée}
+\fancyhead[R]{}
+\fancyfoot[L]{}
+\fancyfoot[R]{}
+
+
+
+\title{Projet Scientifique Collectif X2013}     %% \title est une macro, entre { } figure son premier argument
+\author{Proposition détaillée}        %% idem
+\date{24 septembre 2014}
+
+
+\addbibresource{biblio.bib}
+\begin{document}                  %% signale le début du document
+
+\maketitle                        %% produire à cet endroit le titre de l'article à partir des informations fournies ci-dessus (title, author)
+
+
+\newpage
+
+\tableofcontents			
+\newpage
+%Remise par chaque groupe au coordinateur, au tuteur, au cadre référent et à la Scolarité Jaune, d’une proposition détaillée (10 à 15 pages hors annexes) :
+
+\section*{Notre groupe}
+
+\begin{itemize}
+ \item Fernandez-Pinto-Fachada Sarah, \textbf{$8^e$} compagnie, section \textbf{équitation};
+ \item Schrottenloher André, \textbf{$8^e$} compagnie, section \textbf{escrime};
+ \item Angibault Antonin, \textbf{$8^e$} compagnie, section \textbf{escrime};
+ \item Hufschmitt Théophane, \textbf{$8^e$} compagnie, section \textbf{escrime};
+ \item Cao Zhixing, \textbf{$9^e$} compagnie, section \textbf{escrime};
+ \item Boisseau Guillaume, \textbf{$6^e$} compagnie, section \textbf{natation};
+\end{itemize}
+
+
+\section{Présentation du sujet} %Enjeu et motivation du travail, objectif final
+
+Nous cherchons à mettre sur pied un analyseur syntaxique de documents rédigés en langue anglaise.
+
+\subsection{Motivation et enjeu}
+Nous vivons dans un \^{a}ge d'abondance d'information, qu'il convient de traiter efficacement pour en profiter. Dans ce contexte, les synthétiseurs automatiques de textes ont bénéficiés d'efforts importants de recherche au cours des années passées. Notre travail s'inscrira dans cette démarche.\cite{elhadad_natural_2010}\\
+
+Contrairement à un certain nombre de projets ayant abouti pour l'instant, nous espérons dépasser la simple sélection de phrases pertinentes dans un corpus plus volumineux (\textit{extractive summarization}) pour donner à notre programme une compréhension des idées présentes dans le texte (\textit{abstractive summarization}).
+
+\subsection{Objectif du projet}
+Nous cherchons à résumer un texte ou un corpus de textes sur un sujet donné. A partir de ces textes, traitant d'un thème commun, le programme devra \textit{in fine} traduire les informations importantes en termes compréhensibles par un être humain.\\
+
+Pour effectuer cette opération, nous envisageons l'approche suivante :\\
+\begin{enumerate}
+ \item Effectuer une analyse syntaxique permettant de passer du texte écrit à un ensemble d'informations informatiquement exploitables;
+ \item Traiter ces informations, par exemple sous forme de réseau sémantique, afin d'en extraire les données pertinentes;
+ \item Retraduire cette information pertinente en termes simples du point de vue du langage et de la syntaxe, éventuellement sous forme de graphe.
+\end{enumerate}
+
+Nous ciblerons des textes d'actualité, dont la profusion permet d'envisager une analyse statistique, en plus de fournir un moyen d'évaluer notre programme (en comparant ses résumés à des résumés existants).
+
+Dans la mesure où des outils pour la transformation d'un texte en réseau sémantique exploitable par la machine existent, l'accent sera mis sur le traitement de l'information et la sélection de celles qui sont importantes ou sujettes à débat.
+
+Pour cela deux méthodes sont envisageables : la première reposera essentiellement sur une analyse statistique d'un grand nombre de textes pour déterminer où sont les unités de sens et comment elles s'accordent ; la seconde sur un réseau de concepts représentant le "bon sens" de notre programme. Dans la mesure où des outils d'extraction existent déjà, nous espérons aboutir à des résultats concret en choisissant la méthode statistique ; c'est cependant la seconde méthode qui laisse le plus de place à l'innovation et que nous explorerons dans un premier temps, m\^{e}me si elle sera plus difficile à mettre en place. 
+
+
+\section{Etat de l'art}%%Revue et analyse de l’état de l’art / des approches concurrentes ou alternatives
+
+\subsection{Autres approches du problème}
+Nous prenons le problème sous l'angle de la compréhension du texte, mais en réalité, un plus grand nombre de travaux s'intéresse à l'extraction de phrases jugées pertinentes sur des critères statistiques.\\
+Cette extraction se fera par exemple sur la base d'une analyse fine des champs lexicaux, de la syntaxe, et des occurrences de certains termes importants.
+
+
+\subsection{Documentation disponible}
+Différents outils existent et permettent de se concentrer sur les étapes-clés du projet.\\
+\begin{itemize}
+ \item L'analyse syntaxique du texte brut peut être réalisée par un outil \textit{open-source} déjà disponible qui intervient dans certains logiciels de traduction automatique et dont le but est de séparer le texte en unités syntaxiques;
+ \item Des outils existent pour gérer de manière efficace des réseaux de concepts.
+\end{itemize}
+
+
+
+\section{Traitement envisagé du sujet}
+
+\subsection{Etapes-clés} %Objectifs intermédiaires, avec leur échéancier, 
+
+\subsubsection{Analyse syntaxique et représentation des informations}
+
+Nous nous concentrerons dans un premier temps sur l'analyse du texte à l'aide des outils déjà existants. Le texte sera subdivisé en unités syntaxiques liées par des verbes d'action, d'état ou diverses relations (propriété, caractéristique, nature).\\
+
+Il s'agira donc, d'une part, d'effectuer des recherches bibliographiques sur les divers outils à notre disposition, puis dans un second temps d'apprendre à les ma\^{i}triser.
+
+\subsubsection{Traitement des informations}
+
+Deux possibilités s'offrent à nous selon l'état d'avancée du projet :\\
+\begin{itemize}
+ \item Traduire immédiatement cette information en réseau sémantique, puis la traiter toujours sous cette forme (cela reviendra à retirer les nœuds les plus faibles en terme de poids ou de relations)
+ \item Utiliser une architecture plus complexe faisant intervenir un réseau de concepts, sur lequel la lecture du texte agit avant de produire un réseau sémantique comme dans le point précédent 
+\end{itemize}
+La seconde possibilité sera explorée d'abord, s'il s'avère impossible de produire une avancée quelconque dans le temps imparti nous nous rabattrons sur la première.
+
+\subsection{Répartition des tâches}%Méthodes, organisation du travail,  répartition des tâches
+\begin{itemize}
+	\item Chef de projet, contact avec l'encadrement : Antonin Angibault
+	\item Contact avec le tuteur : Théophane Hufschmitt
+	\item Établissement de la bibliographie : Antonin Angibault, André Schrottenloher
+	\item Codeurs : ?
+	\item Obtention d'outils : Guillaume Boisseau
+	\item autre ?
+\end{itemize}
+
+%Identification des moyens auxquels le projet fera appel : moyens mobilisables à l’Ecole (TREX, laboratoires, ateliers, binets…), achats à prévoir…
+%Contributions de partenaires  internes (laboratoires, binets) et externes (entreprises, organismes)
+%Eventuels résultats préliminaires
+%Références bibliographiques (publications, brevets…)
+%Annexes : devis des achats à prévoir, demande de financement
+
+\section{Références bibliographiques}
+
+\begin{thebibliography}{}
+\nocite{*}
+\printbibliography
+\end{thebibliography}
+
+
+
+\appendix
+\section{Les annexes}
+
+
+\end{document}
