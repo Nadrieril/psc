@@ -22,7 +22,7 @@
 
 
 
-\title{Projet Scientifique Collectif X2013}     %% \title est une macro, entre { } figure son premier argument
+\title{Projet Scientifique Collectif X2013 INF02 : Synthétiseur automatique de documents}     %% \title est une macro, entre { } figure son premier argument
 \author{Proposition détaillée}        %% idem
 \date{24 septembre 2014}
 
@@ -53,10 +53,10 @@
 
 \section{Présentation du sujet} %Enjeu et motivation du travail, objectif final
 
-Nous cherchons à mettre sur pied un analyseur syntaxique de documents rédigés en langue anglaise.
+Nous cherchons à mettre sur pied un synthétiseur automatiques de documents rédigés en langue anglaise, c'est à dire un programme capable de créer de résumer un ou plusieurs documents écrits dans cette langue.
 
 \subsection{Motivation et enjeu}
-Nous vivons dans un \^{a}ge d'abondance d'information, qu'il convient de traiter efficacement pour en profiter. Dans ce contexte, les synthétiseurs automatiques de textes ont bénéficié d'efforts importants de recherche au cours des années passées. Notre travail s'inscrira dans cette démarche.
+Nous vivons dans un \^{a}ge d'abondance d'information, qu'il convient de traiter efficacement pour en profiter. Dans ce contexte, les synthétiseurs automatiques de textes ont bénéficié d'efforts croissants de recherche au cours des années passées. Notre travail s'inscrira dans cette démarche.
 
 
 Un nombre non négligeable d'outils reposent, essentiellement, sur une extraction des phrases pertinentes \textit{via} une analyse statistique et éventuellement une analyse symbolique plus ou moins poussée (\textit{extractive summarization}). Nous voudrions, à l'instar de certains autres projets, mettre l'accent sur cette analyse de façon à donner une réelle compréhension des corpus à notre programme et, pour se convaincre de son succès, le pousser à la reformulation (\textit{abstractive summarization}).
@@ -70,33 +70,33 @@ Pour effectuer cette opération, nous envisageons l'approche suivante, telle que
 \begin{enumerate}
  \item Effectuer une analyse syntaxique permettant de passer du texte écrit à un ensemble d'informations informatiquement exploitables (interprétation);
  \item Traiter ces informations, par exemple sous forme de réseau sémantique, afin d'en extraire les données pertinentes (transformation);
- \item Retraduire cette information pertinente en termes simples du point de vue du langage et de la syntaxe, éventuellement sous forme de graphe (génération).
+ \item Retraduire cette information pertinente en termes simples du point de vue du langage et de la syntaxe (génération).
 \end{enumerate}
 
 
 Nous ciblerons des textes d'actualité, dont la profusion permet d'envisager une analyse statistique, en plus de fournir un moyen simple d'évaluer notre programme (en comparant ses résumés à des résumés existants).
 
-Dans la mesure où des outils pour la transformation d'un texte en réseau sémantique exploitable par la machine existent, l'accent sera mis sur le traitement de l'information et la sélection de celles qui sont importantes ou sujettes à débat.
+Dans la mesure où des outils pour la transcription d'un texte source en réseau sémantique exploitable par la machine (et vice-versa) existent, l'accent sera mis sur le traitement de l'information et la sélection de celles qui sont importantes ou sujettes à débat.
 
 %Pour cela deux méthodes sont envisageables : la première reposera essentiellement sur une analyse statistique d'un grand nombre de textes pour déterminer où sont les unités de sens et comment elles s'accordent ; la seconde sur un réseau de concepts représentant le "bon sens" de notre programme. Dans la mesure où des outils d'extraction existent déjà, nous espérons aboutir à des résultats concrets en choisissant la méthode statistique ; c'est cependant la seconde méthode qui laisse le plus de place à l'innovation et que nous explorerons dans un premier temps, m\^{e}me si elle sera plus difficile à mettre en place.
 
 
 \section{État de l'art} %Revue et analyse de l’état de l’art / des approches concurrentes ou alternatives
-D'après~\cite{jones_automatic_2007}, des recherches sur la synthèse automatique de documents se sont principalement développées depuis les années 1990, motivées par des analyses statistiques remontant à 1958~\cite{}. Les méthodes d'extraction, de par la simplicité de leur mise en œuvre, ont été le plus mises en avant, utilisant dans des travaux plus récents une analyse symbolique plus poussée, menant à la reformulation de la source plut\^{o}t que de la simple extraction de son contenu (on parle alors d'abstraction). Dans cette section, nous détaillerons les techniques propres à ces deux paradigmes, puis nous indiquerons les méthodes envisageables d'évaluation de la qualité des résumés produits.
+D'après~\cite{jones_automatic_2007}, des recherches sur la synthèse automatique de documents se sont principalement développées depuis les années 1990, motivées par des analyses statistiques remontant à 1958. Les méthodes d'extraction, de par la simplicité de leur mise en œuvre, ont été le plus mises en avant, utilisant dans des travaux plus récents une analyse symbolique plus poussée, menant à la reformulation de la source plut\^{o}t que de la simple extraction de son contenu (on parle alors d'abstraction). Dans cette section, nous détaillerons les techniques propres à ces deux paradigmes, puis nous indiquerons les méthodes envisageables d'évaluation de la qualité des résumés produits.
 
 \subsection{Extraction de la source (\emph{extractive summarization})}
 
 % Nous prenons le problème sous l'angle de la compréhension du texte, mais en réalité, un plus grand nombre de travaux s'intéresse à l'extraction de phrases jugées pertinentes sur des critères statistiques.
-L'idée de la méthode est d'extraire les phrases jugées importantes dans le texte et de les concaténer dans le résumé (en éliminant les redondances), après quelques modifications de forme de façon à assurer une plus grande cohérence de l'ensemble. Dans sa version la plus minimaliste, l'interprétation pourra se contenter de transcrire le texte à résumer (la source) en un tableau contenant le numéro de chaque phrase et une valeur quantifiant son importance, la transformation devant alors simplement sélectionner les phrases les mieux notées. 
+L'idée de la méthode est d'extraire les phrases jugées importantes dans le texte et de les concaténer dans le résumé (en éliminant les redondances), après quelques modifications de forme de façon à assurer une plus grande cohérence de l'ensemble. Dans sa version la plus minimaliste, l'interprétation pourra se contenter de transcrire le texte à résumer (la source) en un tableau contenant le numéro de chaque phrase et une valeur (ou un vecteur, comme dans~\cite{fattah_ga_2009}) quantifiant son importance, la transformation devant alors simplement sélectionner les phrases les mieux notées. 
 
-Dans ces méthodes, l'accent est donc plut\^{o}t mis sur l'étape de transformation et, dans des systèmes plus développés, l'interprétation de la source.
+Ces méthodes ont donc souvent tendance à ignorer (ou faire peu de cas) du contenu sémantique de la source, se contentant de marquer la similarité entre phrases (parfois seulement du point de vue symbolique, donc en ignorant la synonymie), de la phrase au titre, etc.
 
 L'établissement de la notation, au cours de l'interprétation, se fondera généralement sur une analyse statistique (fréquence d'apparition ou d'association de termes) et éventuellement sur une analyse plus fine des champs lexicaux et de la syntaxe.
 
 \paragraph{}
 Des méthodes d'extraction plus complexes existent, en faisant notamment intervenir des mesures de similarité entre unités syntaxiques (phrases, paragraphes) au sein d'un graphe de similarité. Dans~\cite{salton_automatic_1997}, les paragraphes les plus pertinents sont extraits du texte après établissement d'un tel graphe, sur la base de leur vocabulaire (précisément, des occurrences de \emph{termes}, qui peuvent être en première étude des mots). On repère alors par exemple ceux des paragraphes qui ont le plus de liens pertinents (au dessus d'une certaine similarité), en supposant qu'ils traitent simultanément d'un plus grand nombre de thèmes et sont donc plus représentatifs.\\
 
-La méthode décrite dans~\cite{salton_automatic_1997} applique en fait à l'intérieur d'un texte des techniques de récupération  de l'information (\emph{information extraction}) qui sont utilisées pour établir automatiquement des liens hypertextes entre pages web ou articles.
+La méthode décrite dans~\cite{salton_automatic_1997} applique en fait à l'intérieur d'un texte des techniques de récupération  de l'information (\emph{information retrieval}) qui sont utilisées pour établir automatiquement des liens hypertextes entre pages web ou articles.
 %Nous nous proposons de descendre au niveau des unités syntaxiques elles-mêmes, mais le traitement à effectuer se rapprochera très certainement de celui-ci et la mesure de pertinence des concepts sera sans doute proche de la mesure de pertinence des paragraphes.
 
 
@@ -104,7 +104,7 @@ La méthode décrite dans~\cite{salton_automatic_1997} applique en fait à l'int
 
 Plusieurs raisons expliquent le développement relativement faible des méthodes non-extractives, comparé à celui des précédentes. Premièrement, les exigences sur la qualité des résumés produits étaient en général plutôt faibles~\cite{jones_automatic_2007}, et les méthodes extractives fournissent le plus souvent des résultats acceptables. La facilité relative de leur mise en œuvre leur a donc profité. D'autre part, les méthodes de résumé automatique se sont principalement développées par un système d'essais et de correction, mettant en avant l'apprentissage des machines et donc les statistiques.
 
-Bien que la limite entre les méthodes extractives et non-extractives soit un peu floue, on peut remarquer que ces dernières poussent l'analyse symbolique de la source nettement plus loin lors de son interprétation. La représentation machine qui en est faite gardera un contenu sémantique (contrairement à certaines méthodes extractives) et contiendra plus d'informations que la représentation pour une méthode extractive (notamment, dans les systèmes les plus évolués, sur la structure générale de la source et de son argumentation éventuelle). Surtout, la génération sera une étape bien plus importante (au lieu de sélectionner du contenu depuis la source, le programme devra créer du contenu à partir de sa représentation transformée).
+Bien que la limite entre les méthodes extractives et non-extractives soit un peu floue, on peut remarquer que ces dernières poussent l'analyse de la source nettement plus profondément lors de son interprétation. En effet, en sus de l'analyse symbolique, la représentation machine qui en est faite gardera un contenu sémantique (contrairement à certaines méthodes extractives) et contiendra plus d'informations que la représentation pour une méthode extractive (notamment, dans les systèmes les plus évolués, sur la structure générale de la source et de son argumentation éventuelle). Surtout, la génération sera une étape bien plus importante (au lieu de sélectionner du contenu depuis la source, le programme devra créer du contenu à partir de sa représentation transformée).
 
 Ces méthodes sont, de manière générale, plus sensibles au contenu de la source que les méthodes extractives~\cite[p.1774]{jones_automatic_2007}, ce qui laisse envisager quelques difficultés à appliquer la méthode à des articles d'actualité (dont le contenu est essentiellement libre, donc varié). Nous la jugeons toutefois plus à même de tenir compte des points de désaccord entre plusieurs documents et donc plus capable de rendre compte des points de polémique dans les corpus étudiés.
 
@@ -112,7 +112,7 @@ Notons que les résultats escomptés pour des méthodes non extractives ne sont 
 
 \subsection{Évaluation}
 
-L'évaluation des programmes de résumé automatique n'est pas aussi évidente qu'elle le paraîtrait au premier abord. En effet il s'agirait, dans l'idéal, de qualifier le programme indépendamment du contenu ou de la forme des sources fournies, et de l'objectif du résumé, qui est pourtant sujet à de grandes variations (typiquement, d'un ou plusieurs paragraphes à une liste simple d'actions à mener automatiquement en cas d'incendie). Trois méthodes principales ont été retenues par les programmes récents d'évaluation (à partir des années 2000)~\cite[p.1453-1461]{jones_automatic_2007}~:
+L'évaluation des programmes de résumé automatique n'est pas aussi évidente qu'elle le paraîtrait au premier abord. En effet leur évaluation en dehors de leur contexte d'utilisation est assez peu informative, et la grande variété sur la forme des sources (d'un texte de loi, très formel, à un scénario par exemple, en ne considérant que du texte) et la forme de la réponse attendue (par exemple entre une liste d'actions à mener lors d'un incendie, ou bien un bref article en prose) rend difficile la comparaison des systèmes entre eux. Trois méthodes principales ont été retenues par les programmes récents d'évaluation (à partir des années 2000)~\cite[p.1453-1461]{jones_automatic_2007}~:
 \begin{description}
   \item [Qualité du texte et qualité du discours :] Pour des résumés sous forme de texte en langage naturel, il s'agit d'une part de vérifier la justesse grammaticale du résumé, ainsi que sa cohérence générale à plus grande échelle. Si les propriétés locales sont assez simplement vérifiables, c'est assez loin d'être le cas pour le discours en général.
   \item [Capture du concept :] Il s'agit de vérifier que les informations centrales de la source sont également présentes dans le résumé. Pour cela, une méthode assez prometteuse est de définir un certain nombre de questions sur la source auxquelles on devrait pouvoir répondre en ayant lu seulement le résumé. Il est concevable de définir ces questions à partir de questions de compréhension de texte basiques (du genre de celles qu'on donne en primaire) ou des questions un peu plus poussées sur la structure de l'argumentation. Cependant les questions auxquelles on doit pouvoir répondre restent essentiellement fonction de l'objectif du résumé et ne permettent donc pas d'évaluer le système en toute indépendance.
@@ -125,11 +125,11 @@ L'évaluation des programmes de résumé automatique n'est pas aussi évidente q
 
 \subsection{Etapes-clés} %Objectifs intermédiaires, avec leur échéancier,
 
-Les trois étapes que doit réaliser le programme sont :
+Comme présenté en début de ce document, le programme sera essentiellement décomposé en trois modules indépendants :
 \begin{itemize}
- \item L'interprétation du texte en données exploitables
- \item La transformation des données
- \item La génération du résumé
+ \item L'interprétation du texte source en données exploitables;
+ \item La transformation des données;
+ \item La génération du résumé.
 \end{itemize}
 
 
@@ -139,18 +139,20 @@ A l'aide des outils déjà existants, nous analyserons le texte dans le but de l
 
 Il faudra dans le même temps former de ces unités une représentation conceptuelle (par exemple, sous forme de réseau sémantique, où différents objets sont mis en relation).
 
+L'utilisation de la langue anglaise nous permet d'envisager d'utiliser des analyseurs syntaxiques \emph{open-source}. Notre tuteur, de l'entreprise française systran, nous a également proposé d'utiliser certains de ses outils.
+
 %Il s'agira donc d'abord d'effectuer des recherches bibliographiques sur les divers outils à notre disposition, puis dans un second temps d'apprendre à les ma\^{i}triser.
 
 
 
 \subsubsection{Traitement des données}
 
-De nombreuses possibilités s'offrent à nous pour exploiter la représentation issue de la première étape. Nous en retenons plusieurs, selon l'état d'avancement du projet~:
+Deux classes de méthodes sont envisageables pour traiter les données issues du premier module~:
 
 \begin{itemize}
-  \item Différentes manières de réduire un réseau sémantique (suppose que le texte a été entièrement interprété sous cette forme) : en élaguant les branches les moins importantes ou les nœuds les plus faibles en terme de poids ou de relations; voire en appliquant un algorithme de regroupement (\emph{clustering}) sur les nœuds du graphe.
+  \item La simple réduction de la taille des données : élaguer les branches les moins importantes ou les nœuds les plus faibles en terme de poids ou de relations~; éventuellement appliquer un algorithme de regroupement (\emph{clustering}) sur les nœuds dans le cas où les données sont représentées par un graphe, etc.
   
-  \item Faire intervenir des données supplémentaires sous la forme d'un réseau de concepts, représentant en première approximation le bon sens (REFERENCE) et qui influence la lecture du texte et l'importance relative des idées perçues.
+  \item Faire intervenir des données supplémentaires sous la forme d'un réseau de concepts, représentant en première approximation le bon sens et qui influence la lecture du texte et l'importance relative des idées perçues.
 \end{itemize}
 La seconde possibilité sera explorée d'abord, puis s'il s'avère impossible de produire une avancée quelconque dans le temps imparti, nous nous rabattrons sur la première.
 
