@@ -76,7 +76,7 @@ Pour effectuer cette opération, nous envisageons l'approche suivante, telle que
 \end{enumerate}
 
 
-Nous ciblerons des textes d'actualité, dont la profusion fournira des données en quantité largement suffisantes pour un traitement statistique éventuel, en plus de fournir un moyen simple d'évaluer notre programme (en comparant ses résumés à des résumés existants).
+Nous ciblerons des textes d'actualité, dont la profusion fournira des données en quantité largement suffisante pour un traitement statistique éventuel, en plus de fournir un moyen simple d'évaluer notre programme (en comparant ses résumés à des résumés existants).
 
 Dans la mesure où des outils pour la transcription d'un texte source en réseau sémantique exploitable par la machine (et vice-versa) existent, l'accent sera mis sur le traitement de l'information et la sélection de celles qui sont importantes ou sujettes à débat.
 
@@ -130,7 +130,7 @@ L'évaluation des programmes de résumé automatique n'est pas aussi évidente q
 
 \section{Traitement envisagé du sujet}
 
-\subsection{Etapes-clés} %Objectifs intermédiaires, avec leur échéancier,
+\subsection{Étapes-clés} %Objectifs intermédiaires, avec leur échéancier,
 
 Comme présenté en début de ce document, le programme sera essentiellement décomposé en trois modules indépendants :
 \begin{itemize}
@@ -177,12 +177,12 @@ Nous prévoyons d'articuler notre projet en 3 étapes :
 
 \subsubsection{1\textsuperscript{ère} étape}
 
-Comme précisé plus haut, nous utiliserons des outils existant pour les phases d'interprétation et de génération de notre programme. Le format d'entrée de l'outil de génération devra \^{e}tre adapté au format de sortie de notre module de transformation, ce qui sera plus déterminant dans le choix de l'outil que la qualité de la sortie : le cœur de notre projet est en effet la sélection des concepts importants et pas la mise en forme de ces concepts.
+Comme précisé plus haut, nous utiliserons des outils existants pour les phases d'interprétation et de génération de notre programme. Le format d'entrée de l'outil de génération devra \^{e}tre adapté au format de sortie de notre module de transformation, ce qui sera plus déterminant dans le choix de l'outil que la qualité de la sortie : le cœur de notre projet est en effet la sélection des concepts importants et pas la mise en forme de ces concepts.
 
 \paragraph{}
 Au centre de cette sélection, justement, se situera le réseau bon sens dont il faudra définir précisément :
 \begin{description}
-	\item[Les capacités exactes :]Nous prévoyons de l'utiliser comme grille de lecture sur les représentations de la source, par analogie avec la connaissance \textit{a priori} sur le sujet d'un humain souhaitant résumé un texte. Il devra donc, d'une manière ou d'une autre, \^{e}tre capable de reconna\^{i}tre certaines unités comme des évènements insécables (printemps arabe, Boston bombing par exemple) et les utiliser pour agir sur la source, renforçant certains liens sémantiques pour en affaiblir d'autres.
+	\item[Les capacités exactes :]Nous prévoyons de l'utiliser comme grille de lecture sur les représentations de la source, par analogie avec la connaissance \textit{a priori} sur le sujet d'un humain souhaitant résumer un texte. Il devra donc, d'une manière ou d'une autre, \^{e}tre capable de reconna\^{i}tre certaines unités comme des évènements insécables (printemps arabe, Boston bombing par exemple) et les utiliser pour agir sur la source, renforçant certains liens sémantiques pour en affaiblir d'autres.
 	\item[L'implémentation physique :]Il s'agira probablement au moins d'un graphe dont les noeuds représenteraient des idées, et les arcs des liens logiques.
 \end{description}
 
