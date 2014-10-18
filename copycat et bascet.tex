@@ -1,0 +1,159 @@
+\documentclass{article}           %% ceci est un commentaire (apres le caractere %)
+\usepackage[utf8]{inputenc}   
+%on me dit : usepackage avec l'option [latin1] mais ça foire... donc je prends utf8, du moment que c beau
+\usepackage[T1]{fontenc}          %% permet d'utiliser les caractères accentués
+\usepackage[french]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage{graphics}
+
+\usepackage{graphics}
+\usepackage{fancybox}		   %% package utiliser pour avoir un encadré 3D des images
+\usepackage{fancyhdr}
+\usepackage{makeidx}              %% permet de générer un index automatiquement
+\usepackage[style=numeric,backend=bibtex]{biblatex}				%% Utilisé pour la biblio
+\usepackage[top=3cm, bottom=4cm, left=2cm, right=2cm,headsep = 0.5cm,headheight = 1cm, footskip = 1cm,marginparsep = 0cm,marginparwidth=0cm]{geometry} %%pour aller vite
+
+
+\pagestyle{fancy}
+\renewcommand\headrulewidth{1pt}
+\fancyhead[L]{Fiche pratique}
+\fancyhead[R]{Octobre 2014}
+\fancyfoot[L]{}
+\fancyfoot[R]{}
+
+
+
+\title{Fiche pratique}     %% \title est une macro, entre { } figure son premier argument
+\author{}        %% idem
+\date{Octobre 2014}
+
+\begin{document}
+\maketitle
+
+\section{Copycat}
+\subsection{Idées principales de Copycat}
+
+\begin{itemize}
+ \item Une approche de système multi-agents
+ \item Des glissements conceptuels, la possibilité pour des concepts d'être activés et de propager cette activation. La proximité des concepts dépend du contexte. Il y a des similitudes avec les réseaux sémantiques (concepts : noeuds et liens du réseau) et les réseaux connexionnistes (interaction entre le réseau dans son ensemble avec ce qui est perçu dans son environnement)\footnote{C'est quoi exactement un réseau connexionniste ? Apparemment, l'idée est que des paramètres du réseau : degré d'activation, d'association ; résultent de l'interaction avec l'environnement}
+ \item Mélange de la construction des descriptions provenant de l'environnement (ascendant) et provenant des concepts (descendant)\footnote{Paraphrase de Parmentier}
+ 
+\item Balayage parallèle étagé : examen simultané de nombreuses possibilités à différents niveaux (concept peu clair chez Parmentier)
+
+\item Usage d'une température pour mesurer la qualité de la réponse : contrôle la quantité de hasard dans les décisions déjà prises par le système
+
+\item Notion d'émergence
+\end{itemize}
+
+\section{Fonctionnement de Copycat}
+
+Sur une question de la forme : "Si abc donne abd, que donne ijk ?", le programme a pour but de construire une représentation qui fasse ressortir une structure commune à abc et ijk, en trouvant des correspondances.
+
+Ici, a correspond à i, b à j, c à k, donc la déduction est que d correspond à l.
+
+\section{Architecture}
+
+\paragraph{Slipnet (réseau de glissement)}
+Contient tous les concepts, seulement les types et pas les instances. Les distances entre concepts peuvent varier au cours du traitement, et elles déterminent les glissements probables.
+
+Les étiquettes sur les liens entre les noeuds sont elles-mêmes des concepts. Lorsqu'un noeud étiquette est actif, la proximité entre deux noeuds étiquetés par ce lien augmente (s'il est question du concept d'"opposé", on aura plus tendance à franchir les liens étiquetés par "opposé").
+
+Un concept émerge dans le slipnet. Initialement, c'est une région qui contient un noeud central et son "halo d'associations" qui peut inclure jusqu'à tous les noeuds liés.
+\begin{itemize}
+ \item Un noeud propage son activation à ses voisins en fonction de la proximité ;
+ \item Les noeuds perdent naturellement de l'activation ;
+ \item Un noeud est activé lorsqu'une instance de ce noeud est perçue par les agents. Plus il est activé, plus il sera probablement considéré comme concept potentiellement organisateur ;
+ \item Le taux de désactivation dépend de la profondeur conceptuelle du noeud (abstraction et généralité du concept) [très simplement, un concept qu'on observe directement est peu profond conceptuellement], fixée par l'auteur. Les noeuds les plus profonds se désactivent moins vite (les concepts les plus abstraits perdurent)
+ \item Les glissements sont effectués par les agents et dépendent de la proximité conceptuelle
+\end{itemize}
+
+Il y a de l'apprentissage au niveau du Slipnet, bien qu'aucun concept ne soit rajouté.
+
+\paragraph{Workspace}
+Contient des instances des concepts du Slipnet: mémoire de travail.
+
+Le programme construit des "structures perceptuelles" sur la base des entrées (les chaînes de lettres pourries) : 
+\begin{itemize}
+ \item Description d'objets
+ \item Relations entre objets (lien de succession entre lettres par ex.)
+ \item Groupes d'objets
+ \item Correspondances entre objets de chaînes différentes ("est analogue à")
+ \item Règles qui décrit le changement entre la chaîne initiale et la chaîne modifiée
+ \item Règle traduite qui décrit comment modifier la chaîne cible (peut être issue de la règle précédente en remplaçant des concepts, par exemple)
+\end{itemize}
+
+
+\paragraph{Coderack}
+Salle d'attentes pour des agents qui sont choisis stochastiquement [que veut dire ce mot ?] (aléatoirement).
+
+Ces agents (codelets) représentent des pressions.
+\begin{itemize}
+ \item Codelets ascendants : pressions présentes dans toutes les situations (trouver des relations...)
+ \item Codelets descendants : pressions provenant de la situation courante
+\end{itemize}
+
+À chaque pas d'exécution, un codelet est exécuté et supprimé du coderack. Chaque codelet a une certaine urgence, mais elle ne détermine pas sa priorité (le choix se fait en partie au hasard) (elle représente l'intérêt de sa tâche).
+
+\begin{itemize}
+ \item Les codelets activent les noeuds du Slipnet
+ \item Les noeuds actifs ajoutent des codelets dans le Coderack (descendants, par exemple)
+ \item Les codelets lancent d'autres codelets
+ \item Des codelets ascendants sont créés en permanence
+\end{itemize}
+
+\paragraph{Température}
+Température basse <=> haut degré d'organisation. Permet le contrôle du degré de hasard lors de la prise de décisions.
+
+\begin{itemize}
+ \item De hautes températures : structures peu fiables, donc on va prendre des décisions aléatoires avec équiprobabilité ;
+ \item De basses températures : on travaille sur des structures fiables ;
+ \item Fin du programme : aléatoire et fonction de la température. La température mesure aussi la qualité de la réponse.
+\end{itemize}
+
+\paragraph{L'émergence}
+\begin{itemize}
+ \item Emergence des concepts
+ \item Émergence des pressions (actions des codelets)
+ \item Balayage parallèle étagé
+\end{itemize}
+
+
+\subsection{L'intérêt de cette architecture}
+La notion d'exploration de possibilités. A la lecture d'une information pléthorique, on peut imaginer l'activation de noeuds d'un réseau conceptuel et la formation d'idées fonction de l'activation de ces noeuds. Au cours de la lecture de ces informations, le sujet précis se cerne selon les concepts activés.
+
+\section{BAsCET}
+Blackboard Agents Concepts Exemples Température.
+
+Architecture très proche de Copycat et développée par Parmentier.
+
+\paragraph{Concepts}
+La description du réseau de concepts est plus précise dans la thèse de parmentier, ainsi que les calculs d'activation. Page 80 du pdf.
+
+\paragraph{Agents}
+
+\begin{itemize}
+ \item Chacun a son urgence
+ \item Chacun a un noeud père qui l'a lancé (RC)
+ \item Ils peuvent lire et créer les objets du Blackboard (active les noeuds du RC dont l'objet est une instance)
+ \item Opinionnent sur la validité d'un objet
+\end{itemize}
+
+
+\paragraph{Blackboard}
+Semblable au Workspace, mais ne construit pas les mêmes types de structure.
+
+Contient des objets, instances des noeuds du RC :
+\begin{itemize}
+ \item Contenu
+ \item Père (noeud dont il est instance)
+ \item Importance (dépend du père et des liens avec les autres objets)
+ \item Satisfaction (dépend des agents)
+ \item Eminence (objet à traiter)
+\end{itemize}
+
+\subsection{Points intéressants}
+Parmentier a construit son réseau de concepts (pour l'étude de références bibliographiques) à  partir d'une analyse statistique. Les poids des liens dépendent de la co-occurrence des termes. Il faut prendre la bonne mesure selon qu'on la veut symétrique ou pas (a priori, pas, pour le réseau de concepts).
+
+S'il reste des trucs bien c'est après la page 90.
+
+\end{document}
