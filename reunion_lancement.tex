@@ -46,7 +46,7 @@
 
 
 \title{Réunion de lancement}
-\subtitle{PSC INF02}
+\subtitle{PSC INF02 : Analyseur de langage naturel}
 \author{}
 \institute{École polytechnique}
 \date{}
@@ -78,17 +78,116 @@
 %VRAI DEBUT DU DOCUMENT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Première section}
-\subsection{Première sous-section}
+\section{Introduction}
 
-\begin{frame}
+\begin{frame}%[allowframebreaks=0.8]
+\frametitle{Objectifs du projet}
+%%à l'ère du big data, une grande partie de ces données sont textuelles
 
-\begin{block}{Bloc}
-Texte dans le bloc.
+\begin{block}{De grandes quantités de données textuelles}
+
 \end{block}
+
+\begin{block}{Des problèmes nombreux}
+\begin{itemize}
+ \item Une grammaire complexe (langage naturel)
+ \item Beaucoup de prérequis de bon sens ou de culture générale
+\end{itemize}
+
+\end{block}
+
+
+\begin{block}{Plusieurs solutions envisageables}
+\begin{itemize}
+\item "Comprendre" l'information du texte et la retranscrire : \textbf{résumé abstractif}
+\item Analyser le texte de façon statistique et en extraire des phrases : \texbf{résumé extractif}
+\end{itemize}
+\end{block}
+
 
 \end{frame}
 
+
+\begin{frame}
+\frametitle{Notre projet : Analyseur de langage naturel}
+
+Nous voulons résumer un texte en langage naturel, de façon abstractive.
+
+Le résumé final ne contiendra pas de phrases initialement présentes dans le texte.
+
+\end{frame}
+
+\section{Structure du projet}
+
+
+\begin{frame}
+\frametitle{Étapes du travail}
+
+\begin{columns}
+
+\begin{column}{6cm}
+\begin{enumerate}
+ \item Analyse syntaxique
+% ie la grammaire. Nos exigences devraient entrer dans le champ des possibilités des outils libres déjà existants
+ \item Repérage des entités : noms, dates, lieux (\textit{Freebase})
+ %les entités ne sont rien d'autre que des concepts importants
+ \item Connaissances des liens entre entités 
+ %liens qui sont donnés par FB : Zlatan est un joueur de foot par exemple
+ \item Analyse des concepts (\textit{WordNet} et TF-IDF)
+ %il s'agit de relier tous les mots à des concepts
+ \item Application d'un programme reposant en partie sur un \textbf{Réseau de Concepts}
+ %explicité dans la suite
+ \item Génération de texte simple
+\end{enumerate}
+\end{column}
+%à droite, ce que ça donne aux différents stades
+
+\begin{column}{6cm}
+\begin{enumerate}
+\item Sujet, Verbe, Objet...
+\item Zinedine Zidane...
+\item Zidane est un joueur de football...
+\item Le football est un sport...
+\item Étape-clé
+\item Sujets-Actions-Objets-Compléments
+\end{enumerate}
+
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Étapes générales}
+
+\begin{enumerate}
+\item Étude statistique
+\item Étude syntaxique et linguistique
+\item Étude "intelligente"
+\item Génération et étude de la qualité du résumé
+\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Moyens utilisés}
+
+De nombreux outils \textit{open source} ou libres, notamment :
+\begin{itemize}
+ \item Freebase
+ \item WordNet (Princeton)
+ \item nltk (librairie python)
+\end{itemize}
+
+
+\end{frame}
+
+\section{Étude statistique}%Zhixing
+%td-idf
+
+\section{Réseau de concepts et structure associée}%Guillaume, change le titre
+	
 
 	
 \end{document}
