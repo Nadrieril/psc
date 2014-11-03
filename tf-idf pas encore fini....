@@ -6,42 +6,88 @@
 \usepackage{amsfonts,amssymb}
 \usepackage{amsmath} % alignement
 \usepackage{amssymb} % symbol
-\usepackage{epsfig}
+
 
 \linespread{1.2}
 \begin{document}
 \title{La méthode de TF-IDF}
 \maketitle
+
 Le TF-IDF (de l'anglais Term Frequency-Inverse Document Frequency) est une méthode de pondération souvent utilisée en recherche d'information et en particulier dans la fouille de textes. Cette mesure statistique permet d'évaluer l'importance d'un terme contenu dans un document, relativement à une collection ou un corpus. Le poids augmente proportionnellement au nombre d'occurrences du mot dans le document. Il varie également en fonction de la fréquence du mot dans le corpus. Des variantes de la formule originale sont souvent utilisées dans des moteurs de recherche pour apprécier la pertinence d'un document en fonction des critères de recherche de l'utilisateur.\\[3mm]
+
 \noindent {\bf 1~~~Introduction}\\
+
 Pour comprendre un text, on va d'abord chercher des mots-clés. Une idée simple pour chercher ces termes est de calculer la fréquence de chaque mot. Généralement, les mots qui ont une fréquence plus élevés sont des mots plus importants.\\
+
 Mais on remarque que, pour la notion de fréquence de document, les termes rares sont plus informatifs que les termes fréquents. Autrement dit, si un mot est rare, mais il apparaît plusieur fois dans un article, il est susceptible de refléter les caractéristique de cet article, c'est-à-dire, il est le mot-clé. D'une autre part, certains termes(appelé aussi «mots vides») sont si fréquents qu'ils peuvent être considérés comme sémantiquement vide. En d'autres termes, ils ne donnent aucun sens. Ces termes ne sont pas habituellement inclus dans un système de récupération d'informations.\\
+
 Comme les mots rares sont généralement plus importantes. Nous voulons les donner un poids élevé. Pour faire cela, on introduit l'IDF, la fréquence inverse de document, pour discriminer les termes informatifs et les termes non-informatifs. Les termes qui ont une faible IDF sont considérés comme non informatifs, cars ils se retrouvent dans de nombreux documents. Et quand le nombre de documents dans une collection augmente, le IDF devient de plus en plus importante pour discriminer les termes utiles.\\
+
 Dès que l'on connaît le TF(la fréquence) et l'IDF(la fréquence inverse de document) d'un mot, on multiplie ces deux valeurs pour obtenir la valeur TF-IDF d'un mot. Et plus important un mot d'un article, plus sa valeur TF-IDF est supérieur. Ainsi, les mots d'une valeur TF-IDF plus élevés sont des mots-clés.\\
 
 \noindent {\bf 2~~~Définition formelle}\\
+
 \textbf{TF(terme frequency)}, la fréqence d'un terme est le nombre d'occurrences de ce terme dans le document considéré.\\
+
 \textbf{IDF(inverse document frequency)}, la fréquence inverse de document est une mesure de l'importance du terme dans l'ensemble du corpus. Elle vise à donner un poids plus important aux termes les moins fréquents, considérés comme plus discriminants.\\
 
 $IDF_{i}=log \frac{|D|}{|d_{j}:t_{i}\in d_{j}|}$\\
 où:\\
 |D|: le nombre total dans le corpus\\
 $|d_{j}:t_{i}\in d_{j}|$:nombre de documents où le terme $t_{i}$ apparaît\\
+
 \textbf{TF-IDF}, le poids de mot i sur le document j s'obtient en multipliant les deux mesures:\\
 TF-$IDF_{i,j} = TF_{i,j} \times IDF_{i}$\\[3mm]
 
 \noindent {\bf 3~~~TF-IDF et la similarité de document}\\
+
 TF-IDF est fréquemment utilisé pour construire un modèle d'espace vectoriel. Dans ce modèle, les termes définissent les dimensions d'un espace vectoriel appelé "espace terme".\\
+
 Par exemple:\\
 Ici, on considère deux documents et deux mots-clés(gossip et jealous)\\
-\includegraphics{img411 (1)}
+
 Comment pouvons-nous quantifier la similarité entre deux documents? Une première tentative pourrait envisager la distance entre deux vecteurs de documents. Cette mesure présente un inconvénient: deux documents dont le contenu très similaire peuvent avoir une différence de vecteur important simplement parce que l'on est beaucoup plus long que l'autre. \\
+
 Pour compenser l'effet de la longueur du document, la manière standard de quantifier la similarité entre deux documents $d_{1}$ et $d_{2}$ est de les normaliser et calculer la similarité cosinus de leurs vecteurs $\vec{V}(d_{1})$ et $\vec{V}(d_{2})$
+
 \begin{displaymath}
 \mbox{sim}(d_1,d_2)= \frac{\vec{V}(d_1)\cdot \vec{V}(d_2)}{\vert\vec{V}(d_1)\vert \vert\vec{V}(d_2)\vert}=\vec{V}(d_{1})\cdot \vec{V}(d_2),
 \end{displaymath}
+
 Et ici, $sim(d_1,d_2)=cos\theta$\\
 
-\noindent {\bf 4~~~TF-IDF et la résumé automatique}
+\noindent {\bf 4~~~TF-IDF et la résumé automatique}\\
 
+Une idée simple de résumer un text est de rechercher des phrases informatives. C'est-à-dire des phrases qui contiennent des mots-clés. Ensuite, on donne chaque phrase une valeur pour indiquer l'importance de cette phrase qui se calcule comme:\\
+
+$Valeur_{phrase i}=\frac{|mots-clé|^2}{longueur de la phrase}$\\
+
+Une autre idée simplifiée est de retirer justement la première phrase qui contient le mot-clé. Cela est la méthode utilisé par la \underline{Class SimpleSummariser dans la libérie de JAVA Classifier4J}\\
+
+Le code ci-dessous est pour illustrer cette méthode:\\
+
+\begin{verbatim}
+Summarizer(originalText, maxSummarySize):
+#:construire le tableau de la fréquence de mot ex:[(10,'the'),(3,'language'),(8,'code')...]
+   wordFrequences = getWordCounts(originalText)
+#:enlever les mots vides ex:[(3, 'language'), (8, 'code')...]}
+   contentWordFrequences = filtStopWords(wordFrequences)
+#:trier le tableau selon les valeurs des TF-IDF ex:['code', 'language'...]
+   contentWordsSortbyFreq = sortByFreqThenDropFreq(contentWordFrequences)
+          separer les phrases du text
+   sentences = getSentences(originalText)
+#:choisir les première phrases contenant les mots-clés
+   setSummarySentences = {}
+   foreach word in contentWordsSortbyFreq:
+      firstMatchingSentence = search(sentences, word)
+      setSummarySentences.add(firstMatchingSentence)
+      if setSummarySentences.size() = maxSummarySize:
+         break
+#:trier les phrases choisies et contruire une résumé
+    summary = ""
+    foreach sentence in sentences:
+       if sentence in setSummarySentences:
+         summary = summary + " " + sentence
+    return summary
+\end{verbatim}
 \end{document} 
