@@ -10,13 +10,13 @@
 %THEMES DU DOCUMENT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%– th`emes globaux : albatross, beetle, crane, fly, seagull.
-%– th`emes internes : lily  orchid, rose.
-%– th`emes externes : whale, seahorse, dolphin
+%– th`emes globaux~: albatross, beetle, crane, fly, seagull.
+%– th`emes internes~: lily  orchid, rose.
+%– th`emes externes~: whale, seahorse, dolphin
 %JuanLesPins Malmoe PaloAlto Berlin Boadilla Copenhagen Hannover Goettingen Montpellier Rochester
 %Madrid Antibes Singapore Szeged Warsaw, thème par défaut Ilmenau Luebeck AnnArbor CambridgeUS Dresden
 
-%themes de polices : professionalfonts serif structurebold structureitalicserif structuresmallcapsserif 
+%themes de polices~: professionalfonts serif structurebold structureitalicserif structuresmallcapsserif 
 
 
 \usetheme{Warsaw}
@@ -29,8 +29,7 @@
 %AUTRES COMMANDES PRÉLIMINAIRES
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\AtBeginSection[]% génère une tableofcontents au début de chaque section
-{
+\AtBeginSection[]{% génère une tableofcontents au début de chaque section
   \begin{frame}
   \frametitle{Sommaire}
 	\tableofcontents[sectionstyle = show/shaded,subsectionstyle = show/show/shaded]
@@ -46,7 +45,7 @@
 
 
 \title{Réunion de lancement}
-\subtitle{PSC INF02 : Synthétiseur automatique de documents}
+\subtitle{PSC INF02~: Synthétiseur automatique de documents}
 \author{}
 \institute{École polytechnique}
 \date{}
@@ -64,7 +63,7 @@
 
 %%page de titre
 \begin{frame}
-\titlepage
+  \titlepage{}
 
 \end{frame}		
 %% sommaire %%		
@@ -99,8 +98,8 @@
 
 \begin{block}{Plusieurs solutions envisageables}
 \begin{itemize}
-\item "Comprendre" l'information du texte et la retranscrire : \textbf{résumé abstractif}
-\item Analyser le texte de façon statistique et en extraire des phrases : \textbf{résumé extractif}
+\item «~Comprendre~» l'information du texte et la retranscrire~: \textbf{résumé abstractif}
+\item Analyser le texte de façon statistique et en extraire des phrases~: \textbf{résumé extractif}
 \end{itemize}
 \end{block}
 
@@ -109,7 +108,7 @@
 
 
 \begin{frame}
-\frametitle{Notre projet : Synthétiseur automatique de documents}
+\frametitle{Notre projet~: Synthétiseur automatique de documents}
 
 Nous voulons résumer un texte en langage naturel, de façon abstractive.
 
@@ -129,10 +128,10 @@ Le résumé final ne contiendra pas de phrases initialement présentes dans le t
 \begin{enumerate}
  \item Analyse syntaxique
 % ie la grammaire. Nos exigences devraient entrer dans le champ des possibilités des outils libres déjà existants
- \item Repérage des entités : noms, dates, lieux (\textit{Freebase})
+ \item Repérage des entités~: noms, dates, lieux (\textit{Freebase})
  %les entités ne sont rien d'autre que des concepts importants
  \item Connaissances des liens entre entités 
- %liens qui sont donnés par FB : Zlatan est un joueur de foot par exemple
+ %liens qui sont donnés par FB~: Zlatan est un joueur de foot par exemple
  \item Analyse des concepts (\textit{WordNet} et TF-IDF)
  %il s'agit de relier tous les mots à des concepts
  \item Établissement des liens entre les concepts (à l'aide d'un \textbf{Réseau de Concepts}) en vue de la sélection des informations importantes
@@ -144,10 +143,10 @@ Le résumé final ne contiendra pas de phrases initialement présentes dans le t
 
 \begin{column}{6cm}
 \begin{enumerate}
-\item Sujet, Verbe, Objet...
-\item Zinedine Zidane...
-\item Zidane est un joueur de football...
-\item Le football est un sport...
+\item Sujet, Verbe, Objet\ldots{}
+\item Zinedine Zidane\ldots{}
+\item Zidane est un joueur de football\ldots{}
+\item Le football est un sport\ldots{}
 \item Étape-clé
 \item Sujets-Actions-Objets-Compléments
 \end{enumerate}
@@ -163,7 +162,7 @@ Le résumé final ne contiendra pas de phrases initialement présentes dans le t
 \begin{enumerate}
 \item Étude statistique
 \item Étude syntaxique et linguistique
-\item Étude "intelligente"
+\item Étude «~intelligente~»
 \item Génération et étude de la qualité du résumé
 \end{enumerate}
 
@@ -174,7 +173,7 @@ Le résumé final ne contiendra pas de phrases initialement présentes dans le t
 \begin{frame}
 \frametitle{Méthodes de travail}
 	\begin{itemize}
-		\item Des réunions hebdomadaires, pour :
+		\item Des réunions hebdomadaires, pour~:
 		\begin{itemize}
 			\item Faire le point sur le travail effectué dans la semaine;
 			\item Rendre compte et résoudre les difficultés rencontrées;
@@ -187,7 +186,7 @@ Le résumé final ne contiendra pas de phrases initialement présentes dans le t
 \begin{frame}
 \frametitle{Moyens utilisés}
 
-De nombreux outils \textit{open source} ou libres, notamment :
+De nombreux outils \textit{open source} ou libres, notamment~:
 \begin{itemize}
  \item Freebase
  \item WordNet (Princeton)
