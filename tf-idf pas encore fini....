@@ -17,12 +17,11 @@ Le TF-IDF (de l'anglais Term Frequency-Inverse Document Frequency) est une méth
 
 \noindent {\bf 1~~~Introduction}\\
 
-Pour comprendre un text, on va d'abord chercher des mots-clés. Une idée simple pour chercher ces termes est de calculer la fréquence de chaque mot. Généralement, les mots qui ont une fréquence plus élevés sont des mots plus importants.\\
+Pour comprendre un text, on cherche souvent des mots-clés. Une idée simple pour chercher ces mots est de calculer la fréquence de chaque mot. Généralement, les mots qui ont une fréquence plus élevés sont des mots plus importants.\\
 
-Mais on remarque que, pour la notion de fréquence de document, les termes rares sont plus informatifs que les termes fréquents. Autrement dit, si un mot est rare, mais il apparaît plusieur fois dans un article, il est susceptible de refléter les caractéristique de cet article, c'est-à-dire, il est le mot-clé. D'une autre part, certains termes(appelé aussi «mots vides») sont si fréquents qu'ils peuvent être considérés comme sémantiquement vide. En d'autres termes, ils ne donnent aucun sens. Ces termes ne sont pas habituellement inclus dans un système de récupération d'informations.\\
+Mais on remarque que, pour la notion de fréquence de document, les termes rares sont souvent plus informatifs que les termes fréquents. Autrement dit, si un mot est rare, mais il apparaît plusieur fois dans un document, il est susceptible de refléter les caractéristique de ce document, c'est-à-dire, il est le mot-clé. D'autre part, certains mots(appelé aussi «mots vides») sont si fréquents qu'ils peuvent être considérés comme sémantiquement vide. En d'autres termes, ils ne donnent aucun sens. Et ces mots ne sont pas habituellement inclus dans un système de récupération d'informations.\\
 
-Comme les mots rares sont généralement plus importantes. Nous voulons les donner un poids élevé. Pour faire cela, on introduit l'IDF, la fréquence inverse de document, pour discriminer les termes informatifs et les termes non-informatifs. Les termes qui ont une faible IDF sont considérés comme non informatifs, cars ils se retrouvent dans de nombreux documents. Et quand le nombre de documents dans une collection augmente, le IDF devient de plus en plus importante pour discriminer les termes utiles.\\
-
+Comme les mots rares sont généralement plus importantes. Nous voulons les donner un poids élevé. Pour faire cela, on introduit la notion de l'IDF, la fréquence inverse de document, pour discriminer les termes informatifs et les termes non-informatifs. Les termes qui ont une faible IDF sont considérés comme non informatifs, cars ils se retrouvent dans de nombreux documents. Et quand le nombre de documents dans une collection augmente, le IDF devient de plus en plus importante pour discriminer les termes utiles.\\
 Dès que l'on connaît le TF(la fréquence) et l'IDF(la fréquence inverse de document) d'un mot, on multiplie ces deux valeurs pour obtenir la valeur TF-IDF d'un mot. Et plus important un mot d'un article, plus sa valeur TF-IDF est supérieur. Ainsi, les mots d'une valeur TF-IDF plus élevés sont des mots-clés.\\
 
 \noindent {\bf 2~~~Définition formelle}\\
