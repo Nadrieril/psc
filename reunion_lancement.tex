@@ -19,8 +19,8 @@
 %themes de polices : professionalfonts serif structurebold structureitalicserif structuresmallcapsserif 
 
 
-\usetheme{Boadilla}
-\usecolortheme{dolphin}
+\usetheme{Warsaw}
+%\usecolortheme{dolphin}
 \usefonttheme{structurebold}
 %\useinnertheme{nom du theme interne}
 %\useoutertheme{split}
@@ -46,7 +46,7 @@
 
 
 \title{Réunion de lancement}
-\subtitle{PSC INF02 : Analyseur de langage naturel}
+\subtitle{PSC INF02 : Synthétiseur automatique de documents}
 \author{}
 \institute{École polytechnique}
 \date{}
@@ -70,7 +70,7 @@
 %% sommaire %%		
 \begin{frame}
 \frametitle{Sommaire}
-			\tableofcontents[pausesections]
+\tableofcontents
 \end{frame}
 
 
@@ -100,7 +100,7 @@
 \begin{block}{Plusieurs solutions envisageables}
 \begin{itemize}
 \item "Comprendre" l'information du texte et la retranscrire : \textbf{résumé abstractif}
-\item Analyser le texte de façon statistique et en extraire des phrases : \texbf{résumé extractif}
+\item Analyser le texte de façon statistique et en extraire des phrases : \textbf{résumé extractif}
 \end{itemize}
 \end{block}
 
@@ -109,7 +109,7 @@
 
 
 \begin{frame}
-\frametitle{Notre projet : Analyseur de langage naturel}
+\frametitle{Notre projet : Synthétiseur automatique de documents}
 
 Nous voulons résumer un texte en langage naturel, de façon abstractive.
 
@@ -119,9 +119,9 @@ Le résumé final ne contiendra pas de phrases initialement présentes dans le t
 
 \section{Structure du projet}
 
-
+\subsection{Le projet}
 \begin{frame}
-\frametitle{Étapes du travail}
+\frametitle{Le synthétiseur en six étapes}
 
 \begin{columns}
 
@@ -135,7 +135,7 @@ Le résumé final ne contiendra pas de phrases initialement présentes dans le t
  %liens qui sont donnés par FB : Zlatan est un joueur de foot par exemple
  \item Analyse des concepts (\textit{WordNet} et TF-IDF)
  %il s'agit de relier tous les mots à des concepts
- \item Application d'un programme reposant en partie sur un \textbf{Réseau de Concepts}
+ \item Établissement des liens entre les concepts (à l'aide d'un \textbf{Réseau de Concepts}) en vue de la sélection des informations importantes
  %explicité dans la suite
  \item Génération de texte simple
 \end{enumerate}
@@ -158,7 +158,7 @@ Le résumé final ne contiendra pas de phrases initialement présentes dans le t
 \end{frame}
 
 \begin{frame}
-\frametitle{Étapes générales}
+\frametitle{Déroulement du projet}
 
 \begin{enumerate}
 \item Étude statistique
@@ -169,6 +169,20 @@ Le résumé final ne contiendra pas de phrases initialement présentes dans le t
 
 \end{frame}
 
+\subsection{Organisation du travail}
+
+\begin{frame}
+\frametitle{Méthodes de travail}
+	\begin{itemize}
+		\item Des réunions hebdomadaires, pour :
+		\begin{itemize}
+			\item Faire le point sur le travail effectué dans la semaine;
+			\item Rendre compte et résoudre les difficultés rencontrées;
+			\item Définir les axes prioritaires pour la semaine à venir.
+		\end{itemize}
+		\item Un répertoire partagé pour une gestion pratique des fichiers.
+	\end{itemize}
+\end{frame}
 
 \begin{frame}
 \frametitle{Moyens utilisés}
@@ -179,9 +193,9 @@ De nombreux outils \textit{open source} ou libres, notamment :
  \item WordNet (Princeton)
  \item nltk (librairie python)
 \end{itemize}
-
-
 \end{frame}
+
+
 
 \section{Étude statistique}%Zhixing
 %td-idf
