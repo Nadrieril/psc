@@ -41,6 +41,7 @@ class Node :
     def computeActivation(self):
         """Calcule la nouvelle activation du noeud  en fonction des autres"""
         divlog=log(3+len(self.linksIn))/log(3)#diviseur logarithmique qui aide à rendre compte de la connexité
+        divlog=1#pour le moment je désactive cette possibilité...
         i=0
         for n,l in self.linksIn.iteritems():
             i=i+l.p*n.a#ne tient pas compte pour l'instant de l'activation des noeuds qui sont sur les liens

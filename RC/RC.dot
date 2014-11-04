@@ -17,12 +17,15 @@ digraph G { /*Mettre d'abord tous les noeuds (nom_ic_activation) avec shape=box*
 	worldcup_4 [shape=box,fontsize=10];
 	against_1 [shape=box,fontsize=10];
 	as_1 [shape=box,fontsize=10];
+	english_3 [shape=box,fontsize=10];
 	/*Mettre ensuite toutes les arêtes avec label s'il y en a un, et le poids obligatoire entre 0 et 100*/
-	team_2 -> fans_2 [weight=30]
-	fans_2 -> team_2 [weight=30]
-	team_2 -> captain_2 [weight=30]
-	captain_2 -> team_2 [weight=30]
+	team_2 -> fans_2 [weight=20]
+	fans_2 -> team_2 [weight=20]
+	team_2 -> captain_2 [weight=20]
+	captain_2 -> team_2 [weight=20]
+	WayneRooney_5 -> english_3 [weight=50]
 	WayneRooney_5 -> England_3 [label="citizenship",weight=50]
 	WayneRooney_5 -> football_4 [label="player",weight=70];
-	football_4 -> team_2 [weight=50]
+	football_4 -> team_2 [weight=20]
+	football_4 -> WayneRooney_5 [weight=30]
 }

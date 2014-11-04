@@ -2,6 +2,7 @@
 # -*-coding:utf-8 -*
 
 from collections import deque
+from random import *
 
 class Task:
     """superclasse pour les actions à déposer dans la file d'attente. Les tâches agissent sur des noeuds déjà déterminés."""
@@ -21,15 +22,31 @@ class Task:
     
     @staticmethod
     def pushRandom(t):
-        Task.push(t)#à changer pour introduire des tâches à une position aléatoire (il faut surtout avoir le choix)
+        Task.push(t)
+        shuffle(Task.tasks)
 
     def launch(self):
         """effectue l'action (sans la retirer de la file où elle se situe)"""
         time+=1
 
+class Activate(Task):
+    """Action consistant à activer un noeud"""
+    """Elle génère ensuite d'autres actions pour calculer les activations des noeuds voisins"""
+    
+    def __init__(self, node, newact):
+        self.node=node
+        self.newact=newact
+
+
+    def launch(self):
+        Task.time+=1
+        self.node.a+=self.newact
+        for n in self.node.linksOut.keys() :
+            Task.pushRandom(Compute(n))
 
 class Read(Task):
     """action consistant à lire une instruction (sous forme de triplet : sujet, action, objet)"""
+    """ne pas utiliser pour le moment !!"""
     
     def __init__(self,node1, action, node2):
         self.node1=node1
