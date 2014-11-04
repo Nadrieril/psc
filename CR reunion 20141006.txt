@@ -1,0 +1,10 @@
+En bref parce qu'il fait faim, aujourd'hui nous avons parlé plus précisément du réseau bon-sens et de sa structure. Largement inspiré de l'architecture copycat nous envisageons le plan suivant pour créer nos résumés :
+
+* La lecture du texte active un certain nombre de concepts. Ces concepts font popper des codelets qui les instancient, et les instances font popper des codelets qui active des concepts proches. On garde en mémoire qui active quoi.
+* Une fois la lecture terminée, on repère les concepts les plus activés (et donc en théorie les plus pertinents pour rendre compte du texte).
+* On récupère l'ensemble des instances à avoir activer ce concept et on propage de manière à avoir une représentation du raisonnement de notre programme.
+* Éventuellement, on essaie d'en faire des phrases.
+
+De plus, la thèse de Parmentier, elle est franchement très bien. On lira sans doute l'article qui y est mentionné à répétition, ça pourra pas faire de mal.
+
+C'est en gros ce qu'on dira à notre tuteur jeudi prochain, à 19h, après que nous l'aurons retrouvé dans le grand hall et mené à une PC. D'ici-là, je me renseigne sur les accès à ces horaires tardifs. Je transmets ça à Théophane pour transmission à Jean Senellart (avec, peut-être, un petit mot du genre "Quid des contacts ? Quid des outils ?")

@@ -1,0 +1,160 @@
+\documentclass{article}   
+\usepackage[utf8]{inputenc}     
+\usepackage[T1]{fontenc}      
+\usepackage[french]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage{graphics}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphics}
+\usepackage{fancybox}		
+\usepackage{fancyhdr}
+\usepackage{makeidx}              %% permet de générer un index automatiquement
+
+\usepackage[top=3cm, bottom=4cm, left=2cm, right=2cm,headsep = 0.5cm,headheight = 1cm, footskip = 1cm,marginparsep = 0cm,marginparwidth=0cm]{geometry} %%pour aller vite
+
+\pagestyle{fancy}
+\renewcommand\headrulewidth{1pt}
+\fancyhead[L]{Réunion}
+\fancyhead[R]{Document interne}
+\fancyfoot[L]{PSC du mythe 2014}
+\fancyfoot[R]{}
+
+\title{Réunion PSC}
+\author{}
+
+\bibliographystyle{plain}	  %% le style utilisé pour créer la bibliographie
+\begin{document}                 
+\maketitle
+    
+\section{Informations}
+
+Réunion interne effectuée le 20 octobre 2014 dans le casert de Guillaume.
+
+But de la réunion : discuter à nouveau de notre programme, et préparer la réunion de lancement avec tout le monde (partage des tâches, réflexion préliminaire).
+
+Durée : longtemps.
+
+\section{Bilan}
+
+\subsection{Réunion de lancement}
+
+Pour la réunion de lancement, nos disponibilités sont :
+\begin{itemize}
+ \item Lundi 3 novembre : 8H-12H et l'après-midi à partir de 15H (séchage éventuel du sport/des cours de langue) ;
+ \item Les 12-13 novembre (X-Forum) toute la journée ;
+ \item Jeudi 6 novembre : à partir de 10H ;
+ \item Lundi 10 novembre : toute la journée.
+\end{itemize}
+Après cela, ce sera du séchage de cours scientifiques.
+
+\paragraph{}
+Informations importantes : jusqu'à contre-ordre nous serons en tenue \textbf{forum}. La présentation dure 20 min sur la base d'un beamer dont le contenu sera le suivant :
+\begin{itemize}
+ \item Introduction, objectifs du projet et explication des étapes du projet : Antonin ;
+ \item Implémentation de TD-IDF : Zhixing ;
+ \item Explication du réseau de concepts (RC) : Guillaume ;
+ \item Organisation : Antonin aussi ?.
+\end{itemize}
+On évite de faire parler Schrotty car il est trop chiant à écouter, et Sarah car elle ne l'est pas assez.
+
+\subsection{Organisation générale}
+
+Les rôles se redistribuent de la façon suivante :
+\begin{itemize}
+ \item Antonin : chef du groupe ;
+ \item Théophane : responsable relations ;
+ \item André : structure (RC);
+ \item Guillaume : structure et implémentation ;
+ \item Sarah : implémentation, comptes-rendus de réunion ;
+ \item Zhixing : TD-IDF et statistiques
+\end{itemize}
+Cependant, il est fort probable qu'à un certain moment de notre projet, nous soyons tous en train de galérer de concert sur la même chose (typiquement l'implémentation qui va nous tomber dessus).
+
+\subsection{Bases de données et statistiques}
+
+\begin{itemize}
+ \item Le parser lexical de nltk permet d'utiliser TF-IDF en se débarrassant des synonymies !
+ \item Pour mieux faire des bases de données, on peut parser un site internet, utiliser des flux RSS (gros XML bien formaté avec titre, corps, mais ne permet pas de remonter très loin dans les articles). Responsable potentiel : Guillaume, mais il ne pourra pas le faire avant la prochaine réunion...
+ \item Si Systran nous fournit du code, on se débrouillera idoinement avec GitHub ;
+ \item TF-IDF permet de calculer des proximités conceptuelles (des mots souvent associés). Donc c'est un outil utile pour créer notre RC ;
+\end{itemize}
+
+
+\subsection{Structures}
+
+\paragraph{RC}
+Ce qui s'est dit à cette réunion annule et remplace ce que j'avais commencé à esquisser ce week-end (je ne sers à rien !). Il sera donc pertinent de refaire une fiche de travail portant sur notre structure de réseau de concepts.
+\begin{itemize}
+ \item L'idée centrale, bien sûr, c'est l'activation des nœuds
+ \item La structure fait que nous n'avons pas un besoin impérieux de grammaire fine. Des relations sujet-action-objet peuvent suffire
+ \item On ne peut pas tout faire sur le tas simplement en lisant le texte. Il faut d'abord : lire le texte ; ensuite : travailler sur les structures
+ \item Il y a différentes actions possibles. On ne se contentera pas de lire les phrases dans l'ordre
+ \item La propagation, on peut la faire après avoir tout lu (ou apr-ès avoir lu un paragraphe)
+ \item Pour les différentes tâches, on peut imaginer un scheduler de tâches pas tout à fait déterministe qui reprenne l'idée des agents de Copycat, mais en plus clair
+ \item Faire paragraphe par paragraphe : reset le RC à chaque étape ? Puis regarder ce qu'on a dans le workspace
+ \item Considérer l'ordre (des phrases) comme un facteur de proximité supplémentaire
+\end{itemize}
+
+\paragraph{Structure du RC}
+Il y a des nœuds, avec chacun une importance conceptuelle, une activation (initialement nulle) ; les nœuds sont reliés par des liens de proximité (qui ne varie pas) et certains de ces liens sont étiquetés par d'autres nœuds (exemple : actions). Le RC est considéré comme la "mémoire à long terme" de Copycat et c'est à peu près la même chose pour nous.
+
+Pour éviter d'avoir à modifier la proximité dans le RC (et ne pas commencer à faire n'importe quoi dans ce réseau), on peut envisager d'en introduire une dans le Workspace.
+
+\paragraph{Structure du Workspace}
+
+Des nœuds représentent des instances de concepts apparus dans la phrase, contenant un certain nombre d'informations. Il y a des distances entre ces nœuds. On repère l'activation des concepts correspondants.
+
+A la fin du programme, le résumé, c'est le Workspace. L'information qu'il contient est l'information pertinente du texte. Elle ressemblera à un graphe avec des nœuds de poids divers.
+
+\paragraph{Tâches}
+A définir plus en détail, mais elles contiendront :
+\begin{itemize}
+ \item Propagation d'activation
+ \item Création d'instances dans le Workspace, de liens entre ces instances
+\end{itemize}
+
+\paragraph{Finir le programme}
+Clairement pas le problème central (on s'occupe en priorité de le faire commencer, après on voit comment on l'arrête). la notion de température développée pour Copycat est génial (d'après Guillaume). À creuser dans des directions telles que :
+\begin{itemize}
+ \item Taille des structures
+ \item Complexité des structures
+ \item Les tâches effectuées ont-elles fait un progrès ou pas ?
+\end{itemize}
+
+
+
+\subsection{Idées random}
+Est-ce qu'on va le faire apprendre ? Après être certain qu'il fait de bons résumés. Mais clairement, le RC sera dans un premier temps de mauvaise qualité (et ne comportera peut-être même pas de liens étiquetés).
+\subsection{Pensées de Guillaume}
+
+\begin{enumerate}
+ \item On dira une seule fois "on s'est inspirés de Copycat", sinon, ça fera mauvaise impression
+ \item Notre problème est-il trop simple ?
+ \item Oublier c'est pas bien
+ \item Ça flotte [Les structures dans le workspace, NDLR][NDLR : comprendre que ce n'est pas très clair]
+\end{enumerate}
+
+\subsection{Pensées de Sarah}
+
+\begin{enumerate}
+ \item J'ai faim.
+\end{enumerate}
+
+
+\section{Conclusion}
+Nous pouvons donc maintenant :
+\begin{itemize}
+ \item Implémenter TF-IDF (Zhixing)
+ \item Se trouver un bon corpus documentaire
+ \item Utiliser TF-IDF conjugué avec nltk sur un corpus documentaire
+ \item Fabriquer le RC (peut-être pas avant la réunion, mais maintenant qu'il est défini, open programmation !)
+ \item Refaire un document de travail sur "notre" RC (ie reprendre les schémas du précédent)
+ \item Réfléchir au reste de l'architecture
+\end{itemize}
+
+Et surtout : faire le beamer pour la réunion !!!!!!!!
+
+\end{document}

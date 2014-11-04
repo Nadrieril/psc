@@ -1,0 +1,91 @@
+\documentclass{article}           %% ceci est un commentaire (apres le caractere %)
+\usepackage[utf8]{inputenc}   
+%on me dit : usepackage avec l'option [latin1] mais ça foire... donc je prends utf8, du moment que c beau
+\usepackage[T1]{fontenc}          %% permet d'utiliser les caractères accentués
+\usepackage[french]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage{graphics}
+
+\usepackage{graphics}
+\usepackage{fancybox}		   %% package utiliser pour avoir un encadré 3D des images
+\usepackage{fancyhdr}
+\usepackage{makeidx}              %% permet de générer un index automatiquement
+\usepackage[style=numeric,backend=bibtex]{biblatex}				%% Utilisé pour la biblio
+
+
+\pagestyle{fancy}
+\renewcommand\headrulewidth{1pt}
+\fancyhead[L]{Compte-rendu de réunion}
+\fancyhead[R]{9 octobre 2014}
+\fancyfoot[L]{}
+\fancyfoot[R]{}
+
+
+
+\title{Compte-rendu de réunion}     %% \title est une macro, entre { } figure son premier argument
+\author{}        %% idem
+\date{9 octobre 2014}
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Réunion effectuée entre 19h30 et 20h30 sur le campus. Participants :
+\begin{itemize}
+ \item Tous les membres du groupe
+ \item Jean Senellart
+\end{itemize}
+
+\section{Objectifs}
+\begin{itemize}
+ \item Première rencontre "physique" entre notre tuteur et les membres de notre groupe
+ \item Revenir sur la proposition détaillée et sur le plan de travail envisagé pour notre projet
+ \item Revenir sur les outils à notre disposition
+\end{itemize}
+
+\section{Déroulé de la réunion}
+
+Notre tuteur, Jean Senellart, est revenu sur les différentes étapes en lesquelles nous allons subdiviser notre projet, déjà évoquées dans la proposition détaillée, et nous a proposé des précisions :
+\begin{enumerate}
+ \item L'analyse \textbf{syntaxique} du texte, la décomposition en unités grammaticales (sujets, verbes, objets) ;
+ \item Le repérage des \textbf{entités} présentes dans le texte : noms, dates, lieux ;
+ \item L'analyse des \textbf{liens} entre ces entités (par exemple à l'aide de l'outil \emph{Freebase} : une base de liens entre lieux, personnes et objets connus), permettant par exemple de "savoir" que Vladimir Poutine est le président de la Russie ;
+ \item L'analyse des \textbf{concepts} à l'aide d'une autre base de données telle que \emph{WordNet}
+ \item L'introduction d'une autre base de données, à un autre niveau d'abstraction. On pourrait à ce niveau introduire de la logique, mais ce serait beaucoup plus difficile et nous n'irons pas aussi loin dans l'analyse. En revanche, nous envisageons toujours d'adapter l'architecture de Copycat et son réseau de concepts ;
+ \item La génération de texte, ou \emph{a minima} d'une information compréhensible.
+\end{enumerate}
+
+Nous choisissons de nous intéresser aux articles traitant de \textbf{sports}, qui sont très descriptifs et informatifs. Cela laisse la possibilité de se restreindre encore à un sport en particulier.\\
+
+Quelques remarques soulevées au cours de l'entretien :
+\begin{itemize}
+ \item Les parties 1 à 4 font appel à des outils déjà existants, et les parties 1 et 2, si elles doivent être bien réfléchies (l'analyse syntaxique et linguistique étant d'après M.Senellart un point sur lequel M.Steyaert aura des exigences particulières), reposeront majoritairement sur des outils \emph{open source} ou de Systran ;
+ \item Un paradigme à creuser est celui consistant à faire interagir l'information du texte avec une \textbf{information globale}, construite à partir de \emph{Big Data}. Si ce n'est pas le but initial de notre projet, c'est un passage qui apparaît comme essentiel, à deux points de vue :
+ \begin{itemize}
+  \item Des méthodes statistiques peuvent permettre de tester la qualité du résumé
+  \item Nous pouvons construire des \textbf{bases de données} à partir d'une analyse statistique
+ \end{itemize}
+ En particulier, nous pouvons envisager d'utiliser un outil du type \emph{TF-IDF} pour sélectionner des concepts majeurs et bâtir ainsi un réseau de concepts. Nous pouvons aussi envisager ces bases de données comme une variable d'ajustement au cours de notre projet (nous pouvons toujours nous en sortir avec une solution plus simple qu'envisagé initialement).\\
+
+ \item La dernière partie est clairement celle sur laquelle nous passerons le moins de temps, avec les deux premières ;
+ \item Notre méthode de résumé automatique sera certainement moins efficace que les méthodes statistiques déjà utilisées. Ce n'est pas rédhibitoire, dans la mesure où nous visons l'efficacité \textbf{sur un document} ;
+ \item Nous ne devons pas hésiter à accorder une importance particulière à des données telles que \textbf{le titre du texte} qui constituent autant d'informations assez fiables et faciles à obtenir.
+\end{itemize}
+
+\paragraph{}
+M.Senellart nous a confirmé que nous aurions un correspondant chez Systran, qui n'a malheureusement pas pu venir ce soir.
+
+\section{Travaux à effectuer}
+
+La réunion de lancement n'est pas encore planifiée mais elle devra avoir lieu d'ici la mi-novembre. La présentation à réaliser comportera une partie consacrée au déroulement du projet (notamment les plans B en cas de difficulté).\\
+
+\begin{itemize}
+ \item Pour formaliser le réseau de concepts et son utilisation, nous pouvons \textbf{en construire un "à la main"} ;
+ \item Dans le même temps, nous pouvons \textbf{résumer des articles} "à la main" (il nous faudra de toute façon des exemples d'ici les prochaines réunions) ;
+ \item Il faut d'ores et déjà construire une \textbf{base de données statistiques}, qui ne peut être qu'utile pour la suite du projet ;
+ \item Il faut aussi commencer à traiter la partie \textbf{analyse syntaxique} dans l'optique d'y passer relativement peu de temps.
+\end{itemize}
+
+
+
+\end{document}

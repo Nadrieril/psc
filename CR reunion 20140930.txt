@@ -1,0 +1,9 @@
+* En résumant à la main des textes, il apparaît que l'on repère assez rapidement des structures assez lâches comme des oppositions au sein de l'article, qui permettent d'établir un (éventuellement plusieurs) thèmes.
+* La "compréhension" d'un article par notre programme, au-delà de l'idée de reformulation, viendrait de sa capacité à tirer des conclusions de certaines données de l'article et d'observer des contradictions (au moins apparentes) avec des données en aval. Typiquement, lisant "cessez le feu", il devrait être étonné de lire plus loin "n'a pas retiré ses troupes".
+* Ce problème étant hautement non trivial, il faudra sans doute réduire très drastiquement nos ambitions, notamment sur la diversité des textes étudiés. Au moins dans un premier temps, il lira des textes sur des arbres et des pommes.
+* Pour le résoudre, nous pensons nous appuyer sur un réseau de concepts. L'activation des neurones permettra de propager de proche en proche les concepts considérés et donc de simuler cette réflexion. De plus, une donnée de profondeur conceptuelle devrait permettre, avec une habile manipulation de poids dont les détails restent à définir, de privilégier les concepts larges et vagues (guerre, paix, etc.) ce qui représente un certain côté de la compréhension (dans un premier temps, on réfléchit en très gros).
+
+Pour la prochaine réunion :
+* Lire la thèse de parmentier sur copycat s'avèrera sans doute profitable pour la compréhension de ce que doit faire un réseau de concepts. Le lien est disponible ici. (pages 40 et suivantes)
+* N'hésitez pas à commencer à bidouiller à la main des algorithmes qui pourraient faire ce qu'on veut histoire de jouer avec la structure, c'est important pour sa compréhension. L'implémentation pourra attendre.
+
