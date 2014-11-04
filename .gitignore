@@ -1,2 +1,4 @@
 *~
-
+/.atom-build.json
+/build/
+*.pdf
