@@ -18,7 +18,7 @@ def work(nbetapes):
         #print(Task.time)
         Task.pop()
         G=net1.to_graph()
-        G.layout()
+        # G.layout()
         G.draw("figures/RCetape{0}.png".format(Task.time))
 
 
@@ -29,6 +29,7 @@ net1=Network(A)
 
 A.layout()
 A.draw("initial.png")
+net1.to_graph().draw("figures/RCetape0.png")
 #lancement des tâches et des observateurs
 
 o=NodeObserver()
