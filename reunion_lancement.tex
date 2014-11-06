@@ -80,14 +80,14 @@
 \section{Introduction}
 
 \begin{frame}%[allowframebreaks=0.8]
-\frametitle{Objectifs du projet}
+\frametitle{Objectifs du projet}%cadre général
 %%à l'ère du big data, une grande partie de ces données sont textuelles
 
 \begin{block}{Des problèmes nombreux}
 \begin{itemize}
  \item De grandes quantités de données textuelles
  \item Une grammaire complexe (langage naturel)
- \item Beaucoup de prérequis de bon sens ou de culture générale
+ \item Beaucoup de prérequis de bon sens ou de culture générale %exemple ?
 \end{itemize}
 
 \end{block}
@@ -96,7 +96,7 @@
 \begin{block}{Plusieurs solutions envisageables}
 \begin{itemize}
 \item «~Comprendre~» l'information du texte et la retranscrire~: \textbf{résumé abstractif}
-\item Analyser le texte de façon statistique et en extraire des phrases~: \textbf{résumé extractif}
+\item Analyser le texte de façon statistique et en extraire des phrases~: \textbf{résumé extractif} %dans la littérature
 \end{itemize}
 \end{block}
 
@@ -122,7 +122,7 @@ Le résumé final ne sera pas une simple copie des phrases importantes du texte.
 \begin{columns}[t]
 
 \begin{column}{6cm}
-\begin{enumerate}
+\begin{enumerate} %éviter la liste
  \item Analyse syntaxique
 % ie la grammaire. Nos exigences devraient entrer dans le champ des possibilités des outils libres déjà existants
  \item Repérage des entités.
@@ -139,14 +139,14 @@ Le résumé final ne sera pas une simple copie des phrases importantes du texte.
 %à droite, ce que ça donne aux différents stades
 
 \begin{column}{6cm}
-\begin{enumerate}
+\begin{itemize}
 \item Sujet, Verbe, Objet\ldots{}
 \item Zinedine Zidane\ldots{}
 \item Zidane est un joueur de football\ldots{}
 \item Le football est un sport\ldots{}
 \item Zinedine Zidane est donc un sportif.
 \item Sujets-Actions-Objets-Compléments
-\end{enumerate}
+\end{itemize}
 
 \end{column}
 \end{columns}
@@ -159,7 +159,7 @@ Le résumé final ne sera pas une simple copie des phrases importantes du texte.
 \begin{enumerate}
 \item Étude statistique
 \item Étude syntaxique et linguistique
-\item Étude «~intelligente~»
+\item Étude «~intelligente~» %but/gros du PSC
 \item Génération et étude de la qualité du résumé
 \end{enumerate}
 
@@ -194,45 +194,38 @@ De nombreux outils \textit{open-source} ou libres, notamment~:
 
 
 \section{Étude statistique}
-\begin{frame}
-\frametitle{TF-IDF(Term Frequency-Inverse Document Frequency)}
-\begin{itemize}
-  \item TF:la fréqence d'un terme est le nombre d'occurrences de ce terme dans le document considéré.
-  \item IDF:la fréquence inverse de document est une mesure de l'importance du terme dans l'ensemble du corpus.
-$IDF_{i}=log \frac{|D|}{|d_{j}:t_{i}\in d_{j}|}$
-  \item TF-IDF:le multiple de TF et IDF
-  \textbf{ex:le poids de mot i sur le document j}
-   $TF-IDF_{i,j} = TF_{i,j} \times IDF_{i}$
-\end{itemize}
-\end{frame}
+    \begin{frame}
+    \frametitle{TF-IDF(Term Frequency-Inverse Document Frequency)}
+    \begin{itemize}
+      \item TF: la fréquence d'un terme est le nombre d'occurrences de ce terme dans le document considéré.
+      \item IDF: la fréquence inverse de document est une mesure de l'importance du terme dans l'ensemble du corpus.
+    $IDF_{i}=log \frac{|D|}{|d_{j}\,:\,t_{i}\in d_{j}|}$
+      \item TF-IDF: le multiple de TF et IDF.\newline{}
+      \textbf{Exemple: le poids du mot i sur le document j}
+       $TFIDF_{i,j} = TF_{i,j} \times IDF_{i}$
+    \end{itemize}
+    \end{frame}
 
-\begin{frame}
-\frametitle{TF-IDF et la similarité de document}
-TF-IDF est fréquemment utilisé pour construire un modèle d'espace vectoriel:
-%%un graphe que je n'ai pas réussi à ajouter...
-Ici, on considère deux documents avec deux mots-clés: "gossip" et "jealous"
-\end{frame}
+    \begin{frame}
+    \frametitle{TF-IDF et la similarité de document}
+    TF-IDF est fréquemment utilisé pour construire un modèle d'espace vectoriel:\newline{}
+    %%un graphe que je n'ai pas réussi à ajouter...
+    Ici, on considère deux documents avec deux mots-clés: "gossip" et "jealous"
+    \end{frame}
 
-\begin{frame}
-\frametitle{TF-IDF et la résumé automatique}
-\begin{itemize}
-  \item calculer le TF de chaque mot
-  \item enlever les mots vides
-  \item calculer le TF-IDF et trier les mots valeur
-  \item calculer les valeurs des phrases à partir des mots-clés
-  \item trier les phrases
-\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Problème de ce modèle}
-\begin{itemize}
-  \item les facteurs considérés sont trop simples
-  \item répétition de l'information
-  \item risque de choisir des phrases trop longues
-\end{itemize}
-À venir: chercher d'autres indices et compléter le modèle
-\end{frame}
+    \begin{frame}
+    \frametitle{Utilisations du TF-IDF}
+        \begin{itemize}
+        \item Similarité de documents:\newline{}
+        On mesure la coprésence de mots-clés entre deux documents.
+        \item Résumé extractif:
+            \begin{itemize}
+                \item On calcule le TF-IDF et on trie les mots selon leur valeur;
+                \item On calcule les valeurs des phrases à partir des mots-clés;
+                \item On trie les phrases.
+            \end{itemize}
+        \end{itemize}
+    \end{frame}
 
 \section{Structure de l'analyseur}%Guillaume
     \begin{frame}
@@ -247,9 +240,9 @@ Ici, on considère deux documents avec deux mots-clés: "gossip" et "jealous"
         \frametitle{Réseau de concepts}
             \begin{itemize}
                 \item Graphe de concepts (objets, actions ou idées plus abstraites) reliés entre eux;
-                \item Deux concepts sont proches s'il est pertinent de penser au premier après avoir rencontré le second;
+                \item Deux concepts sont proches s'il est pertinent de penser au second après avoir rencontré le premier;
                 \item Modélise une certaine compréhension du monde;
-                \item Capable d'apprendre et d'évoluer à partir des résultat d'une analyse de texte.
+                \item Capable d'apprendre et d'évoluer à partir des résultats d'une analyse de texte.
             \end{itemize}
         \end{frame}
 
@@ -269,6 +262,7 @@ Ici, on considère deux documents avec deux mots-clés: "gossip" et "jealous"
             \begin{itemize}
                 \item Zone de travail qui contient les \textit{instances} des concepts rencontrés et des structures en cours de construction;
                 \item Modélise la progression de la compréhension du texte;
+                \item Quand l'analyse est terminée, les structures présentes dans le Workspace représentent la compréhension du texte qu'a acquise l'analyseur.
             \end{itemize}
         \end{frame}
 
@@ -279,20 +273,12 @@ Ici, on considère deux documents avec deux mots-clés: "gossip" et "jealous"
     \subsection{Workers}
         \begin{frame}
         \frametitle{Workers}
+            Ensemble de méthodes permettant d'extraire de l'information du texte et du réseau de concepts.\newline{}
+            Par exemple:
             \begin{itemize}
-                \item Ensemble de méthodes permettant d'extraire de l'information du texte et du réseau de concepts;
-                \item Gèrent l'activation du réseau de concepts, la création/modification de structures du Workspace, etc.;
-                \item Sont executés au fur et à mesure de l'analyse et gèrent son déroulement.
-            \end{itemize}
-        \end{frame}
-
-        \begin{frame}
-        \frametitle{Exemple}
-            \begin{itemize}
-                \item Workers gérant la lecture mot-à-mot du texte;
-                \item Workers capables d'identifier les références à un même objet;
-                \item Workers comprenant l'importance des mots selon l'ordre du texte, les paragraphes, le titre;
-                \item Workers capables d'extraire les structures les plus importantes.
+                \item Lecture mot-à-mot du texte;
+                \item Identification les références à un même objet;
+                \item Importance des mots selon l'ordre du texte, les paragraphes, le titre.
             \end{itemize}
         \end{frame}
 
@@ -304,10 +290,8 @@ Ici, on considère deux documents avec deux mots-clés: "gossip" et "jealous"
                 \item Le workspace est la zone de travail qui contient les \textit{instances} des concepts rencontrés ainsi que des structures;
                 \item Les workers sont différentes méthodes de récupérer de l'information; ils gèrent l'analyse.
             \end{itemize}
-            Quand l'analyse est terminée, les structures présentes dans le Workspace représentent la compréhension du texte qu'a acquise l'analyseur.
+
             En en extrayant les plus importantes, on peut obtenir une synthèse du texte.
         \end{frame}
-
-
 
 \end{document}
