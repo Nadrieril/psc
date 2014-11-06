@@ -1,10 +1,12 @@
 digraph G { /*Mettre d'abord tous les noeuds (nom_ic_activation) avec shape=box*/
 	celebrate_1 [shape=box,fontsize=10];
 	WayneRooney_5 [shape=box,fontsize=10];
+	/*ManchesterUnited_4 [shape=box,fontsize=10];*/
+	EnglandNationalTeam_4 [shape=box,fontsize=10];
 	player_2 [shape=box,fontsize=10];
 	appointment_1 [shape=box,fontsize=10];
 	exit_1 [shape=box,fontsize=10];
-	citizenship_2 [shape=box,fontsize=10];
+	citizen_2 [shape=box,fontsize=10];
 	turnsbsback_1 [shape=box,fontsize=10];
 	night_1 [shape=box,fontsize=10];
 	fans_2 [shape=box,fontsize=10];
@@ -24,8 +26,13 @@ digraph G { /*Mettre d'abord tous les noeuds (nom_ic_activation) avec shape=box*
 	team_2 -> captain_2 [weight=20]
 	captain_2 -> team_2 [weight=20]
 	WayneRooney_5 -> english_3 [weight=50]
-	WayneRooney_5 -> England_3 [label="citizenship",weight=50]
+	WayneRooney_5 -> England_3 [label="citizen",weight=50]
 	WayneRooney_5 -> football_4 [label="player",weight=70];
+	/*WayneRooney_5 -> ManchesterUnited_4 [label="player",weight=60];*/
+	WayneRooney_5 -> EnglandNationalTeam_4 [label="player",weight=60];
+	/*ManchesterUnited_4 -> football_4 [label="team",weight=60];*/
+	EnglandNationalTeam_4 -> football_4 [label="team",weight=60];
+	EnglandNationalTeam_4 -> England_3 [weight=30];
 	football_4 -> team_2 [weight=20]
 	football_4 -> WayneRooney_5 [weight=30]
 }

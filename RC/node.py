@@ -9,7 +9,7 @@ class Node :
 
     #activation entre 0 et 100
     #poids des liens entre 0 et 100
-    
+
     def __init__(self, newname, impcon, activation=None):
        self.linksIn={}#les liens ARRIVANT SUR LE NOEUD (pour que ce soit simple à programmer)
        self.linksOut={}#les liens PARTANT DU NOEUD (parce qu'il y en a besoin aussi)
@@ -20,7 +20,7 @@ class Node :
        else:
            self.a=0
        self.ic=impcon
- 
+
     def existsLink(self, de):
         """existe-t-il un lien de self au noeud passé en argument ?"""
         if(de in self.linksOut):
@@ -36,7 +36,7 @@ class Node :
         if(self in de.linksIn):
             del de.linksIn[self]
         de.linksIn.update({self : lien})
- 
+
 
     def computeActivation(self):
         """Calcule la nouvelle activation du noeud  en fonction des autres"""
@@ -53,8 +53,8 @@ class Node :
 
     def __str__(self):
         """surcharge de la méthode __str__"""
-        return("{0}_{1}".format(self.name, self.ic))
-    
+        return("{0}".format(self.name, self.ic))
+
     def describeLinks(self):
         """décrit tous les liens vers d'autres noeuds du RC"""
         print("Liens venant d autres noeuds : ")
@@ -73,7 +73,7 @@ class Link :
     def __init__(self, proximite, node=None):
         self.label=node
         self.p=proximite
-    
+
     def __str__(self):
         if(self.label):
             return("Etiquette : {0}, proximite : {1}").format(self.label.name,  self.p)
@@ -82,11 +82,11 @@ class Link :
 
 
 class NodeObserver:
-    
+
     def __init__(self):
         self.times=[]#liste d'instants où le noeud est modifié
         self.activations=[]#liste d'activations successives (c'est ça qu'on observe)
-    
+
     def update(self, time, activation):
         self.times.append(time)
         self.activations.append(activation)
