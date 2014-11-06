@@ -193,8 +193,46 @@ De nombreux outils \textit{open-source} ou libres, notamment~:
 
 
 
-\section{Étude statistique}%Zhixing
-%td-idf
+\section{Étude statistique}
+\begin{frame}
+\frametitle{TF-IDF(Term Frequency-Inverse Document Frequency)}
+\begin{itemize}
+  \item TF:la fréqence d'un terme est le nombre d'occurrences de ce terme dans le document considéré.
+  \item IDF:la fréquence inverse de document est une mesure de l'importance du terme dans l'ensemble du corpus.
+$IDF_{i}=log \frac{|D|}{|d_{j}:t_{i}\in d_{j}|}$
+  \item TF-IDF:le multiple de TF et IDF
+  \textbf{ex:le poids de mot i sur le document j}
+   $TF-IDF_{i,j} = TF_{i,j} \times IDF_{i}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{TF-IDF et la similarité de document}
+TF-IDF est fréquemment utilisé pour construire un modèle d'espace vectoriel:
+%%un graphe que je n'ai pas réussi à ajouter...
+Ici, on considère deux documents avec deux mots-clés: "gossip" et "jealous"
+\end{frame}
+
+\begin{frame}
+\frametitle{TF-IDF et la résumé automatique}
+\begin{itemize}
+  \item calculer le TF de chaque mot
+  \item enlever les mots vides
+  \item calculer le TF-IDF et trier les mots valeur
+  \item calculer les valeurs des phrases à partir des mots-clés
+  \item trier les phrases
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Problème de ce modèle}
+\begin{itemize}
+  \item les facteurs considérés sont trop simples
+  \item répétition de l'information
+  \item risque de choisir des phrases trop longues
+\end{itemize}
+À venir: chercher d'autres indices et compléter le modèle
+\end{frame}
 
 \section{Structure de l'analyseur}%Guillaume
     \begin{frame}
@@ -269,5 +307,7 @@ De nombreux outils \textit{open-source} ou libres, notamment~:
             Quand l'analyse est terminée, les structures présentes dans le Workspace représentent la compréhension du texte qu'a acquise l'analyseur.
             En en extrayant les plus importantes, on peut obtenir une synthèse du texte.
         \end{frame}
+
+
 
 \end{document}
