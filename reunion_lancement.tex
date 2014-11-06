@@ -64,8 +64,8 @@
 %%page de titre
 \begin{frame}
   \titlepage{}
-
 \end{frame}
+
 %% sommaire %%
 % \begin{frame}
 % \frametitle{Sommaire}
@@ -268,13 +268,14 @@
     \subsection{Synthèse}
         \begin{frame}
         \frametitle{Synthèse}
+            Fonctionnement de l'analyseur:
             \begin{itemize}
-                \item Le réseau de concepts contient des connaissances \textit{a priori} sur le monde; il n'est pas modifié pendant l'analyse;
-                \item Le workspace est la zone de travail qui contient les \textit{instances} des concepts rencontrés ainsi que des structures;
-                \item Les workers sont différentes méthodes de récupérer de l'information; ils gèrent l'analyse.
+                % \item Le réseau de concepts contient des connaissances \textit{a priori};
+                \item La lecture du texte active le réseau de concepts;
+                \item Les concepts activés sont instanciés dans le workspace;
+                \item Les workers travaillent dans le workspace et créent des structures;
+                \item À la fin, les structures les plus importantes permettent d'obtenir une synthèse du texte.
             \end{itemize}
-
-            En en extrayant les plus importantes, on peut obtenir une synthèse du texte.
         \end{frame}
 
 \begin{frame}
