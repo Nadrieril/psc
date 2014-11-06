@@ -14,7 +14,7 @@ import pygraphviz as pgv
 
 #petite fonction importante
 def work(nbetapes):
-    while (len(Task.tasks))<>0  and (Task.time<nbetapes)  : #tant que ce n'est pas vide
+    while len(Task.tasks)!=0  and Task.time < nbetapes: #tant que ce n'est pas vide
         #print(Task.time)
         Task.pop()
         G=net1.to_graph()
