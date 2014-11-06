@@ -196,8 +196,78 @@ De nombreux outils \textit{open-source} ou libres, notamment~:
 \section{Étude statistique}%Zhixing
 %td-idf
 
-\section{Réseau de concepts et structure associée}%Guillaume, change le titre
+\section{Structure de l'analyseur}%Guillaume
+    \begin{frame}
+        \frametitle{Exemple - Fil rouge}
+        Phrase à analyser:\newline{}
+        "Wayne Rooney celebrated his appointment as England captain with the winner against Norway on a night when
+        fans turned their back on the team following their dismal World Cup exit."
+    \end{frame}
 
+    \subsection{Réseau de concepts}
+        \begin{frame}
+        \frametitle{Réseau de concepts}
+            \begin{itemize}
+                \item Graphe de concepts (objets, actions ou idées plus abstraites) reliés entre eux;
+                \item Deux concepts sont proches s'il est pertinent de penser au premier après avoir rencontré le second;
+                \item Modélise une certaine compréhension du monde;
+                \item Capable d'apprendre et d'évoluer à partir des résultat d'une analyse de texte.
+            \end{itemize}
+        \end{frame}
 
+        \begin{frame}
+        \frametitle{Exemple}
+            \includegraphics[height=0.8\textheight]{RC/figures/RCetape0.png}
+        \end{frame}
+
+        \begin{frame}
+        \frametitle{Concept clé: l'activation}
+            \includegraphics[height=0.8\textheight]{RC/figures/RCetape30.png}
+        \end{frame}
+
+    \subsection{Workspace}
+        \begin{frame}
+        \frametitle{Workspace}
+            \begin{itemize}
+                \item Zone de travail qui contient les \textit{instances} des concepts rencontrés et des structures en cours de construction;
+                \item Modélise la progression de la compréhension du texte;
+            \end{itemize}
+        \end{frame}
+
+        \begin{frame}
+        \frametitle{Exemple}
+        \end{frame}
+
+    \subsection{Workers}
+        \begin{frame}
+        \frametitle{Workers}
+            \begin{itemize}
+                \item Ensemble de méthodes permettant d'extraire de l'information du texte et du réseau de concepts;
+                \item Gèrent l'activation du réseau de concepts, la création/modification de structures du Workspace, etc.;
+                \item Sont executés au fur et à mesure de l'analyse et gèrent son déroulement.
+            \end{itemize}
+        \end{frame}
+
+        \begin{frame}
+        \frametitle{Exemple}
+            \begin{itemize}
+                \item Workers gérant la lecture mot-à-mot du texte;
+                \item Workers capables d'identifier les références à un même objet;
+                \item Workers comprenant l'importance des mots selon l'ordre du texte, les paragraphes, le titre;
+                \item Workers capables d'extraire les structures les plus importantes.
+            \end{itemize}
+        \end{frame}
+
+    \subsection{Synthèse}
+        \begin{frame}
+        \frametitle{Synthèse}
+            \begin{itemize}
+                \item Le réseau de concepts contient des connaissances \textit{a priori} sur le monde; il n'est pas modifié pendant l'analyse;
+                \item Le workspace est la zone de travail qui contient les \textit{instances} des concepts rencontrés ainsi que des structures;
+                \item Les workers sont différentes méthodes de récupérer de l'information; ils gèrent l'analyse.
+            \end{itemize}
+            Quand l'analyse est terminée, les structures présentes dans le Workspace représentent la compréhension du texte qu'a acquise l'analyseur.
+            En en extrayant les plus importantes, on peut obtenir une synthèse du texte.
+        \end{frame}
 
 \end{document}
