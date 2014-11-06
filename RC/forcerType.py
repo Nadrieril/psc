@@ -1,5 +1,6 @@
-#code récupéré sur internet qui permet de forcer le type des arguments
-#http://kedeligdata.blogspot.fr/2009/03/type-checking-in-python.html
+# code récupéré sur internet qui permet de forcer le type des arguments
+# http://kedeligdata.blogspot.fr/2009/03/type-checking-in-python.html
+
 
 def decorator_with_args(decorator):
     def new(*args, **kwargs):
@@ -7,6 +8,7 @@ def decorator_with_args(decorator):
             return decorator(fn, *args, **kwargs)
         return new2
     return new
+
 
 @decorator_with_args
 def typecheck(fn, *decorator_args):
@@ -17,12 +19,13 @@ def typecheck(fn, *decorator_args):
         for x in range(0, len(args)):
             if type(args[x]) != decorator_args[x]:
                 raise TypeError('Argument %i is of wrong type.\
-                                 %s expected, %s received.'%\
-                               (x+1, str(decorator_args[x]),
-                                str(type(args[x]))))
+                                %s expected, %s received.'
+                                (x+1, str(decorator_args[x]),
+                                 str(type(args[x]))))
         return fn(*args)
     return new
-    
+
+
 @typecheck(int, int)
 def add(x, y):
     return x+y
