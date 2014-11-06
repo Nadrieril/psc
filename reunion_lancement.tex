@@ -79,131 +79,121 @@
 
 \section{Introduction}
 
-\begin{frame}%[allowframebreaks=0.8]
-\frametitle{Objectifs du projet}%cadre général
-%%à l'ère du big data, une grande partie de ces données sont textuelles
+    \begin{frame}%[allowframebreaks=0.8]
+    \frametitle{Objectifs du projet}%cadre général
+        %%à l'ère du big data, une grande partie de ces données sont textuelles
 
-\begin{block}{Des problèmes nombreux}
-\begin{itemize}
- \item De grandes quantités de données textuelles
- \item Une grammaire complexe (langage naturel)
- \item Beaucoup de prérequis de bon sens ou de culture générale %exemple ?
-\end{itemize}
-
-\end{block}
-
-
-\begin{block}{Plusieurs solutions envisageables}
-\begin{itemize}
-\item «~Comprendre~» l'information du texte et la retranscrire~: \textbf{résumé abstractif}
-\item Analyser le texte de façon statistique et en extraire des phrases~: \textbf{résumé extractif} %dans la littérature
-\end{itemize}
-\end{block}
+        \begin{block}{Des problèmes nombreux}
+            \begin{itemize}
+                \item De grandes quantités de données textuelles
+                \item Une grammaire complexe (langage naturel)
+                \item Beaucoup de prérequis de bon sens ou de culture générale %exemple ?
+            \end{itemize}
+        \end{block}
 
 
-\end{frame}
+        \begin{block}{Plusieurs solutions envisageables}
+            \begin{itemize}
+                \item «~Comprendre~» l'information du texte et la retranscrire~: \textbf{résumé abstractif}
+                \item Analyser le texte de façon statistique et en extraire des phrases~: \textbf{résumé extractif} %dans la littérature
+            \end{itemize}
+        \end{block}
+    \end{frame}
 
 
-\begin{frame}
-\frametitle{Notre projet~: Synthétiseur automatique de documents}
+    \begin{frame}
+    \frametitle{Notre projet~: Synthétiseur automatique de documents}
+        Nous voulons résumer un texte en langage naturel, de façon abstractive.
 
-Nous voulons résumer un texte en langage naturel, de façon abstractive.
+        Le résumé final ne sera pas une simple copie des phrases importantes du texte.
+    \end{frame}
 
-Le résumé final ne sera pas une simple copie des phrases importantes du texte.
-
-\end{frame}
 
 \section{Structure du projet}
 
-\subsection{Le projet}
-\begin{frame}
-\frametitle{Le synthétiseur en six étapes}
+    \subsection{Le projet}
 
-\begin{columns}[t]
+        \begin{frame}
+        \frametitle{Le synthétiseur en six étapes}
 
-\begin{column}{6cm}
-\begin{enumerate} %éviter la liste
- \item Analyse syntaxique
-% ie la grammaire. Nos exigences devraient entrer dans le champ des possibilités des outils libres déjà existants
- \item Repérage des entités.
- %les entités ne sont rien d'autre que des concepts importants
- \item Connaissances des liens entre entités.
- %liens qui sont donnés par FB~: Zlatan est un joueur de foot par exemple
- \item Analyse des concepts.
- %il s'agit de relier tous les mots à des concepts
- \item Approfondissement des liens entre les concepts.
- %explicité dans la suite
- \item Génération de texte simple
-\end{enumerate}
-\end{column}
-%à droite, ce que ça donne aux différents stades
+            \begin{columns}[t]
+                \begin{column}{6cm}
+                    \begin{enumerate} %éviter la liste
+                        \item Analyse syntaxique
+                        % ie la grammaire. Nos exigences devraient entrer dans le champ des possibilités des outils libres déjà existants
+                        \item Repérage des entités.
+                        %les entités ne sont rien d'autre que des concepts importants
+                        \item Connaissances des liens entre entités.
+                        %liens qui sont donnés par FB~: Zlatan est un joueur de foot par exemple
+                        \item Analyse des concepts.
+                        %il s'agit de relier tous les mots à des concepts
+                        \item Approfondissement des liens entre les concepts.
+                        %explicité dans la suite
+                        \item Génération de texte simple
+                    \end{enumerate}
+                \end{column}
+                %à droite, ce que ça donne aux différents stades
 
-\begin{column}{6cm}
-\begin{itemize}
-\item Sujet, Verbe, Objet\ldots{}
-\item Zinedine Zidane\ldots{}
-\item Zidane est un joueur de football\ldots{}
-\item Le football est un sport\ldots{}
-\item Zinedine Zidane est donc un sportif.
-\item Sujets-Actions-Objets-Compléments
-\end{itemize}
+                \begin{column}{6cm}
+                    \begin{itemize}
+                        \item Sujet, Verbe, Objet\ldots{}
+                        \item Zinedine Zidane\ldots{}
+                        \item Zidane est un joueur de football\ldots{}
+                        \item Le football est un sport\ldots{}
+                        \item Zinedine Zidane est donc un sportif.
+                        \item Sujets-Actions-Objets-Compléments
+                    \end{itemize}
+                \end{column}
+            \end{columns}
+        \end{frame}
 
-\end{column}
-\end{columns}
+        \begin{frame}
+        \frametitle{Déroulement du projet}
+            \begin{enumerate}
+                \item Étude statistique
+                \item Étude syntaxique et linguistique
+                \item Étude «~intelligente~» %but/gros du PSC
+                \item Génération et étude de la qualité du résumé
+            \end{enumerate}
+        \end{frame}
 
-\end{frame}
+    \subsection{Organisation du travail}
 
-\begin{frame}
-\frametitle{Déroulement du projet}
+        \begin{frame}
+        \frametitle{Méthodes de travail}
+        	\begin{itemize}
+        		\item Des réunions hebdomadaires, pour~:
+        		\begin{itemize}
+        			\item Faire le point sur le travail effectué dans la semaine;
+        			\item Rendre compte et résoudre les difficultés rencontrées;
+        			\item Définir les axes prioritaires pour la semaine à venir.
+        		\end{itemize}
+        		\item Un répertoire partagé (git) pour une gestion pratique des fichiers.
+        	\end{itemize}
+        \end{frame}
 
-\begin{enumerate}
-\item Étude statistique
-\item Étude syntaxique et linguistique
-\item Étude «~intelligente~» %but/gros du PSC
-\item Génération et étude de la qualité du résumé
-\end{enumerate}
-
-\end{frame}
-
-\subsection{Organisation du travail}
-
-\begin{frame}
-\frametitle{Méthodes de travail}
-	\begin{itemize}
-		\item Des réunions hebdomadaires, pour~:
-		\begin{itemize}
-			\item Faire le point sur le travail effectué dans la semaine;
-			\item Rendre compte et résoudre les difficultés rencontrées;
-			\item Définir les axes prioritaires pour la semaine à venir.
-		\end{itemize}
-		\item Un répertoire partagé (git) pour une gestion pratique des fichiers.
-	\end{itemize}
-\end{frame}
-
-\begin{frame}
-\frametitle{Moyens utilisés}
-
-De nombreux outils \textit{open-source} ou libres, notamment~:
-\begin{itemize}
- \item Freebase
- \item WordNet (Princeton)
- \item nltk (librairie python)
-\end{itemize}
-\end{frame}
-
+        \begin{frame}
+        \frametitle{Moyens utilisés}
+            De nombreux outils \textit{open-source} ou libres, notamment~:
+            \begin{itemize}
+                \item Freebase
+                \item WordNet (Princeton)
+                \item nltk (librairie python)
+            \end{itemize}
+        \end{frame}
 
 
 \section{Étude statistique}
     \begin{frame}
     \frametitle{TF-IDF(Term Frequency-Inverse Document Frequency)}
-    \begin{itemize}
-      \item TF: la fréquence d'un terme est le nombre d'occurrences de ce terme dans le document considéré.
-      \item IDF: la fréquence inverse de document est une mesure de l'importance du terme dans l'ensemble du corpus.
-    $IDF_{i}=log \frac{|D|}{|d_{j}\,:\,t_{i}\in d_{j}|}$
-      \item TF-IDF: le multiple de TF et IDF.\newline{}
-      \textbf{Exemple: le poids du mot i sur le document j}
-       $TFIDF_{i,j} = TF_{i,j} \times IDF_{i}$
-    \end{itemize}
+        \begin{itemize}
+            \item TF: la fréquence d'un terme est le nombre d'occurrences de ce terme dans le document considéré.
+            \item IDF: la fréquence inverse de document est une mesure de l'importance du terme dans l'ensemble du corpus.
+                $IDF_{i}=log \frac{|D|}{|d_{j}\,:\,t_{i}\in d_{j}|}$
+            \item TF-IDF: le multiple de TF et IDF.\newline{}
+                \textbf{Exemple: le poids du mot i sur le document j}
+                $TFIDF_{i,j} = TF_{i,j} \times IDF_{i}$
+        \end{itemize}
     \end{frame}
 
     \begin{frame}
