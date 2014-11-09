@@ -207,24 +207,26 @@
                 \item On calcule les valeurs des phrases à partir des mots-clés;
                 \item On extrait les phrases les plus importantes.
             \end{itemize}
+        \item Approche grossière mais qui fournit une base de travail
         \end{itemize}
     \end{frame}
+
 
 \section{Structure de l'analyseur}%Guillaume
     \begin{frame}
         \frametitle{Exemple - Fil rouge}
         Phrase à analyser:\newline{}
-        "Wayne Rooney celebrated his appointment as England captain with the winner against Norway on a night when
-        fans turned their back on the team following their dismal World Cup exit."
+        "Wayne Rooney celebrated his appointment as England captain on a night when
+        fans turned their back on the team."
     \end{frame}
 
     \subsection{Réseau de concepts}
         \begin{frame}
         \frametitle{Réseau de concepts}
             \begin{itemize}
-                \item Graphe de concepts (objets, actions ou idées plus abstraites) reliés entre eux;
-                \item Deux concepts sont proches s'il est pertinent de penser au second après avoir rencontré le premier;
-                \item Modélise une certaine compréhension du monde;
+                \item \textbf{Graphe de concepts} (objets, actions ou idées plus abstraites) reliés entre eux;
+                \item Deux concepts sont proches s'il est \textbf{pertinent} de penser au second après avoir rencontré le premier;
+                \item Modélise une certaine \textbf{compréhension du monde};
                 \item Capable d'apprendre et d'évoluer à partir des résultats d'une analyse de texte.
             \end{itemize}
         \end{frame}
@@ -243,9 +245,9 @@
         \begin{frame}
         \frametitle{Workspace}
             \begin{itemize}
-                \item Zone de travail qui contient les \textit{instances} des concepts rencontrés et des structures en cours de construction;
-                \item Modélise la progression de la compréhension du texte;
-                \item Quand l'analyse est terminée, les structures présentes dans le Workspace représentent la compréhension du texte qu'a acquise l'analyseur.
+                \item Zone de travail qui contient les \textbf{instances} des concepts rencontrés et des \textbf{structures} en cours de construction;
+                \item Modélise la progression de la \textbf{compréhension du texte};
+                \item Quand l'analyse est terminée, les structures importantes représentent l'information importante du texte.
             \end{itemize}
         \end{frame}
 
@@ -257,7 +259,7 @@
     \subsection{Workers}
         \begin{frame}
         \frametitle{Workers}
-            Ensemble de méthodes permettant d'extraire de l'information du texte et du réseau de concepts.\newline{}
+            Ensemble de \textbf{méthodes} permettant d'extraire de l'information du texte et du réseau de concepts.\newline{}
             Par exemple:
             \begin{itemize}
                 \item Lecture mot-à-mot du texte;
@@ -272,10 +274,10 @@
             Fonctionnement de l'analyseur:
             \begin{itemize}
                 % \item Le réseau de concepts contient des connaissances \textit{a priori};
-                \item La lecture du texte active le réseau de concepts;
-                \item Les concepts activés sont instanciés dans le workspace;
-                \item Les workers travaillent dans le workspace et créent des structures;
-                \item À la fin, les structures les plus importantes permettent d'obtenir une synthèse du texte.
+                \item La lecture du texte \textbf{active} le réseau de concepts;
+                \item Les concepts activés sont \textbf{instanciés} dans le workspace;
+                \item Les workers \textbf{travaillent} dans le workspace et créent des structures;
+                \item À la fin, les structures les plus importantes permettent d'obtenir une \textbf{synthèse} du texte.
             \end{itemize}
         \end{frame}
 
