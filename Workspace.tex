@@ -1,0 +1,151 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[latin1]{inputenc}%%seul package à charger : pour éviter les problèmes sordides d'encodage
+\usepackage[fiche,psc]{andre}%%bon eh bien sûr...
+%%fiche, psc pour faire une fiche
+%%rapport, psc pour faire un rapport
+
+\title{Document de travail - Workspace et Workers}
+\author{\membres} %%\membres uniquement avec l'option psc
+\date{12 novembre 2014}
+
+\begin{document}
+
+%\titrelong%%une page complète
+\titrecourt %titre plus court, typiquement pour les fiches
+
+
+\section*{Important}
+
+MODIDIFIEZ CE DOCUMENT AUTANT QUE VOUS VOULEZ SELON VOS IDÉES DU MOMENT, C'EST QUELQUE CHOSE DE FULLY COLLABORATIF
+
+\section{Présentation}
+
+Le Workspace est la structure la plus importante ; plus encore que le réseau de concept. Il nous faut la définir rigoureusement, ainsi que ce que font les workers, afin d'être sûrs à quoi nous arrivons.
+
+C'est aussi ici que nous allons le plus nous démarquer de Copycat notamment, puisque nous voulons faire du résumé automatique : pour ce qui était du réseau de concepts, nous étions encore dans la continuité.
+
+
+\paragraph{Cahier des charges du workspace}
+
+\begin{itemize}
+ \item Contenir des instances des n\oe uds du réseau de concepts (ie : des concepts signifiants) ;
+ \item Reprendre les informations importantes du texte ;
+ \item Ajouter de l'information ne provenant pas directement du texte, mais jugée importante ? A voir ! (Ex. trivial des n\oe uds fortement activés dans le RC)
+ \item Ne pas contenir d'information trop évidente : ex. il ne faut pas répéter que Wayne Rooney est un joueur de football, même si c'était un sous-entendu du texte. C'était sous-entendu justement parce que ça ne sert pas de le répéter, a priori ;
+ \item Contenir une information exploitable ;
+ \item Tracer du début à la fin du programme le rôle grammatical des concepts tirés du texte, dans leur contexte. Exemple : Wayne Rooney est un sujet. Il faut savoir tout au long du programme, y compris lorsque le n\oe ud Wayne Rooney sera créé dans le Workspace, que c'est un sujet. Cela permet de ne pas jeter de l'information par la fenêtre.
+\end{itemize}
+ 
+\paragraph{Cahier des charges des workers}
+Il nous en faut pour :
+\begin{itemize}
+ \item Créer des instances de n\oe uds du RC dans le W ;
+ \item Activer des n\oe uds du RC ;
+ \item Faire des liens entre les n\oe uds du W ;
+ \item \textbf{Prendre en compte toute l'information grammaticale/syntaxique} et la transférer au W, car elle n'apparaît pas dans le RC. Exemple : un worker spécial qui crée un sujet (Wayne Rooney) dans le W, et va ensuite spécifiquement chercher "ce que fait Wayne Rooney". Un worker spécial qui crée un objet (World Cup) dans le W, et va ensuite chercher "ce qui arrive à" ou "ce qu'on dit sur" World Cup.
+ 
+\end{itemize}
+
+\section{Idées provenant de Copycat/Bascet}
+ 
+\subsection{Copycat}
+
+\paragraph{Workspace}
+Le workspace contient des instances du réseau de concepts (Slipnet) organisées en : 
+\begin{itemize}
+ \item \textbf{Description} d'objets
+ \item \textbf{Relations} entre objets (lien de succession entre lettres par ex.)
+ \item \textbf{Groupes} d'objets
+ \item Correspondances entre objets de chaînes différentes ("est analogue à")
+ \item Règles qui décrit le changement entre la chaîne initiale et la chaîne modifiée
+ \item Règle traduite qui décrit comment modifier la chaîne cible (peut être issue de la règle précédente en remplaçant des concepts, par exemple)
+\end{itemize}
+
+Je retiens : description, relations, groupes d'objets.
+
+\paragraph{coderack}
+Le coderack contient les codelets, agents choisis stochastiquement mais pas n'importe comment.
+
+Ces agents (codelets) représentent des pressions.
+\begin{itemize}
+ \item Codelets ascendants : pressions présentes dans toutes les situations (trouver des relations...)
+ \item Codelets descendants : pressions provenant de la situation courante
+\end{itemize}
+
+À chaque pas d'exécution, un codelet est exécuté et supprimé du coderack. Chaque codelet a une certaine urgence, mais elle ne détermine pas sa priorité (le choix se fait en partie au hasard) (elle représente l'intérêt de sa tâche).
+
+\begin{itemize}
+ \item Les codelets activent les noeuds du Slipnet
+ \item Les noeuds actifs ajoutent des codelets dans le Coderack (descendants, par exemple)
+ \item Les codelets lancent d'autres codelets
+ \item Des codelets ascendants sont créés en permanence
+\end{itemize}
+
+Je laisse pour plus tard le problème de la température.
+
+\subsection{Bascet}
+
+\paragraph{Agents}
+
+\begin{itemize}
+ \item Chacun a son \textbf{urgence}
+ \item Chacun a un \textbf{n\oe ud père} qui l'a lancé (RC)
+ \item Ils peuvent lire et créer les objets du Blackboard (active les n\oe uds du RC dont l'objet est une instance)
+ \item \textbf{Opinionnent} sur la validité d'un objet
+\end{itemize}
+
+
+\paragraph{Blackboard}
+Contient des objets, instances des noeuds du RC :
+\begin{itemize}
+ \item Contenu
+ \item Père (noeud dont il est instance)
+ \item Importance (dépend du père et des liens avec les autres objets)
+ \item Satisfaction (dépend des agents)
+ \item Eminence (objet à traiter)
+\end{itemize}
+
+\section{Conclusions}
+
+Je pense reprendre dans un premier temps un mélange de ces caractéristiques, et adapter ensuite à notre problème.
+
+\begin{definition}[Workspace]
+
+Le Workspace est une structure constituée de :
+\begin{itemize}
+ \item N\oe uds dits "du Workspace", issus de l'instantiation de concepts ;
+ \item N\oe uds "fantômes" issus de n\oe uds du RC très activés, mais non présents dans le texte ;
+ \item Liens entre ces n\oe uds.
+\end{itemize}
+
+\end{definition}
+
+
+\begin{definition}[N\oe ud du Workspace]
+
+Un tel n\oe ud comporte :
+\begin{itemize}
+ \item Un \textbf{n\oe ud père} dans le RC et une étiquette identique à son père ;
+ \item Une \textbf{importance} qui dépend de celle de son père ;
+ \item Un  \textbf{rôle} plus ou moins défini issu du parsing syntaxique/grammatical ;
+ \item Une \textbf{satisfaction} calculée par les workers, selon le rôle, et les liens qu'ils ont réussi à créer (par exemple, pour un sujet, on s'attend à ce que celui-ci agisse) ;
+\end{itemize}
+
+\end{definition}
+
+Moins le n\oe ud est satisfait, plus il faut chercher, donc lancer des workers qui traitent de lui OU augmenter l'urgence de ces workers.
+
+\begin{definition}[Worker]
+Un worker correspond à une tâche. De manière générale, il agit à la fois sur le Workspace et sur le RC. Un worker comporte toujours :
+\begin{itemize}
+ \item Une urgence ;
+ \item Une mission définie ;
+\end{itemize}
+
+\end{definition}
+
+
+\end{document}
+
+
+
