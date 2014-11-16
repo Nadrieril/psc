@@ -108,8 +108,8 @@ class WorkspaceNode:
             self.name="No_name"
         
         if(father):
-            self.importance=min(100,father.ic/10*father.activation)
-            #the node's importance can evolve by itself
+            self.importance=min(100,father.activation)
+            #the node's importance could evolve by itself
         self.real_links=real_links#links to real nodes
         self.phantom_links=phantom_links#links to phantom_nodes
         self.satisfaction=0

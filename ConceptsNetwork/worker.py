@@ -5,13 +5,21 @@ from random import random
 from node import Node
 from workspace import *
 
+"""
+Main class worker, some functions, and 
+workers which act only on the conceptnetwork
+"""
 
-__all__=['pop','push','Worker','Activate', 'Compute', 'ReadAndWrite',
-'ReadTitle', 'WriteConcept', 'activate_messages', 'deactivate_messages', 'increase_time']
+
+__all__=['pop','push','Worker','Activate', 'Compute',  'activate_messages', 'deactivate_messages', 'increase_time']
 
 workers = []#global static queue of workers
 time = 0
 print_messages=False
+
+ACTIVATION_ENABLING_CONCEPT_INSTANTIATION=80
+ACTIVATE_URGENCY=100
+COMPUTE_URGENCY=50
 
 def increase_time():
     global time
@@ -29,7 +37,7 @@ def push(t):
 def pushRandom(t):
     """
     Push a new worker into the queue, but randomly
-    (it has to depend on the type and urgency of the worker)
+    (it has to depend on the urgency of the worker)
     """
     i=0
     while(i<len(workers) and workers[i].urgency>t.urgency):
@@ -52,7 +60,7 @@ def deactivate_messages():
     print_messages=False
 
 
-class WorkerException(Error):
+class WorkerException(Exception):
     pass
 
 class Worker:
@@ -93,18 +101,19 @@ class Activate(Worker):
         """
         It is urgent to activate nodes. Thus, worker's urgency is set to 100 (maximum)
         """
-        Worker.__init__(self, 100)
+        Worker.__init__(self, ACTIVATE_URGENCY)
         self.target_node = target_node
         self.activation_to_add = activation_to_add
 
 
     def launch(self):
         """
-        The Activate workers generates new Compute workers for every linked node
+        The Activate worker generates new Compute workers for every linked node
+        It pushes a writeConcept worker if the node is activated enough
         """
         Worker.launch(self)
         self.target_node.activation += self.activation_to_add
-        if(self.target_node.activation>80):
+        if(self.target_node.activation>ACTIVATION_ENABLING_CONCEPT_INSTANTIATION):
             pushRandom(WriteConcept(target_node))
         for n in self.target_node.linksOut.keys():
             pushRandom(Compute(n))
@@ -126,7 +135,7 @@ class Compute(Worker):
         It is important to compute node's activation, but there are things more important to do.
         Thus, the worker's importance is set to 50
         """
-        Worker.__init__(self, 50)
+        Worker.__init__(self, COMPUTE_URGENCY)
         self.target_node = target_node
 
     def launch(self):
@@ -153,4 +162,3 @@ if __name__=="__main__":
     push(toto)
     toto.launch()
     toto2=RealNode(father=Node("toto", 4))
-    
