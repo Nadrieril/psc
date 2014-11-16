@@ -145,6 +145,158 @@ Un worker correspond à une tâche. De manière générale, il agit à la fois sur le 
 \end{definition}
 
 
+\section{Liste actualisée des workers et détail de leur activité}
+
+
+Remarques générales :
+\begin{itemize}
+ \item Moins un n\oe ud est satisfait, plus il doit générer de workers constructeurs
+ \item La satisfaction d'un n\oe ud doit augmenter lorsque quelque chose est construit sur ce n\oe ud (par exemple lorsqu'on crée des liens)
+ \item Les workers les plus importants sont ceux qui activent les concepts
+ \item Ensuite viennent ceux qui construisent quelque chose
+ \item Ceux qui font des calculs généraux
+ \item etc
+\end{itemize}
+
+
+\paragraph{Worker}
+Classe-mère. Augmente le temps lors du lancement du worker, et affiche un message si cette fonction est activée.
+
+\subsection{Workers qui n'agissent directement que sur le RC}
+
+\paragraph{Activate}
+Urgence : 100
+Active un n\oe ud du RC avec un certain montant (l'activation d'un n\oe ud ne peut pas dépasser 100).
+
+\begin{itemize}
+ \item Si le n\oe ud activé dépasse un certain seuil (80), push un WriteConcept correspondant
+ \item Dans tous les cas, push des workers Compute pour tous les n\oe uds dans linksOut
+\end{itemize}
+
+
+\paragraph{Compute}
+Urgence : 50
+
+Recalcule l'activation d'un n\oe ud du RC. Push des workers Compute pour tous les n\oe uds dans linksOut.
+
+
+\subsection{Builders : workers qui agissent sur le workspace, et le RC}
+
+\paragraph{ReadAndWrite}
+Urgence : 90
+
+Écrit un nouveau mot dans le workspace, en prenant en argument le mot du texte et son rôle grammatical (notion assez vague) issu du parsing.
+
+
+\begin{itemize}
+ \item S'il y a un concept correspondant dans le RC, pas de n\oe ud réel dans le workspace, pas de n\oe ud fantôme dans le workspace :
+ \begin{itemize}
+      \item Push un worker Activate(concept correspondant)
+     \item Crée un n\oe ud réel correspondant à ce mot
+     \item Push une recherche de liens à ce n\oe ud réel, selon son rôle grammatical
+ \end{itemize}
+
+ \item S'il y a un concept, pas de n\oe ud réel, un n\oe ud fantôme :
+    \begin{itemize}
+    \item Push un worker Activate(concept correspondant)
+    \item Crée un n\oe ud réel, supprime le n\oe ud fantôme et met tous les liens qu'il avait sur ce n\oe ud réel
+    \item Push une recherche de liens à ce n\oe ud réel, selon son rôle grammatical
+   \end{itemize}
+ 
+ \item S'il y a un concept, un n\oe ud réel, pas de n\oe ud fantôme :
+  \begin{itemize}
+     \item Push un worker Activate(concept correspondant)
+   \item Push une recherche de liens à ce n\oe ud réel, selon son rôle grammatical
+  \end{itemize}
+
+  \item S'il n'y a pas de concept, un n\oe ud réel :
+  \begin{itemize}
+   \item Push une recherche de liens à ce n\oe ud réel, selon son rôle grammatical
+  \end{itemize}
+
+  \item S'il n'y a pas de concept, pas de n\oe ud réel :
+   \begin{itemize}
+     \item Crée un n\oe ud réel correspondant à ce mot
+     \item Push une recherche de liens à ce n\oe ud réel, selon son rôle grammatical
+ \end{itemize}
+  
+\end{itemize}
+
+
+\paragraph{WriteConcept}
+Urgence : 90
+
+Créée un nouveau n\oe ud fantôme dans le workspace, correspondant au concept passé en argument.
+
+\begin{itemize}
+  \item Push un worker Activate négatif de ce concept (ie désactive le concept)
+  
+ \item S'il y a un n\oe ud réel correspondant :
+ \begin{itemize}
+  \item Push une recherche de liens
+ \end{itemize}
+ 
+  \item Sinon, s'il y a un n\oe ud fantôme correspondant :
+  \begin{itemize}
+   \item Push une recherche de liens
+  \end{itemize}
+  
+  \item Sinon :
+  \begin{itemize}
+   \item Crée un n\oe ud fantôme correspondant à ce concept
+   \item Push une recherche de liens
+  \end{itemize}
+
+\end{itemize}
+
+
+\paragraph{BuildLink}
+
+Urgence : 100
+
+Construit un lien entre deux n\oe uds du workspace.
+
+\begin{itemize}
+ \item Si l'un des deux n\oe uds passés en argument n'existe pas : erreur
+ 
+ \item S'il existe un lien entre les deux n\oe uds pères :
+ \begin{itemize}
+  \item Si ce lien est étiqueté par un n\oe ud activé (seuil 50)
+  \begin{itemize}
+   \item Créer un lien partant du premier n\oe ud et allant sur le deuxième n\oe ud, étiqueté de la même façon
+  \end{itemize}
+
+  \end{itemize}
+   \item Sinon, créer le même lien sans étiquette
+
+
+\end{itemize}
+
+
+\paragraph{ReadPhrase}
+
+Urgence : 100
+
+Lit une unité complète, avec plusieurs mots éventuellement reliés entre eux (par des relations sujet-action-objet ou objet-caractéristique).
+
+\begin{itemize}
+ \item Pour chaque mot 
+\end{itemize}
+
+
+
+\paragraph{SearchLinkSubject}
+Urgence : l'importance du n\oe ud considéré (max : 100).
+
+Cherche de nouveaux liens possibles partant d'un sujet.
+
+\begin{itemize}
+ \item 
+\end{itemize}
+
+
+
+
 \end{document}
 
 
