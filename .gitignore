@@ -1,6 +1,6 @@
 *~
-/.atom-build.json
-/build/
-/*.pdf
+*.pdf
 *.png
+*.pyc
+/.atom-build.json
 localConfig.py
