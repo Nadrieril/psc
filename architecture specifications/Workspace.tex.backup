@@ -4,7 +4,7 @@
 %%fiche, psc pour faire une fiche
 %%rapport, psc pour faire un rapport
 
-\title{Document de travail - Workspace, Textspace, Workers}
+\title{Document de travail - Workspace et Workers}
 \author{\membres} %%\membres uniquement avec l'option psc
 \date{12 novembre 2014}
 
@@ -239,7 +239,7 @@ Il n'est pas exclu de lire plusieurs phrases en même temps !!
 \subsubsection{}
 
 
-\subsection{Builders : workers ascendants (up)}
+\subsection{Builders : workers qui agissent sur le workspace}
 
 
 Il y a trois possibilités :
@@ -250,30 +250,11 @@ Il y a trois possibilités :
 \end{itemize}
 Je préfère la première possibilité : cela donne plus de chances d'agrandir les structures qu'on est en train de construire. En revanche, il faut activr avec modération, sinon on va commencer à faire n'importe quoi.
 
-
-\subsubsection{NodeBuilder}
-Worker chargé de créer un n\oe ud.
-
-\begin{itemize}
- \item On lui donne un n\oe ud du RC très activé
- \item Si ce n\oe ud est déjà instancié, il ne fait rien (à voir : il créé une nouvelle instance ???)
- \item Si ce n\oe ud n'est pas instancié, il créé une instance et désactive le n\oe ud
- \item Il envoie un LinkBuilder
-\end{itemize}
-
-
-\subsubsection{NodeFinder}
-Worker chargé de trouver un n\oe ud du workspace correspondant à un n\oe ud du RC.
-
-Lorsque nous ferons des instanciations multiples de n\oe uds du RC, nous aurons bien besoin de lui pour décider à quel n\oe ud du W s'intéresser...
-Pour le moment, on s'en fiche pas mal.
-
-
 \subsubsection{LinkBuilder}
 
 Worker chargé de trouver des liens partant d'un n\oe ud déjà instancié dans le workspace.
 
-Le worker recherche dans le textspace (mettons par exemple qu'on a décomposé la phrase en petits bouts) des liens possibles. Différentes possibilités s'offrent alors :
+Le worker recherche dans l'arbre de la phrase (selon la façon dont on l'a décomposé, mettons par exemple qu'on en a fait des petits bouts) des liens possibles. Différentes possibilités s'offrent alors :
 \begin{itemize}
  \item S'il trouve un lien avec un n\oe ud instancié et activé dans le RC, il faut :
  \begin{itemize}
@@ -281,7 +262,6 @@ Le worker recherche dans le textspace (mettons par exemple qu'on a décomposé la 
   \item Créér le lien dans le W
   \item Supprimer le lien dans les informations accessibles (à voir)
  \end{itemize}
- 
   \item S'il trouve un lien avec un n\oe ud instancié mais pas activé dans le RC, il faut :
   \begin{itemize}
    \item Instancier à nouveau le concept du RC considéré
@@ -298,7 +278,7 @@ Le worker recherche dans le textspace (mettons par exemple qu'on a décomposé la 
 
   
 \end{itemize}
-Dans tous lescas où un lien est créé, la satisfaction des membres du lien augmente.
+
 
 
 
@@ -313,8 +293,6 @@ Dans tous lescas où un lien est créé, la satisfaction des membres du lien augmen
  \item Lorsqu'un n\oe ud est instancié, il est désactivé ;
  \item Lorsqu'une relation du RC entre deux n\oe uds semble pertinente (ie : ces deux n\oe uds sont activés, ils sont déjà instanciés), on crée un lien dans le workspace entre ces deux instances. Ce peut être une relation conceptuelle (ie : il y a une étiquette sur le lien) mais pas sujet-objet. Il faudra ensuite travailler ça ;
  \item Etant donné un n\oe ud qui vient d'être instancié, on crée un worker chargé de trouver des liens partant de ce n\oe ud.
- \item Un calcul global de satisfaction des différents n\oe uds permet de se rendre compte de l'avancée du travail.
- (Si la satisfaction stagne, on n'a plus qu'à arrêter)
 \end{enumerate}
 
 
