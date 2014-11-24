@@ -1,0 +1,75 @@
+\documentclass{article}   
+\usepackage[utf8]{inputenc}     
+\usepackage[T1]{fontenc}      
+\usepackage[french]{babel}
+\usepackage[pdftex]{graphicx}
+\usepackage{graphics}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{graphics}
+\usepackage{fancybox}		
+\usepackage{fancyhdr}
+\usepackage{makeidx}              %% permet de générer un index automatiquement
+
+\usepackage[top=3cm, bottom=4cm, left=2cm, right=2cm,headsep = 0.5cm,headheight = 1cm, footskip = 1cm,marginparsep = 0cm,marginparwidth=0cm]{geometry} %%pour aller vite
+
+\pagestyle{fancy}
+\renewcommand\headrulewidth{1pt}
+\fancyhead[L]{Réunion}
+\fancyhead[R]{Document interne}
+\fancyfoot[L]{PSC du mythe 2014}
+\fancyfoot[R]{}
+
+\title{Réunion PSC}
+\author{}
+
+\bibliographystyle{plain}	  %% le style utilisé pour créer la bibliographie
+\begin{document}                 
+\maketitle
+    
+\section{Informations}
+
+Réunion interne effectuée le 17 novembre 2014 dans le casert de Guillaume.
+
+But de la réunion : fixer les nouveaux objectifs.
+
+Durée/productivité : $\infty$.
+
+\section{Bilan}
+
+\subsection*{Urgent}
+
+\begin{itemize}
+ \item Finir implémentation du TFID
+ \item Trouver la structure du réseau
+ \item A quoi ressemble le workspace ?
+
+
+\subsection*{Variations autour du réseau de concept}
+
+\begin{itemize}
+ \item Première approche par co-occurrence des mots.
+ \item Problème de la symétrie du graphe : Graphe orienté ou pas ? bouleau => arbre mais pas réciproquement. Cependant "arbre" est relié avec beaucoup d'espèces d'arbre ce qui peut donner une symétrie...
+\end{itemize}
+
+
+\subsection*{Qui fait quoi ?}
+
+
+\begin{itemize}
+ \item Théophane finit le parseur.
+ \item Antonin-san travaille sur le parseur et la grammaire.
+ \item Guillaume retravaille le code de Schrotty.
+ \item Sarah réfléchit.
+ \item Zhixing finit le TFID ?
+ \item Schrotty !
+\end{itemize}
+
+
+\section{Conclusion}
+
+Réunion peu productive où nous sommes parvenus à l'idée qu'avoir un réseau de concept, c'est bien.
+
+\end{document}
