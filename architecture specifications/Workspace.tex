@@ -306,12 +306,13 @@ Dans tous lescas où un lien est créé, la satisfaction des membres du lien augmen
 
 \begin{enumerate}
  \item La phrase est lue, parsée etc ;
- \item L'arbre sémantique correspondant est envoyé dans le workspace ;
+ \item L'arbre sémantique correspondant est envoyé dans le textspace ;
  \item Un worker initial est appellé sur l'arbre sémantique ;
- \item Le worker décortique l'arbre sémantique en activant les uns après les autres les n\oe uds correspondants du RC ;
+ \item Le worker décortique l'arbre sémantique en activant les uns après les autres les n\oe uds correspondants du RC ; et en créant des infos simples qu'il met dans le textspace ;
  \item Les activations se propagent au fur et à mesure et dès qu'un n\oe ud est assez activé, il est instancié, l'ordre de lecture importe donc ;
  \item Lorsqu'un n\oe ud est instancié, il est désactivé ;
  \item Lorsqu'une relation du RC entre deux n\oe uds semble pertinente (ie : ces deux n\oe uds sont activés, ils sont déjà instanciés), on crée un lien dans le workspace entre ces deux instances. Ce peut être une relation conceptuelle (ie : il y a une étiquette sur le lien) mais pas sujet-objet. Il faudra ensuite travailler ça ;
+ \item Pour les n\oe uds instanciés, on récupère et on insère dans le workspace les infos pré-digérées du textspace ;
  \item Etant donné un n\oe ud qui vient d'être instancié, on crée un worker chargé de trouver des liens partant de ce n\oe ud.
  \item Un calcul global de satisfaction des différents n\oe uds permet de se rendre compte de l'avancée du travail.
  (Si la satisfaction stagne, on n'a plus qu'à arrêter)
