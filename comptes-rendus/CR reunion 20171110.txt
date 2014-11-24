@@ -1,0 +1,45 @@
+Bah voilà quelques journaux de foot/avec rubrique foot
+
+The guardian:
+http://www.theguardian.com/football
+http://feeds.theguardian.com/theguardian/football/rss
+
+football365 (très varié, ce site est entièrement consacré au football *-*, mais on a l'embarras du choix pour le rss)
+http://www.football365.com/
+http://www.football365.com/rss/
+
+Dailymail (articles pas longs avec des grosses photos (parce que lire c'est difficile))
+http://www.dailymail.co.uk/sport/football/index.html
+http://www.dailymail.co.uk/sport/football/index.rss
+
+The independant
+http://www.independent.co.uk/sport/football/
+http://rss.feedsportal.com/c/266/f/3785/index.rss
+
+The telegraph (article plutot longs)
+http://www.telegraph.co.uk/sport/football/
+http://www.telegraph.co.uk/sport/football/rss
+
+Express
+http://www.express.co.uk/sport/football
+http://feeds.feedburner.com/daily-express-football-news?format=xml
+
+Skysports (factuel, mais pas que des description de match)
+http://www1.skysports.com/football/news
+
+Mirror (articles pas trop courts, qui surlignent en rouge les mots importants)
+http://www.mirror.co.uk/sport/football/
+
+Dailystar (articles généralement courts, parfois il y a des vidéos)
+http://www.dailystar.co.uk/sport/football
+http://feeds.feedburner.com/daily-star-football?format=xml
+
+BBC (varié, parfois avec des vidéos)
+http://www.bbc.com/sport/0/football/
+http://feeds.bbci.co.uk/sport/0/football/rss.xml?edition=int
+
+
+En bonus : ce truc qui prend tous les journaux et balance les derniers articles :
+http://www.newsnow.co.uk/h/Sport/Football
+
+Sarah
