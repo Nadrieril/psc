@@ -1,0 +1,8 @@
+http://www.dailymail.co.uk/sport/football/index.rss
+http://www.theguardian.com/football/rss
+http://rss.feedsportal.com/c/266/f/3785/index.rss
+http://www.telegraph.co.uk/sport/football/rss
+http://feeds.feedburner.com/daily-express-football-news?format=xml
+http://feeds.feedburner.com/daily-star-football?format=xml
+http://feeds.bbci.co.uk/sport/0/football/rss.xml?edition=int
+http://rss.feedsportal.com/c/266/f/3785/index.rss
