@@ -2,6 +2,7 @@ import feedparser
 import requests
 import re
 import json
+import time
 from html import unescape
 from localConfig import token
 
@@ -48,9 +49,23 @@ class webParser:
         article = json.loads(json_response.text)['content']
         return article
 
-    def getUrisFromRss(self, rssUri):
+    def getUrisFromRss(self, rssUri, minTime=None):
         """
-        Get all the articles from the given RSS feed
+        Get all the articles from the given RSS feed which are more recent than
+        minTime
         """
         rss = feedparser.parse(rssUri)
-        return [item.link for item in rss.entries]
+        if minTime is None:
+            return [item.link for item in rss.entries]
+        else:
+            return [item.link for item in rss.entries
+                    if item.published_parsed >= minTime]
+
+    def getTodayUrisFromRss(self, rssUri):
+        """
+        Get alla today uris from the given RSS feed
+        """
+        now = time.gmtime()
+        today = time.struct_time((now.tm_year, now.tm_mon, now.tm_mday,
+                                  0, 0, 0, 0, 0, 0))
+        return self.getUrisFromRss(rssUri, minTime=today)
