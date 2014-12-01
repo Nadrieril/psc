@@ -9,12 +9,12 @@ parser = webParser.webParser()
 if not os.access(resultPath, os.R_OK):
     print("Folder " + resultPath + " does not exists,creating it")
     os.mkdir(resultPath)
+datePath = resultPath + "/" + datetime.date.today().strftime("%Y_%m_%d")
 with open("rssUrls.txt") as rssUris:
     for countRss, rss in enumerate(rssUris.readlines()):
         articles = parser.getTodayUrisFromRss(rss)
 
-        folderName = (resultPath + "/"
-                      + datetime.date.today().strftime("%Y_%m_%d")
+        folderName = (datePath
                       + "/"
                       + str(countRss))
         os.makedirs(folderName)
@@ -29,7 +29,7 @@ with open("rssUrls.txt") as rssUris:
                       + "_url.txt", "w") as nameFile:
                 nameFile.write(article)
 
-        with tarfile.open(folderName + ".tar.gz", "w:gz") as tar_out:
-            tar_out.add(folderName)
+with tarfile.open(datePath + ".tar.gz", "w:gz") as tar_out:
+    tar_out.add(datePath)
 
-        shutil.rmtree(folderName)
+shutil.rmtree(datePath)
