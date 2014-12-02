@@ -29,6 +29,8 @@ class webParser:
         """
         Parses the given html text an returns it as plain text
         """
+        article = re.sub(r"< ?br/? ?>", "\n", article)
+        article = re.sub(r"\n+", "\n", article)
         # Remove all html tabs
         article = re.sub(r"<.*?>", "", article)
         # Remove special characters
