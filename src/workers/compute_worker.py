@@ -23,9 +23,9 @@ class ComputeWorker(Worker):
         """
         self.target_node.compute_activation()
         if(self.target_node.has_observer):
-            self.target_node.observer.update(context.manager.time, self.target_node.activation)
+            self.target_node.observer.update(context.workers.time, self.target_node.activation)
         for n in self.target_node.linksOut.keys():
-            context.manager.pushRandom(ComputeWorker(n))
+            context.workers.pushRandom(ComputeWorker(n))
 
     def __str__(self):
         return "Calculation of concept " + self.target_node.name + \
