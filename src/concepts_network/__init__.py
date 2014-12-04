@@ -1,4 +1,5 @@
 import networkx as nx
+from math import log
 
 def returnsConceptIterator(f):
     def wrap(self, *args, **kwargs):
@@ -49,6 +50,27 @@ class Concept:
     @returnsArcIterator
     def inArcs(self):
         return self.network.in_edges_iter(self.id, data=True, keys=True)
+
+
+    def compute_activation(self):
+        """
+        computes the new node activation, using :
+        -divlog : logarithmic divisor (connexity)
+        -activation of neighbours
+        -self-desactivation
+        """
+        divlog = log(3 + len(self.inArcs())) / log(3)
+        divlog = 1  # deactivated for now
+        i = 0
+        for arc in self.inArcs():
+            i = i + (arc.weight or 0) * arc.origin.activation
+            # does not take
+        act = self.activation
+        i = i / (100 * divlog)  # neighbours
+        d = act / (100 * (self.ic or 1))  # self desactivation
+        self.activation = min(act + i - d, 100)  # we do not go beyond 100
+
+
 
 
 class Arc:
