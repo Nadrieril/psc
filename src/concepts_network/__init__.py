@@ -1,4 +1,5 @@
 import networkx as nx
+from networkx.readwrite import *
 from math import log
 
 def returnsConceptIterator(f):
@@ -17,11 +18,20 @@ def returnsArcIterator(f):
 
 
 class Network:
-    def __init__(self):
+    def __init__(self,filename=None):
         self.network = nx.MultiDiGraph()
-
+        if(filename):
+        	file=open(filename, 'w')
+        	json_graph.load(file)
+        	
     def get(self, id):
         return Concept(self.network, id)
+	
+	def save_to_JSON(self,filename=None):
+		if(not filename):
+			filename="temp.txt"
+		file=open(filename,'r')
+		json_graph.dumps(self.network,file)
 
 
 class Concept:
@@ -91,3 +101,10 @@ class Arc:
 
     def destination(self):
         return Concept(self.network, self.toId)
+        
+        
+if __name__ = '__main__':
+	
+	test = Network("RC.txt")
+	test.save_to_JSON("RC2.txt")
+	

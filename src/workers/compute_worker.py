@@ -1,4 +1,4 @@
-from workers import Worker
+from concept_network import *
 
 COMPUTE_URGENCY = 50
 
@@ -22,8 +22,8 @@ class ComputeWorker(Worker):
         Also, send a signal to the node's observer if there is one.
         """
         self.target_node.compute_activation()
-        if(self.target_node.has_observer):
-            self.target_node.observer.update(context.workers.time, self.target_node.activation)
+        #if(self.target_node.has_observer):
+         #   self.target_node.observer.update(context.workers.time, self.target_node.activation)
         for n in self.target_node.linksOut.keys():
             context.workers.pushRandom(ComputeWorker(n))
 

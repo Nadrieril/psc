@@ -57,6 +57,6 @@ class WorkersManager:
         self.time += delta_time
 
 
-    def print_workers(self):
+    def __str__(self):
         for w in self.workers:
             print(w)
