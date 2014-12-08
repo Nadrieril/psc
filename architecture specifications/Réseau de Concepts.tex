@@ -1,0 +1,123 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[latin1]{inputenc}%%seul package à charger : pour éviter les problèmes sordides d'encodage
+\usepackage[fiche,psc]{andre}%%bon eh bien sûr...
+%%fiche, psc pour faire une fiche
+%%rapport, psc pour faire un rapport
+%%pour insérer du code : \langage{java} , puis \begin{lstlisting} \end{lstlisting}
+%%pour insérer des guillemets : \eg \og
+
+\title{Réseau de concepts}
+\author{\membres} %%\membres uniquement avec l'option psc
+\date{8 décembre 2014}
+
+\begin{document}
+
+%\titrelong%%une page complète
+\titrecourt %titre plus court, typiquement pour les fiches
+
+
+\section{Contenu}
+
+Cette fiche reprend tout sur notre architecture de réseau de concepts, détaille le plus possible, sans parler des précédents (copycat et bascet) déjà traités dans d'autres documents.
+
+\section{ConceptNet}
+
+ConceptNet est un projet libre de réseau sémantique représentant des connaissances usuelles.
+
+http://conceptnet5.media.mit.edu/
+
+\begin{quotation}
+ This work includes data from ConceptNet 5, which was compiled by the Commonsense Computing Initiative. ConceptNet 5 is freely available under the Creative Commons Attribution-ShareAlike license (CC BY SA 3.0) from http://conceptnet5.media.mit.edu. The included data was created by contributors to Commonsense Computing projects, contributors to Wikimedia projects, Games with a Purpose, Princeton University's WordNet, DBPedia, OpenCyc, and Umbel.
+\end{quotation}
+
+Une idée justement très intéressante de ConceptNet5 est d'utiliser des "json streams", ie de stocker des données sous forme de json mais de ne pas les lire d'un bloc, ce que l'on fait d'habitude, mais de les lire sous forme de stream. (extension .jsons)
+
+
+\subsection{Structure de ConceptNet}
+les n\oe uds sont des mots et de courtes phrases, dans un certain nombre de langages possibles. Les arêtes qui relient ces n\oe uds expriment une connaissance, elles expriment chacune une relation particulière.
+
+Une arête possède aussi une source (d'où provient l'information) et un poids en fonction de cette source, selon l'importance de l'arête.
+
+Une relation concept-arête-concept exprime une assertion. Une même assertion peut être exprimée de différentes manières.
+
+Une assertion peut elle-même être utilisée comme un n\oe ud ou comme une arête (on peut avoir des assertions d'assertions).
+
+Les relations valables dans tout langage, pour ConceptNet5, sont par exemple : 
+\begin{itemize}
+ \item RelatedTo
+ \item IsA
+ \item PartOf
+ \item MemberOf
+ \item HasA
+ \item UsedFor
+ \item CapableOf
+ \item AtLocation
+ \item Causes
+ \item HasSubevent
+ \item HasFirstSubevent
+ \item HasLastSubevent
+ \item HasPrerequisite
+ \item HasProperty
+ \item MotivatedByGoal
+ \item ObstructedBy
+ \item Desires
+ \item CreatedBy
+ \item Synonym
+ \item Antonym
+ \item DerivedFrom
+ \item TranslationOf
+ \item DefinedAs
+\end{itemize}
+
+https://github.com/commonsense/conceptnet5/wiki/Relations
+
+Dans le RC, nous utiliserons un sous-ensemble de ces relations.
+
+\section{Réseau de concepts}
+
+\subsection{Structure}
+
+
+\begin{definition}[Réseau de concepts]
+Le réseau de concepts est la "mémoire à long terme" de Copycat, et de notre programme.
+
+Ce réseau est au carrefour entre les réseaux sémantiques et les réseaux de neurones. Les n\oe uds du réseau ne représentent pas des concepts à proprement parler ; en revanche, les concepts sont vus comme regroupant des n\oe uds fortement interconnectés.
+\end{definition}
+
+Le RC est constitué de n\oe uds. Chaque n\oe ud comporte :
+\begin{itemize}
+  \item Une étiquette (mot) ;
+ \item Une importance conceptuelle (IC) ou profondeur conceptuelle ;
+ \item Une activation (A) initialement nulle ;
+ \item Un certain nombre de liens à d'autres n\oe uds.
+\end{itemize}
+
+Chaque lien comporte :
+\begin{itemize}
+ \item Une proximité conceptuelle (P) ;
+ \item Une étiquette que nous reprenons sur le modèle de conceptnet
+\end{itemize}
+
+\subsection{Intérêt et différences avec conceptnet5}
+
+La différence majeure est que le RC est évolutif : l'activation des n\oe uds se propage au cours du temps, tandis que ConceptNet est statique (c'est un réseau sémantique, il contient des informations très intéressantes, mais il ne réagit pas).
+
+\subsection{Construction}
+
+\paragraph{D'où viennent les noeuds du RC ?}
+Nous construisons le Workspace à l'aide de requêtes ConceptNet. ConceptNet contient beaucoup plus d'informations que ce dont nous avons besoin. Nous allons donc reconstruire un sous-ensemble de n\oe uds qui ne seront que des termes anglais intervenant dans des articles de sports.
+
+Nous pouvons utiliser WordNet pour reconnaître la synonymie ou la proximité. Il faut réduire le réseau de concepts de façon à ce que deux n\oe uds strictement synonymes fusionnent.
+
+Nous pouvons utiliser TF-IDF et la co-occurrence pour mettre ensuite à la louche les proximités conceptuelles sur les arêtes.
+
+
+\subsection{Détails de l'implémentation et ToDO }
+
+Il faut sauvegarder/charger un json, éventuellement json stream comme ConceptNet5 (on va avoir un RC de grande taille).
+
+
+\end{document}
+
+
+
