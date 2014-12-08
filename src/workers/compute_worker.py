@@ -1,6 +1,7 @@
 from concept_network import *
 
 COMPUTE_URGENCY = 50
+COMPUTE_DELTA_TIME=1
 
 class ComputeWorker(Worker):
     """
@@ -24,6 +25,7 @@ class ComputeWorker(Worker):
         self.target_node.compute_activation()
         for n in self.target_node.linksOut.keys():
             context.workers.pushRandom(ComputeWorker(n))
+        return(COMPUTE_DELTA_TIME)
 
     def __str__(self):
         return "Calculation of concept " + self.target_node.name + \

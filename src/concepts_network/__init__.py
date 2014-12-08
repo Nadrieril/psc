@@ -30,15 +30,23 @@ class Network:
     def get(self, id):
         return Concept(self.network, id)
 
+    def add_node(self,node):
+        self.network.add_node(node)
+
+    def add_edge(self,):
+        self.network.add_edge(edge)
+
     def save_to_JSON(self, filename="temp.txt"):
         with open(filename, 'r') as file:
             json.dumps(self.network.to_dict_of_dicts(), file)
 
 
 class Concept:
-    def __init__(self, network, id):
+    def __init__(self, network, id,ic=0):
         self.network = network
         self.id = id
+        self.__setattr__(activation,0)
+        self.__setattr__(ic,ic)
 
     def __getattr__(self, attr):
         return self.network.node[self.id][attr]
@@ -115,8 +123,13 @@ if __name__ == '__main__':
     # G.add_edge("n1","n3")
     # print(G.nodes())
     n = Network()
-    n.network = G
-    nx.draw(G)
+
+
+    c1=Concept(network=n.network,id="Toto",ic=5)
+    print(c1)
+    n.add_node(c1)
+    
+    nx.draw(n.network)
     plt.savefig("test.png")
     n.save_to_JSON(filename="test.txt")
     plt.show()
