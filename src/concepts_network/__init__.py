@@ -1,6 +1,8 @@
 import networkx as nx
 from networkx.readwrite import *
 from math import log
+import matplotlib.pyplot as plt
+import json
 
 def returnsConceptIterator(f):
     def wrap(self, *args, **kwargs):
@@ -22,16 +24,17 @@ class Network:
         self.network = nx.MultiDiGraph()
         if(filename):
         	file=open(filename, 'w')
-        	json_graph.load(file)
+        	dico=json.load(file)
+        	self.network=nx.MultiDiGraph(dico)
         	
     def get(self, id):
         return Concept(self.network, id)
-	
+
 	def save_to_JSON(self,filename=None):
 		if(not filename):
 			filename="temp.txt"
 		file=open(filename,'r')
-		json_graph.dumps(self.network,file)
+		json.dumps(self.network.to_dict_of_dicts(),file)
 
 
 class Concept:
@@ -103,8 +106,19 @@ class Arc:
         return Concept(self.network, self.toId)
         
         
-if __name__ = '__main__':
+if __name__ == '__main__':
 	
-	test = Network("RC.txt")
-	test.save_to_JSON("RC2.txt")
-	
+	#G = Network("RC.txt")
+	#test.save_to_JSON("RC2.txt")
+	#G=nx.MultiDiGraph()
+	#G.add_node("n1")
+	#G.add_node("n2")
+	#G.add_nodes_from(["b","c"])
+	#G.add_edge("n1","n3")
+	#print(G.nodes())
+	n=Network()
+	n.network=G
+	nx.draw(G)
+	plt.savefig("test.png")
+	n.save_to_JSON(filename="test.txt")
+	plt.show()
