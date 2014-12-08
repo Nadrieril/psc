@@ -20,21 +20,19 @@ def returnsArcIterator(f):
 
 
 class Network:
-    def __init__(self,filename=None):
+    def __init__(self, filename=None):
         self.network = nx.MultiDiGraph()
-        if(filename):
-        	file=open(filename, 'w')
-        	dico=json.load(file)
-        	self.network=nx.MultiDiGraph(dico)
-        	
+        if filename:
+            with open(filename, 'w') as file:
+                dico = json.load(file)
+                self.network = nx.MultiDiGraph(dico)
+
     def get(self, id):
         return Concept(self.network, id)
 
-	def save_to_JSON(self,filename=None):
-		if(not filename):
-			filename="temp.txt"
-		file=open(filename,'r')
-		json.dumps(self.network.to_dict_of_dicts(),file)
+    def save_to_JSON(self, filename="temp.txt"):
+        with open(filename, 'r') as file:
+            json.dumps(self.network.to_dict_of_dicts(), file)
 
 
 class Concept:
@@ -104,21 +102,21 @@ class Arc:
 
     def destination(self):
         return Concept(self.network, self.toId)
-        
-        
+
+
 if __name__ == '__main__':
-	
-	#G = Network("RC.txt")
-	#test.save_to_JSON("RC2.txt")
-	#G=nx.MultiDiGraph()
-	#G.add_node("n1")
-	#G.add_node("n2")
-	#G.add_nodes_from(["b","c"])
-	#G.add_edge("n1","n3")
-	#print(G.nodes())
-	n=Network()
-	n.network=G
-	nx.draw(G)
-	plt.savefig("test.png")
-	n.save_to_JSON(filename="test.txt")
-	plt.show()
+
+    # G = Network("RC.txt")
+    # test.save_to_JSON("RC2.txt")
+    # G = nx.MultiDiGraph()
+    # G.add_node("n1")
+    # G.add_node("n2")
+    # G.add_nodes_from(["b","c"])
+    # G.add_edge("n1","n3")
+    # print(G.nodes())
+    n = Network()
+    n.network = G
+    nx.draw(G)
+    plt.savefig("test.png")
+    n.save_to_JSON(filename="test.txt")
+    plt.show()
