@@ -45,8 +45,8 @@ class Concept:
     def __init__(self, network, id,ic=0):
         self.network = network
         self.id = id
-        self.__setattr__(activation,0)
-        self.__setattr__(ic,ic)
+        self.activation = 0
+        self.ic = ic
 
     def __getattr__(self, attr):
         return self.network.node[self.id][attr]
