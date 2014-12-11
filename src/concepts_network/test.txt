@@ -1,1 +1,0 @@
-{"directed": true, "graph": [], "nodes": [{"activation": 0, "ic": 6, "id": "Babar"}, {"activation": 0, "ic": 5, "id": "Toto"}], "links": [{"source": 1, "data": "Beuh", "target": 0, "key": 0}], "multigraph": true}
