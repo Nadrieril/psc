@@ -4,6 +4,11 @@ from math import log
 import matplotlib.pyplot as plt
 import json
 
+
+#TODO : CHANGE JSON BEHAVIOR TO PRINT AND LOAD IT with user-readable files
+#ie not just one line...
+#TODO : SEE FOR ARC AND CONCEPT the adjustments to made in the constructors
+
 def returnsConceptIterator(f):
     def wrap(self, *args, **kwargs):
         ret = f(self, *args, **kwargs)
@@ -48,10 +53,11 @@ class Network:
 class Concept:
     def __init__(self, network, id,ic=0,activation=0):
         self.network=network
-        self.network.add_node(id)#no error if the node already exists
         self.id=id
-        self.activation=activation
-        self.ic=ic
+        if not network.has_node(id):
+            self.network.add_node(id)#no error if the node already exists
+            self.activation=activation
+            self.ic=ic
         #self.__setattr__("network",network)#self.network = network
         #self.__setattr__("id",0)
         #self.__setattr__("activation",0)
@@ -106,8 +112,7 @@ class Concept:
 
 
     def __str__(self):
-        return("toto")
-        #return("Concept : "+self.id+", activation : "+self.activation)
+        return("Concept : "+self.id+", activation : "+self.activation)
 
 
 
@@ -115,11 +120,14 @@ class Concept:
 class Arc:
     def __init__(self, network, fromId, toId, key=0, data=None):
         self.network = network
-        self.network.add_edge(fromId,toId,key)#must look if network.has_edge()
         self.fromId = fromId
         self.toId = toId
         self.key = key
-        self.data=data
+        if (not network.has_edge(fromId,toId)):
+        # or (network[fromId][toId]['data'] != data):
+            self.network.add_edge(fromId,toId,key)#must look if network.has_edge()
+            self.data=data
+
 
     def __getattr__(self, attr):
         if attr in ["network","fromId","toId","key"]:
@@ -141,27 +149,4 @@ class Arc:
 
 
 if __name__ == '__main__':
-
-    n = Network()
-
-
-    c1=Concept(network=n.network,id="Toto",ic=5)
-    c2=Concept(network=n.network,id="Babar",ic=4)
-    c3=Concept(network=n.network,id="Babar",ic=6)
-    a=Arc(network=n.network,fromId="Toto",toId="Babar",key=0,data="Beuh")
-    #print(c1.activation)
-    #print(c1)
-
-    n.save_to_JSON("test.txt")
-
-    print(json_graph.node_link_data(n.network))
-    #n.add_node(c1)
-    #
-    nx.draw(n.network)
-    plt.savefig("test.png")
-    plt.show()
-
-    n.load_from_JSON("test.txt")
-    nx.draw(n.network)
-    plt.savefig("test.png")
-    plt.show()
+    pass
