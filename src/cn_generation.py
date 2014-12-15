@@ -3,8 +3,8 @@ from nltk.corpus import wordnet as wnc
 from nltk import word_tokenize, sent_tokenize, pos_tag
 from nltk.tokenize import PunktWordTokenizer
 from nltk.tokenize import TreebankWordTokenizer
-from nltk import pos_tag
 from concepts_network import *
+from abstracter import tokenizer
 import os
 import json
 
@@ -44,19 +44,34 @@ DISMISSED_WORDS=[",",";","."]
 
 
 def tokenize(text):
-	word_list=TreebankWordTokenizer().tokenize(text);
-	res=[]
-	for word in word_list:
-		if word.rstrip('.'):
-			res.append(word.rstrip('.'))
-			#cause we do not keep the .
-	return res
+	#word_list=TreebankWordTokenizer().tokenize(text);
+	#res=[]
+	#for word in word_list:
+	#	if word.rstrip('.'):
+	#		res.append(word.rstrip('.'))
+	#		#cause we do not keep the .
+	return tokenizer.tokenize(text)
 
 
 def tag(word_list):
 	return pos_tag(word_list)
 
 ########################################################
+
+def read_and_tokenize(filename="data/sample"):
+	"""
+	We read the text and tokenize it, but we don't create the network.
+	"""
+	with open(filename+".txt",'r') as file,open(filename+"_words.txt",'w') as wordsfile:
+		word_list=tokenize(file.read())
+		print("Writing words down...")
+		json.dump(word_list,wordsfile)	
+	tagged_list=pos_tag(word_list)
+	with open(filename+"_tags.txt",'w') as tagsfile:
+		print("Writing POS-tagged words down...")
+		json.dump(tagged_list,tagsfile)
+	print("All done.")
+
 
 def read_text(filename="data/sample"):
 	"""
@@ -201,8 +216,10 @@ def create_network_from_sample(path):
 
 #read_text("data/sample")
 
-n=Network();
-n.load_from_JSON("data/sample_network.txt")
-nx.draw(n.network)
-plt.savefig("data/sample_network.png")
-plt.show()
+#n=Network();
+#n.load_from_JSON("data/sample_network.txt")
+#nx.draw(n.network)
+#plt.savefig("data/sample_network.png")
+#plt.show()
+
+read_and_tokenize("data/test")
