@@ -4,7 +4,8 @@ from nltk import word_tokenize, sent_tokenize, pos_tag
 from nltk.tokenize import PunktWordTokenizer
 from nltk.tokenize import TreebankWordTokenizer
 from concepts_network import *
-from abstracter import tokenizer
+from parsers import tokenizer
+from util import json_stream
 import os
 import json
 
@@ -65,7 +66,7 @@ def read_and_tokenize(filename="data/sample"):
 	with open(filename+".txt",'r') as file,open(filename+"_words.txt",'w') as wordsfile:
 		word_list=tokenize(file.read())
 		print("Writing words down...")
-		json.dump(word_list,wordsfile)	
+		json.dump(word_list,wordsfile)
 	tagged_list=pos_tag(word_list)
 	with open(filename+"_tags.txt",'w') as tagsfile:
 		print("Writing POS-tagged words down...")
@@ -223,3 +224,13 @@ def create_network_from_sample(path):
 #plt.show()
 
 read_and_tokenize("data/test")
+
+n=Network()
+#n.load_from_JSON("data/sample_network.txt")
+#n.save_to_JSON_stream("data/test")
+#n.load_nodes_from_stream("data/test_nodes.jsons");
+#n.load_edges_from_stream("data/test_edges.jsons")
+
+#n.load_from_JSON_stream(nodes_files=["data/test_nodes.jsons"],edges_files=["data/test_edges.jsons"])
+
+#n.save_to_JSON_stream("data/test2")

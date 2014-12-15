@@ -4,9 +4,12 @@ from math import log
 import matplotlib.pyplot as plt
 import json
 
+import os.path, sys
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
 
-#TODO : CHANGE JSON BEHAVIOR TO PRINT AND LOAD IT with user-readable files
-#ie not just one line...
+from util import *
+
+#TODO : change the line sys.path.append... and make sure imports from subdirectories will still work
 #TODO : SEE FOR ARC AND CONCEPT the adjustments to made in the constructors
 
 def returnsConceptIterator(f):
@@ -41,13 +44,45 @@ class Network:
     def add_edge(self,id1,id2):
         self.network.add_edge(id1,id2)
 
-    def save_to_JSON(self, filename="temp.txt"):
+    ###########################################################
+    ###JSON generating and decoding
+    ##############################################
+
+    def save_to_JSON(self, filename="temp.json"):
         with open(filename, 'w') as file:
             json.dump(json_graph.node_link_data(self.network), file)
 
-    def load_from_JSON(self,filename="temp.txt"):
+    def load_from_JSON(self,filename="temp.json"):
         with open(filename,'r') as file:
             self.network=json_graph.node_link_graph(json.load(file))
+
+    def load_nodes_from_stream(self,filename="temp_nodes.jsons"):
+        self.network.add_nodes_from(read_json_stream(filename))
+
+    def load_edges_from_stream(self,filename="temp_edges.jsons"):
+        self.network.add_edges_from(read_json_stream(filename))
+
+    def load_from_JSON_stream(self,nodes_files,edges_files):
+        """
+        We load from a bunch of files, assuming that
+        they contain node and edge data
+        """
+        for f in nodes_files:
+            self.load_nodes_from_stream(f)
+        for f in edges_files:
+            self.load_edges_from_stream(f)
+
+
+    def save_to_JSON_stream(self,filenamebase="temp"):
+        nodes_writer=JSONStreamWriter(filenamebase+"_nodes.jsons")
+        for n in self.network.nodes(data=True):
+            nodes_writer.write(n)
+        nodes_writer.close()
+        edges_writer=JSONStreamWriter(filenamebase+"_edges.jsons")
+        for e in self.network.edges(data=True):
+            edges_writer.write(e)
+        edges_writer.close()
+
 
 
 class Concept:
