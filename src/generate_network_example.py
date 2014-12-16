@@ -3,10 +3,9 @@ from nltk.corpus import wordnet as wnc
 from nltk import word_tokenize, sent_tokenize, pos_tag
 from nltk.tokenize import PunktWordTokenizer
 from nltk.tokenize import TreebankWordTokenizer
-from concepts_network import *
-from parsers import tokenizer
-from util import json_stream
-import os
+from abstracter.concepts_network import *
+from abstracter.parsers import tokenizer
+from abstracter.util import json_stream
 import json
 
 """
@@ -219,15 +218,17 @@ def create_network_from_sample(path):
 
 #n=Network();
 #n.load_from_JSON("data/sample_network.txt")
-#nx.draw(n.network)
-#plt.savefig("data/sample_network.png")
+
 #plt.show()
 
-read_and_tokenize("data/test")
+ #read_and_tokenize("network_example/sample")
 
-n=Network()
+#n=Network()
 #n.load_from_JSON("data/sample_network.txt")
-#n.save_to_JSON_stream("data/test")
+#n.save_to_JSON_stream("network_example/network_example")
+#nx.draw(n.network)
+#plt.savefig("network_example/network_example.png")
+
 #n.load_nodes_from_stream("data/test_nodes.jsons");
 #n.load_edges_from_stream("data/test_edges.jsons")
 

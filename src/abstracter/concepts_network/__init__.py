@@ -4,11 +4,10 @@ from math import log
 import matplotlib.pyplot as plt
 import json
 
+#import src.util.json_stream
 import os.path, sys
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
-
-from util import *
-
+#sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
+from ..util.json_stream import *
 #TODO : change the line sys.path.append... and make sure imports from subdirectories will still work
 #TODO : SEE FOR ARC AND CONCEPT the adjustments to made in the constructors
 
