@@ -9,8 +9,8 @@ except ImportError:
 
 from urllib2 import HTTPError, URLError
 
-from conceptnet5_client.utils.debug import print_debug
-from conceptnet5_client.cache.file_cache import cache
+from abstracter.conceptnet5_client.utils.debug import print_debug
+from abstracter.conceptnet5_client.cache.file_cache import cache
 
 
 @cache

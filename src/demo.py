@@ -4,11 +4,11 @@ import urllib2
 
 
 
-from conceptnet5_client.utils.debug import print_debug
-from conceptnet5_client.web.api import LookUp, Search, Association
-from conceptnet5_client.utils.result import Result
-from conceptnet5_client.utils.pprint import pprint_paths
-from conceptnet5_client.inference.path import Path
+from abstracter.conceptnet5_client.utils.debug import print_debug
+from abstracter.conceptnet5_client.web.api import LookUp, Search, Association
+from abstracter.conceptnet5_client.utils.result import Result
+from abstracter.conceptnet5_client.utils.pprint import pprint_paths
+from abstracter.conceptnet5_client.inference.path import Path
 
 urllib2.install_opener(
     urllib2.build_opener(
@@ -108,8 +108,41 @@ def demonstrate_path_existence_check():
     if exist:
         print('Path exist')
 
+#useful edges with associated weight
+#these weights are arbitrary
+USEFUL_CONCEPTNET_EDGES = { '/r/IsA' : 1,
+'/r/RelatedTo' : 0.5,
+'/r/CapableOf' : 0.3,
+'/r/AtLocation' : 0.3,
+'/r/Antonym' : 0.2,
+'/r/Desires' : 0.2,
+'/r/HasProperty' : 0.6,
+'/r/HasA' : 0.5,
+'/r/UsedFor' : 0.4
+}
+
+NOT_USEFUL_CONCEPTNET_EDGES = ['/r/NotCapableOf','/r/ReceivesAction']
+
+
+def get_edges(concept='dog'):
+    #relations=['/r/IsA']
+    attributes=[]
+    lookup = LookUp(offset=5, limit=50)
+    data = lookup.search_concept(concept)
+    r = Result(data)
+    edges = r.parse_all_edges()
+    for edge in edges:
+        #if(edge.rel in         #
+        #edge.print_edge()
+        #+edge.weight
+        print(edge.rel)
+        #print('(%s -> %s -> %s , %d)' % (edge.start, edge.rel, edge.end,edge.weight))
+        #edge.print_all_attrs()
+    print
+
     
 def main():
+    get_edges()
     #demonstrate_lookup('see movie')
     #demonstrate_search()
     #demonstrate_association()
@@ -118,7 +151,7 @@ def main():
     #demonstrate_source_lookup('/s/wordnet/3.0')
 
     #demonstrate_concepts_tuples_by_relations()
-    demonstrate_relations_tuples_by_concepts()
+    #demonstrate_relations_tuples_by_concepts()
     #demonstrate_path_existence_check()
 
 if __name__ == '__main__':

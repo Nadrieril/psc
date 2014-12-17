@@ -1,12 +1,12 @@
 import sys
 import urllib
 
-from conceptnet5_client.utils.debug import print_debug
-from conceptnet5_client.utils.http import make_http_request
-from conceptnet5_client.utils.util import is_arg_valid
+from abstracter.conceptnet5_client.utils.debug import print_debug
+from abstracter.conceptnet5_client.utils.http import make_http_request
+from abstracter.conceptnet5_client.utils.util import is_arg_valid
 
 
-from conceptnet5_client.conf import settings
+from abstracter.conceptnet5_client.conf import settings
 
 
 class LookUp:

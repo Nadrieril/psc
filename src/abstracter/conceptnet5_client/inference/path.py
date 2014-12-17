@@ -1,9 +1,9 @@
 import copy
 import networkx as nx
 
-from conceptnet5_client.web.api import Search
-from conceptnet5_client.utils.util import pairwise
-from conceptnet5_client.utils.result import Result, Assertion
+from abstracter.conceptnet5_client.web.api import Search
+from abstracter.conceptnet5_client.utils.util import pairwise
+from abstracter.conceptnet5_client.utils.result import Result, Assertion
     
 
 class Path:
