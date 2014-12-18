@@ -8,7 +8,6 @@ import json
 import os.path, sys
 #sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
 from ..util.json_stream import *
-#TODO : change the line sys.path.append... and make sure imports from subdirectories will still work
 #TODO : SEE FOR ARC AND CONCEPT the adjustments to made in the constructors
 
 def returnsConceptIterator(f):
@@ -85,10 +84,11 @@ class Network:
 
 
 class Concept:
-    def __init__(self, network, id,ic=0,activation=0):
+    def __init__(self, network, id,ic=2,activation=0):
         self.network=network
         self.id=id
         if not network.has_node(id):
+            #print("creating concept "+id)
             self.network.add_node(id)#no error if the node already exists
             self.activation=activation
             self.ic=ic
@@ -107,6 +107,7 @@ class Concept:
         if attr in ["network","id"]:
             self.__dict__[attr]=value
         else:
+            #print("setting "+self.id)
             self.network.node[self.id][attr] = value
 
     @returnsConceptIterator
@@ -152,15 +153,20 @@ class Concept:
 
 
 class Arc:
-    def __init__(self, network, fromId, toId, key=0, data=None):
+    def __init__(self, network, fromId, toId, key=0, data=None,weight=0):
         self.network = network
         self.fromId = fromId
         self.toId = toId
         self.key = key
+        if not network.has_node(fromId):
+            c=Concept(network,fromId)
+        if not network.has_node(toId):
+            c=Concept(network,toId)
         if (not network.has_edge(fromId,toId)):
         # or (network[fromId][toId]['data'] != data):
-            self.network.add_edge(fromId,toId,key)#must look if network.has_edge()
+            self.network.add_edge(fromId,toId,key)
             self.data=data
+            self.weight=weight
 
 
     def __getattr__(self, attr):

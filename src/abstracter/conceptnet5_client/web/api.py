@@ -8,6 +8,7 @@ from abstracter.conceptnet5_client.utils.util import is_arg_valid
 
 from abstracter.conceptnet5_client.conf import settings
 
+#commented all the print_debug functions...
 
 class LookUp:
     '''
@@ -20,7 +21,8 @@ class LookUp:
                 query_args[key] = value
                 # print_debug('%s : %s' % (key, value), 'arg')
             else:
-                print_debug('%s : %s -- THIS ARG IS NOT SUPPORTED!' % (key, value), 'ArgError')
+                pass
+                #print_debug('%s : %s -- THIS ARG IS NOT SUPPORTED!' % (key, value), 'ArgError')
         self.encoded_query_args = urllib.urlencode(query_args)
         self.lang = lang
     
@@ -34,7 +36,7 @@ class LookUp:
         '''
         concept = concept.replace(' ', '_')
         url = ''.join(['%s/c/%s/%s?' % (settings.BASE_LOOKUP_URL, self.lang, concept)]) + self.encoded_query_args
-        print_debug(url, 'url')
+        #print_debug(url, 'url')
         json_data = make_http_request(url)
         return json_data
 
@@ -49,11 +51,11 @@ class LookUp:
         '''
         if source_uri:
             url = ''.join(['%s%s' % (settings.BASE_LOOKUP_URL, source_uri)])
-            print url
+            #print(url)
             json_data = make_http_request(url)
             return json_data
         else:
-            print_debug('You should pass argument \'source\'.', 'ArgError')
+            #print_debug('You should pass argument \'source\'.', 'ArgError')
             sys.exit()
 
 
@@ -69,7 +71,8 @@ class Search:
                 query_args[key] = value
                 # print_debug('%s : %s' % (key, value), 'arg')
             else:
-                print_debug('%s : %s -- THIS ARG IS NOT SUPPORTED!' % (key, value), 'ArgError')
+                pass
+                #print_debug('%s : %s -- THIS ARG IS NOT SUPPORTED!' % (key, value), 'ArgError')
         self.encoded_query_args = urllib.urlencode(query_args)
         
         
@@ -79,7 +82,7 @@ class Search:
         and returns the result of the request in json format.
         '''
         url = ''.join(['%s%s' % (settings.BASE_SEARCH_URL, '?')]) + self.encoded_query_args
-        print_debug(url, 'url')
+        #print_debug(url, 'url')
         json_data = make_http_request(url)
         return json_data
 
@@ -96,7 +99,8 @@ class Association:
                 query_args[key] = value
                 # print_debug('%s : %s' % (key, value), 'arg')
             else:
-                print_debug('%s : %s -- THIS ARG IS NOT SUPPORTED!' % (key, value), 'ArgError')
+                pass
+                #print_debug('%s : %s -- THIS ARG IS NOT SUPPORTED!' % (key, value), 'ArgError')
         self.encoded_query_args = urllib.urlencode(query_args)
         self.lang = lang
 
@@ -108,7 +112,7 @@ class Association:
         :param concept: a concept word or phrase, e.g. 'toast', 'see movie' etc.
         '''
         url = ''.join(['%s/c/%s/%s?' % (settings.BASE_ASSOCIATION_URL, self.lang, concept)]) + self.encoded_query_args
-        print_debug(url, 'url')
+        #print_debug(url, 'url')
         json_data = make_http_request(url)
         return json_data
 
@@ -121,7 +125,7 @@ class Association:
         '''
         terms = ','.join(term_list)
         url = ''.join(['%s/list/%s/%s' % (settings.BASE_ASSOCIATION_URL, self.lang, terms)]) + self.encoded_query_args
-        print_debug(url, 'url')
+        #print_debug(url, 'url')
         json_data = make_http_request(url)
         return json_data
 

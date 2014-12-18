@@ -135,8 +135,8 @@ def get_edges(concept='dog'):
         #if(edge.rel in         #
         #edge.print_edge()
         #+edge.weight
-        print(edge.rel)
-        #print('(%s -> %s -> %s , %d)' % (edge.start, edge.rel, edge.end,edge.weight))
+        #print(edge.rel)
+        print('(%s -> %s -> %s , %d)' % (edge.start, edge.rel, edge.end,edge.weight))
         #edge.print_all_attrs()
     print
 

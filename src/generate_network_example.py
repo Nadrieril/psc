@@ -6,6 +6,7 @@ from nltk.tokenize import TreebankWordTokenizer
 from abstracter.concepts_network import *
 from abstracter.parsers import tokenizer
 from abstracter.util import json_stream
+from abstracter.conceptnet5_client.conceptnet5 import conceptnet5 as cn5
 import json
 
 """
@@ -198,6 +199,9 @@ def create_network_from_words(wordnet_tagged_list):
 
 
 
+def polysemy(word):
+	return len(wnc.synsets(word,pos=None)) 
+
 def keep_important_words(word_list):
 	"""
 	There is room for a use of tf-idf in order to keep important
@@ -212,6 +216,58 @@ def create_network_from_sample(path):
 	data, such as wordnet (similarity measures can be used)
 	"""
 	pass
+
+def expand_network_from_seed(list,max_nodes=10,network=Network()):
+	"""
+	Given list of some relevant concepts, we create a conceptnetwork using :
+	-conceptnet5 data
+	-wordnet polysemy
+	Notes :
+	- a node can't expand more than a fixed number of edges (see conceptnet5.py)
+	- there is a random component when we get the edges from conceptnet5
+	"""
+	nodenumber=0
+	while nodenumber<max_nodes and len(list)>0:
+		word=list[0]
+		#print(word)
+		conceptic=polysemy(word)
+		if conceptic==0:#TODO : check if it's a name
+			conceptic=7
+		#print(conceptic)
+		concept=Concept(network.network,word,ic=conceptic)
+		nodenumber+=1
+		cn5.expand_concept(word,network.network)
+		list.remove(word)
+		for concept2 in concept.successors():
+			conceptic=polysemy(concept2.id)
+			if conceptic==0:#TODO : check if it's a name
+				conceptic=7
+			concept2.ic=conceptic
+			list.append(concept2.id)
+
+			
+SEED=["America","Arsenal","Aston","Barkley","Basel","Brazil","Cahill","Cup","England","Euro","Liverpool","Manchester","Norway","Sterling","wayne_rooney",
+"Switzerland","Uruguay","World","apathy","appointment","atmosphere","attacker","back","brilliantly","busy","captain","celebrate", "comprehensively","decisive","defeat","display","eliminate","encouragement","exit","glamorous","imagination","opponent","partnership",
+"penalty","performance","play","player","positive","preparation","pressure","prove","public","retire","summer","surreal", "team", "winner","worry","victory", "young"]
+
+SMALL_SEED=["America","Arsenal","Brazil","Cup","England","wayne_rooney","appointment","atmosphere",
+"attacker","back","brilliantly","busy","captain","celebrate","defeat","eliminate","encouragement","exit",
+"penalty","performance","play","player","positive","preparation","pressure","prove","public",
+ "team", "winner","worry","victory", "young"]
+
+
+def test():
+	n=Network()
+	expand_network_from_seed(SMALL_SEED,max_nodes=100,network=n)
+	n.save_to_JSON_stream("network_example/network_example_2")
+	nx.draw(n.network)
+	#plt.show()
+	plt.savefig("network_example/network_example_2.png")
+
+test()
+
+
+#print polysemy('human')
 
 
 #read_text("data/sample")
@@ -235,3 +291,11 @@ def create_network_from_sample(path):
 #n.load_from_JSON_stream(nodes_files=["data/test_nodes.jsons"],edges_files=["data/test_edges.jsons"])
 
 #n.save_to_JSON_stream("data/test2")
+
+#n=Network()
+#toto=Concept(n.network,id='wayne_rooney')
+#cn5.expand_concept('wayne_rooney',n.network)
+#n.save_to_JSON_stream("network_example/network_example_1")
+#nx.draw(n.network)
+#plt.savefig("network_example/network_example_1.png")
+
