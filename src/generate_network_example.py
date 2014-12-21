@@ -1,10 +1,10 @@
-from nltk import wordnet as wn
 from nltk.corpus import wordnet as wnc
 from nltk import word_tokenize, sent_tokenize, pos_tag
 from nltk.tokenize import PunktWordTokenizer
 from nltk.tokenize import TreebankWordTokenizer
 from abstracter.concepts_network import Network
-from abstracter.parsers import tokenizer
+import abstracter.parsers.tokenizer as tok
+import abstracter.parsers.concepts_retriever as cr
 from abstracter.util import json_stream
 from abstracter.conceptnet5_client.conceptnet5 import conceptnet5 as cn5
 import json
@@ -51,13 +51,24 @@ def tokenize(text):
 	#	if word.rstrip('.'):
 	#		res.append(word.rstrip('.'))
 	#		#cause we do not keep the .
-	return tokenizer.tokenize(text)
+	return tok.tokenize(text)
 
 
 def tag(word_list):
 	return pos_tag(word_list)
 
-########################################################
+def read_concepts(filename="data/sample"):
+	with open(filename+".txt",'r') as file,open(filename+"_concepts.txt",'w') as conceptsfile:
+		print("Reading "+filename+" and calculating concepts...")
+		concepts=cr.retrieve_concepts(file.read())
+		print("Writing down...")
+		json.dump(concepts,conceptsfile)
+
+
+
+#######################################################################################
+################deprecated ! use only module concepts_retriever
+##############################################################
 
 def read_and_tokenize(filename="data/sample"):
 	"""
@@ -209,25 +220,10 @@ def create_network_from_words(wordnet_tagged_list):
 	return concepts
 
 
+####################################################################
 
 def polysemy(word):
 	return len(wnc.synsets(word,pos=None)) 
-
-def keep_important_words(word_list):
-	"""
-	There is room for a use of tf-idf in order to keep important
-	words only
-	But it's already the case with the POS
-	"""
-	return word_list
-
-def create_network_from_sample(path):
-	"""
-	Given a text sample, we create a conceptnetwork using only nltk 
-	data, such as wordnet (similarity measures can be used)
-	"""
-	pass
-
 
 
 
@@ -285,44 +281,12 @@ SMALL_SEED=["America","Arsenal","Brazil","Cup","England","wayne_rooney","appoint
 
 def test():
 	n=Network()
-	expand_network_from_seed(SMALL_SEED,max_nodes=10,network=n)
+	seed=SMALL_SEED
+	with open("data/sample_concepts.txt",'r') as file:
+		seed=json.load(file)
+	expand_network_from_seed(seed,max_nodes=10,network=n)
 	n.save_to_JSON_stream("network_example/network_example_5")
 	n.draw("network_example/network_example_5.png")
 
-
 test()
-#str="test_test"
-#print len(str.split("_"))
-
-#print polysemy('human')
-
-
-#read_text("data/sample")
-
-#n=Network();
-#n.load_from_JSON("data/sample_network.txt")
-
-#plt.show()
-
- #read_and_tokenize("network_example/sample")
-
-#n=Network()
-#n.load_from_JSON("data/sample_network.txt")
-#n.save_to_JSON_stream("network_example/network_example")
-#nx.draw(n.network)
-#plt.savefig("network_example/network_example.png")
-
-#n.load_nodes_from_stream("data/test_nodes.jsons");
-#n.load_edges_from_stream("data/test_edges.jsons")
-
-#n.load_from_JSON_stream(nodes_files=["data/test_nodes.jsons"],edges_files=["data/test_edges.jsons"])
-
-#n.save_to_JSON_stream("data/test2")
-
-#n=Network()
-#toto=Concept(n.network,id='wayne_rooney')
-#cn5.expand_concept('wayne_rooney',n.network)
-#n.save_to_JSON_stream("network_example/network_example_1")
-#nx.draw(n.network)
-#plt.savefig("network_example/network_example_1.png")
-
+#read_concepts(filename="data/sample")

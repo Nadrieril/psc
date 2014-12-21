@@ -17,7 +17,7 @@ def tokenize(text):
     """
     Split a text into tokens (words, morphemes, names and punctuation).
     """
-    return custom_word_tokenize(text)
+    return custom_word_tokenize(text,get_named_entities(text))
 
 
 def custom_sent_tokenize(text):
@@ -28,14 +28,13 @@ def custom_sent_tokenize(text):
     #    #sents.append(para.replace("'s",""))
     return sents
 
-def custom_word_tokenize(text):
+def custom_word_tokenize(text,named_entities):
     """
-    Tokenizer which recognizes also named entities.
+    Tokenizer which uses named_entities.
     However, it does not make links between them.
     It keeps also ponctuation.
     """
     words=[]
-    named_entities=get_named_entities(text)
     for sent in custom_sent_tokenize(text):
         split = word_tokenize(sent)
         tokens = pos_tag(split)
@@ -83,6 +82,9 @@ def get_named_entities(text):
     return named_entities
 
 #not from me
+
+BOUNDARIES=["!",".","?"]
+
 def string_pieces(s, maxlen=1024):
     """
     Takes a (unicode) string and yields pieces of it that are at most `maxlen`
@@ -98,7 +100,7 @@ def string_pieces(s, maxlen=1024):
             yield s[i:]
             return
         # Using "j - 1" keeps boundary characters with the left chunk
-        while unicodedata.category(s[j - 1]) not in BOUNDARY_CATEGORIES:
+        while (s[j - 1]) not in BOUNDARIES:
             j -= 1
             if j == i:
                 # No boundary available; oh well.
@@ -119,4 +121,6 @@ Chris Clark, a fifth-year journeyman, will take the place of Clady - the undispu
 
 Still, those are some big cleats for Clark to fill.
 """
-    print(custom_word_tokenize(text))
+    for s in string_pieces(text):
+        print(s)
+    #print(custom_word_tokenize(text))

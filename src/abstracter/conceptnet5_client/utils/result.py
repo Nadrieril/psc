@@ -3,11 +3,7 @@ import ast
 from abstracter.conceptnet5_client.utils.debug import print_debug
 from abstracter.conceptnet5_client.utils.util import is_arg_valid
 from abstracter.conceptnet5_client.conf.data_settings import RELEVANT_EDGES_ATTRIBUTES,USEFUL_CONCEPTNET_EDGES,MINIMUM_WEIGHT_ALLOWED,MAX_UNDERSCORES_ALLOWED
-
-try: 
-    import simplejson as json
-except ImportError: 
-    import json
+import json
 
 
 # These are the primary keys returned by a query
