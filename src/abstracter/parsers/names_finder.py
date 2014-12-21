@@ -9,15 +9,16 @@ import requests
 import operator
 import re
 import logging
-from collections import defaultdict
- 
+#from collections import defaultdict
+from nltk import word_tokenize, sent_tokenize, pos_tag
+
 pattern = '[A-Z][^A-Z]*'
-FREEBASE_API_KEY = '' 
+FREEBASE_API_KEY = "AIzaSyBPhRSY6Q1iPx82tnkoWAzbAc4JqhNjiJs"
 
 class FindNames(object):
  
   def __init__(self, text, freebase_api_key):
-    self.text = text.encode('ascii','ignore')
+    self.text = text#.encode('ascii','ignore')
     self.key = freebase_api_key
     self.valid_mids = []
     self.sentences = self._get_sentences()
@@ -36,7 +37,8 @@ class FindNames(object):
     Also removes "'s" from things. All text cleaning should go hear before
     processing.
     '''
-    nlsplit = [l.strip() for l in self.text.split('\n')]
+    nlsplit=sent_tokenize(self.text)
+    #nlsplit = [l.strip() for l in self.text.split('\n')]
     sents = []
     for para in nlsplit:
       #for s in nltk.tokenize.sent_tokenize(para):
@@ -92,8 +94,8 @@ class FindNames(object):
     changes = True
     domain = None
     num_runs = 3
-    print 'Found following Named Entities:'
-    print self.unnamed_entities
+    print('Found following Named Entities:')
+    print(self.unnamed_entities)
     changes = self._search_freebase(domain)
     dom_ind = 0
     domain = self._get_domain(dom_ind)
@@ -109,7 +111,7 @@ class FindNames(object):
     '''
     scores = []
     ratios = []
-    print 'Searching on domain: ' + str(domain)
+    print('Searching on domain: ' + str(domain))
     params = {}
     params['key'] = self.key
     if domain:
@@ -143,7 +145,7 @@ class FindNames(object):
     We want to check if the mids are people. mids is a list of tuples so we know what
     guess mid relates to the ne
     '''
-    print 'Checking for people...'
+    print('Checking for people...')
     fin_mids = []
     params = {}
     any_valid = False
@@ -185,9 +187,9 @@ class FindNames(object):
     return any_valid
  
   def _show_people_names(self,mids):
-    print 'Found these names this round:'
+    print('Found these names this round:')
     for mid in mids:
-      print mid[0] + ' ---> ' + mid[2]
+      print(mid[0] + ' ---> ' + mid[2])
  
   def _get_domain(self, ind):
     '''
@@ -201,7 +203,7 @@ class FindNames(object):
  
   def _print_valid_names(self):
     for name in self.valid_mids:
-      print name
+      print(name)
  
   def get_freebase_info(self, mid):
     '''
@@ -216,7 +218,7 @@ def main():
   Run some tests
   '''
   fn = FindNames(text, FREEBASE_API_KEY)
-  print fn.get_people()
+  print(fn.get_people())
  
 if __name__ == '__main__':
  
@@ -247,4 +249,4 @@ To fill Clady's spot, the Broncos brought in veteran tackle Winston Justice, who
   
   '''
  
-  main()
+main()

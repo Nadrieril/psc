@@ -1,5 +1,5 @@
 import sys
-import urllib
+import urllib.parse
 
 from abstracter.conceptnet5_client.utils.debug import print_debug
 from abstracter.conceptnet5_client.utils.http import make_http_request
@@ -10,20 +10,22 @@ from abstracter.conceptnet5_client.conf import settings
 
 #commented all the print_debug functions...
 
+
+#we use so far only LookUp
 class LookUp:
     '''
     This class implements the methods for querying about a concept or sources.
     '''
     def __init__(self, lang = 'en', **kwargs):
         query_args = {}
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
             if is_arg_valid(key, settings.SUPPORTED_LOOKUP_ARGS):
                 query_args[key] = value
                 # print_debug('%s : %s' % (key, value), 'arg')
             else:
                 pass
                 #print_debug('%s : %s -- THIS ARG IS NOT SUPPORTED!' % (key, value), 'ArgError')
-        self.encoded_query_args = urllib.urlencode(query_args)
+        self.encoded_query_args = urllib.parse.urlencode(query_args)
         self.lang = lang
     
 
@@ -66,7 +68,7 @@ class Search:
     '''
     def __init__(self, **kwargs):
         query_args = {}
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
             if is_arg_valid(key, settings.SUPPORTED_SEARCH_ARGS):
                 query_args[key] = value
                 # print_debug('%s : %s' % (key, value), 'arg')
@@ -94,7 +96,7 @@ class Association:
     '''
     def __init__(self, lang = 'en', **kwargs):
         query_args = {}
-        for key, value in kwargs.iteritems():
+        for key, value in kwargs.items():
             if is_arg_valid(key, settings.SUPPORTED_ASSOCIATION_ARGS):
                 query_args[key] = value
                 # print_debug('%s : %s' % (key, value), 'arg')

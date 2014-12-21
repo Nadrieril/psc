@@ -1,4 +1,4 @@
-from itertools import tee, izip
+from itertools import *
 
 def is_arg_valid(arg, arg_list):
     '''
@@ -13,6 +13,6 @@ def pairwise(iterable):
     Creates a pairwise tuple of the iterable object.
     For example, for the list [1, 2, 3, 4], it will return (1, 2), (2, 3), (3, 4).
     '''
-    a, b = tee(iterable)
+    a, b = tee(iterable,2)
     next(b, None)
-    return izip(a, b)
+    return zip_longest(a, b)

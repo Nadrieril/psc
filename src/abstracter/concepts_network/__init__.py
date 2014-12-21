@@ -3,12 +3,19 @@ from networkx.readwrite import json_graph
 from math import log
 import matplotlib.pyplot as plt
 import json
+from abstracter.util.json_stream import *
 
-#import src.util.json_stream
-import os.path, sys
+#import os.path, sys
 #sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
-from ..util.json_stream import *
+
 #TODO : SEE FOR ARC AND CONCEPT the adjustments to made in the constructors
+
+#:param arg1: description
+#:param arg2: description
+#:type arg1: type
+#:type arg1: type
+#:return: description de la valeur de retour
+#:rtype: type de la valeur de retour
 
 def returnsConceptIterator(f):
     def wrap(self, *args, **kwargs):
@@ -26,21 +33,111 @@ def returnsArcIterator(f):
 
 
 class Network:
-    def __init__(self, filename=None):
+    """
+    Class representing a concept network.
+    It uses the package networkx.
+    The only methods to access in other modules are :
+    -add_node
+    -add_edge
+    -has_node
+    -has_edge
+    -remove_node
+    -remove_edge
+    -compute_activation
+    -successors
+    -predecessors
+    -JSON generating & loading
+    """
+    def __init__(self):
         self.network = nx.MultiDiGraph()
-        if filename:
-            with open(filename, 'w') as file:
-                dico = json.load(file)
-                self.network = nx.MultiDiGraph(dico)
 
-    def get(self, id):
-        return Concept(self.network, id)
+    ###########################################################
+    ###Nodes and edges
+    ##############################################
 
-    def add_node(self,node):
-        self.network.add_node(node.id)
+    def __getitem__(self, id):
+        try:
+            return self.network.node[id]
+        except KeyError:
+            return None
 
-    def add_edge(self,id1,id2):
-        self.network.add_edge(id1,id2)
+    def get_node(self,id):
+        return self.network.node[id]
+
+    def add_node(self,id,ic=2,activation=0):
+        self.network.add_node(id)
+        self[id]['ic']=ic
+        self[id]['activation']=activation
+
+    def add_edge(self,fromId,toId,key=0,**kwargs):
+        """
+        Add an edge with as many data as you want.
+        Of course, it's supposed to contain a weight and a relation,
+        but we can deal without (no weight is treated like a weight 0)
+        """
+        if not self.network.has_node(fromId):
+            self.network.add_node(fromId)
+        if not self.network.has_node(toId):
+            self.network.add_node(toId)
+        if self.network.has_edge(fromId,toId,key):
+            key=key+1
+        self.network.add_edge(fromId,toId,key)
+        for akey,avalue in kwargs.items():
+           self.network[fromId][toId][key][akey]=avalue
+  
+    def remove_node(self,id):
+        self.network.remove_node(id)
+
+    def remove_edge(self,fromId,toId,key=None,all=True):
+        if all:
+            while self.has_edge(fromId,toId):
+                self.network.remove_edge(fromId,toId)
+        else:
+            if self.has_edge(fromId,toId,key):
+                self.network.remove_edge(fromId,toId,key)
+
+    def has_node(self,id):
+        return self.network.has_node(id)
+
+    def has_edge(self,fromId,toId,key=None):
+        return self.network.has_edge(fromId,toId,key)
+
+    def predecessors(self,id):
+        return self.network.predecessors_iter(id)
+
+    def successors(self,id):
+        return self.network.successors_iter(id)
+
+    def get_edge(self,fromId,toId,key=0):
+        return self.network[fromId][toId][key]
+
+    @returnsArcIterator
+    def outArcs(self,id):
+        return self.network.out_edges_iter(id, data=True, keys=True)
+
+    @returnsArcIterator
+    def inArcs(self,id):
+        return self.network.in_edges_iter(id, data=True, keys=True)
+
+
+    def compute_activation(self,id):
+        """
+        computes the new node activation, using :
+        -divlog : logarithmic divisor (connexity)
+        -activation of neighbours
+        -self-desactivation
+        """
+        #divlog = log(3 + len(self.inArcs(id))) / log(3)
+        divlog = 1  # deactivated for now
+        i = 0
+        for arc in self.inArcs(id):
+            i = i + (arc.weight or 0) * self[arc.fromId]['activation']
+        act = self[id]['activation']
+        i = i / (100 * divlog)  # neighbours
+        d = act / (100 * (self[id]['ic'] or 1))  # self desactivation
+        self[id]['activation'] = min(act + i - d, 100)  # we do not go beyond 100
+
+
 
     ###########################################################
     ###JSON generating and decoding
@@ -81,8 +178,14 @@ class Network:
             edges_writer.write(e)
         edges_writer.close()
 
+    def draw(self,filename=None):
+        nx.draw(self.network)
+        if filename:
+            plt.savefig(filename)
+        plt.show()
 
 
+#deprecated ??
 class Concept:
     def __init__(self, network, id,ic=2,activation=0):
         self.network=network
@@ -107,7 +210,6 @@ class Concept:
         if attr in ["network","id"]:
             self.__dict__[attr]=value
         else:
-            #print("setting "+self.id)
             self.network.node[self.id][attr] = value
 
     @returnsConceptIterator
@@ -127,7 +229,7 @@ class Concept:
         return self.network.in_edges_iter(self.id, data=True, keys=True)
 
 
-    def compute_activation(self):
+    def compute_activation(self,id):
         """
         computes the new node activation, using :
         -divlog : logarithmic divisor (connexity)
@@ -153,20 +255,12 @@ class Concept:
 
 
 class Arc:
-    def __init__(self, network, fromId, toId, key=0, data=None,weight=0):
+    def __init__(self, network, fromId, toId, key=0, data=None):
         self.network = network
         self.fromId = fromId
         self.toId = toId
         self.key = key
-        if not network.has_node(fromId):
-            c=Concept(network,fromId)
-        if not network.has_node(toId):
-            c=Concept(network,toId)
-        if (not network.has_edge(fromId,toId)):
-        # or (network[fromId][toId]['data'] != data):
-            self.network.add_edge(fromId,toId,key)
-            self.data=data
-            self.weight=weight
+        self.data=data
 
 
     def __getattr__(self, attr):
@@ -181,12 +275,26 @@ class Arc:
         else:
             self.network[self.fromId][self.toId][self.key][attr] = value
 
-    def origin(self):
-        return Concept(self.network, self.fromId)
-
-    def destination(self):
-        return Concept(self.network, self.toId)
-
+    def __str__(self):
+        return ("%s --> %s, %d, data=" % (self.fromId,self.toId,self.key) + self.data.__str__())
 
 if __name__ == '__main__':
-    pass
+    n=Network()
+    n.add_node(id="toto",activation=70,ic=5)
+    n.add_node(id="babar",activation=0,ic=6)
+    n.add_edge(fromId="toto",toId="babar",key=0,autreargdumythe="haha",weight=50)
+    n.add_edge("toto","babar",relation="hihi",weight=10)
+    print(n.get_edge("toto","babar",0))
+    print(n.get_edge("toto","babar",1))
+
+    for v in n.outArcs("toto"):
+        print(v)
+
+    print(n["toto"]['activation'])
+    n.compute_activation("babar")
+    print(n["babar"]["activation"])
+    n.remove_edge("toto","babar",all=False,key=1)
+    #nx.draw(n.network)
+    #plt.show()
+    for n in n.successors("toto"):
+        print(n)

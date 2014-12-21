@@ -116,15 +116,15 @@ class Path:
             result = Result(data)
             if result.get_num_found() == 0:
                 if print_where_breaks == True:
-                    print 'Assertion breaking the path: [ %s --> (%s) --> %s) ]' % (
-                        assertion.start, assertion.relation, assertion.end)
+                    print('Assertion breaking the path: [ %s --> (%s) --> %s) ]' % (
+                        assertion.start, assertion.relation, assertion.end))
                 return False
         return True
 
 
     def print_path(self):
-        print 'Path instance: ',
-        print '[ %s ' % self.concepts[0],  
+        print('Path instance: ')
+        print('[ %s ' % self.concepts[0])  
         for index, concept in enumerate(self.concepts[1:]):
-            print '--> (%s) --> %s' % (self.relations[index], concept),
-        print ']'
+            print('--> (%s) --> %s' % (self.relations[index], concept))
+        print(']')

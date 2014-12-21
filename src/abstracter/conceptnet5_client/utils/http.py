@@ -1,13 +1,16 @@
 import sys
-import urllib
-import urllib2
+import urllib.request
+import urllib.parse
+from urllib.error import HTTPError, URLError
+
+import codecs
+reader = codecs.getreader("utf-8")
 
 try: 
     import simplejson as json
 except ImportError: 
     import json
 
-from urllib2 import HTTPError, URLError
 
 from abstracter.conceptnet5_client.utils.debug import print_debug
 from abstracter.conceptnet5_client.cache.file_cache import cache
@@ -21,13 +24,15 @@ def make_http_request(url):
 
     Returns the response in json format.
     '''
-    request = urllib2.Request(url)
+    #request = urllib2.Request(url)
     try:
-        data = urllib2.urlopen(request)
-    except HTTPError, e:
-        print_debug('Error code: %s' % e.code, 'HTTPError')
+        #data = urllib2.urlopen(request)
+        data=urllib.request.urlopen(url)
+    except HTTPError:
+        print('Error code: %s' % e.code, 'HTTPError')
         sys.exit()
-    except URLError, e:
-        print_debug('Reason: %s' % e.reason, 'URLError')
+    except URLError:
+        print('Reason: %s' % e.reason, 'URLError')
         sys.exit()
-    return json.load(data)
+    return json.load(reader(data))
+    #return json.load(data)

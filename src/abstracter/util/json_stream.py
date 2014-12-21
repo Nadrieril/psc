@@ -51,7 +51,9 @@ class JSONStreamWriter(object):
 
 def write_json_stream(data,filename):
     """
-    Where data is a list of objects
+    :param data: iterable data of JSON serializable ojects
+    :param filename: name of the file to create
+    :type filename: str
     """
     writer=JSONStreamWriter(filename)
     for d in data:

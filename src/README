@@ -1,5 +1,6 @@
 package abstracter contains most of our code (conceptnetwork and so on)
 package conceptnet5_client contains an old client, which works only with python2
+comes from : https://github.com/israkir/conceptnet5-client
 demo.py is a demo of the client.
 it has been configured with a proxy
 network_example contains network data

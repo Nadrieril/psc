@@ -9,6 +9,6 @@ def caller():
 
 def print_debug(msg, tag = None):
     if tag:
-        print '[%s][%s] %s' % (caller(), tag, msg)
+        print('[%s][%s] %s' % (caller(), tag, msg))
     else:
-        print '[%s] %s' % (caller(), msg)
+        print('[%s] %s' % (caller(), msg))

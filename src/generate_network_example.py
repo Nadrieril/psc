@@ -3,7 +3,7 @@ from nltk.corpus import wordnet as wnc
 from nltk import word_tokenize, sent_tokenize, pos_tag
 from nltk.tokenize import PunktWordTokenizer
 from nltk.tokenize import TreebankWordTokenizer
-from abstracter.concepts_network import *
+from abstracter.concepts_network import Network
 from abstracter.parsers import tokenizer
 from abstracter.util import json_stream
 from abstracter.conceptnet5_client.conceptnet5 import conceptnet5 as cn5
@@ -95,6 +95,18 @@ def read_text(filename="data/sample"):
 	conceptnetwork.save_to_JSON(filename+"_network.txt")
 	
 
+def parse_nouns(word_list):
+	return word_list
+
+def get_concepts(filename="data/sample"):
+	with open(filename+".txt",'r') as file:
+		raw_text=file.read()
+		word_list=parse_nouns(tokenize(raw_text))
+		tagged=pos_tag(word_list)
+		for w in tagged:
+			v=w[0]
+			tag=w[1]
+
 
 def tag_words_for_wordnet(tagged_list):
 	#nltk.pos_tag uses the Penn Treebank project
@@ -172,14 +184,13 @@ def create_network_from_words(wordnet_tagged_list):
 
 
 	"""
-	conceptnetwork=Network()
+	concepts=Network()
 	for v,tag in wordnet_tagged_list:
 		if tag:
 			polysemy=len(wnc.synsets(v,pos=tag))
-			tmp_concept=Concept(network=conceptnetwork.network,id=v,ic=polysemy)
+			concepts.add_node(id=v,ic=polysemy)
 		else:#no tag, such as a proper noun
-			tmp_concept=Concept(network=conceptnetwork.network,id=v,ic=5)
-
+			concepts.add_node(id=v,ic=5)
 	#at this point, all nodes have been created
 	#then, we study edges
 	#following code to build edges from wordnet, using isa relations
@@ -194,8 +205,8 @@ def create_network_from_words(wordnet_tagged_list):
 				if (not v==v2) and wnsynsets[v] and wnsynsets[v2]:
 					tmp=wnsynsets[v].path_similarity(wnsynsets[v2])
 					if tmp >0.1:
-						tmp_arc=Arc(network=conceptnetwork.network,fromId=v,toId=v2,data=tmp)
-	return conceptnetwork
+						concepts.add_edge(fromId=v,toId=v2,weight=tmp)
+	return concepts
 
 
 
@@ -217,7 +228,21 @@ def create_network_from_sample(path):
 	"""
 	pass
 
-def expand_network_from_seed(list,max_nodes=10,network=Network()):
+
+
+
+def expand_concept(concept,network,one_word=False):
+	"""
+	network : Network object
+	"""
+	edges=cn5.get_edges(concept)
+	for e in edges:
+		if (one_word and '_' not in e.end and '_' not in e.start) or not one_word:
+			network.add_edge(fromId=e.start,toId=e.end,weight=e.weight,relation=e.rel)
+	return
+
+
+def expand_network_from_seed(list,max_nodes=10,network=Network(),max=2):
 	"""
 	Given list of some relevant concepts, we create a conceptnetwork using :
 	-conceptnet5 data
@@ -227,23 +252,25 @@ def expand_network_from_seed(list,max_nodes=10,network=Network()):
 	- there is a random component when we get the edges from conceptnet5
 	"""
 	nodenumber=0
-	while nodenumber<max_nodes and len(list)>0:
-		word=list[0]
-		#print(word)
-		conceptic=polysemy(word)
-		if conceptic==0:#TODO : check if it's a name
-			conceptic=7
-		#print(conceptic)
-		concept=Concept(network.network,word,ic=conceptic)
-		nodenumber+=1
-		cn5.expand_concept(word,network.network)
-		list.remove(word)
-		for concept2 in concept.successors():
-			conceptic=polysemy(concept2.id)
+	k=0
+	list2=[]
+	while nodenumber<max_nodes and k<max:
+		k+=1
+		print(len(list))
+		for word in list:
+			#print(word)
+			conceptic=polysemy(word)
 			if conceptic==0:#TODO : check if it's a name
-				conceptic=7
-			concept2.ic=conceptic
-			list.append(concept2.id)
+					conceptic=7
+			#print(conceptic)
+			if not network.has_node(word):
+				network.add_node(id=word,ic=conceptic)
+				nodenumber+=1
+				expand_concept(word,network)
+				for word2 in network.successors(word):
+					list2.append(word2)
+		list=list2
+
 
 			
 SEED=["America","Arsenal","Aston","Barkley","Basel","Brazil","Cahill","Cup","England","Euro","Liverpool","Manchester","Norway","Sterling","wayne_rooney",
@@ -251,21 +278,21 @@ SEED=["America","Arsenal","Aston","Barkley","Basel","Brazil","Cahill","Cup","Eng
 "penalty","performance","play","player","positive","preparation","pressure","prove","public","retire","summer","surreal", "team", "winner","worry","victory", "young"]
 
 SMALL_SEED=["America","Arsenal","Brazil","Cup","England","wayne_rooney","appointment","atmosphere",
-"attacker","back","brilliantly","busy","captain","celebrate","defeat","eliminate","encouragement","exit",
-"penalty","performance","play","player","positive","preparation","pressure","prove","public",
- "team", "winner","worry","victory", "young"]
-
+"attacker","back","brilliantly","busy","captain","celebrate"]
+#,"defeat","eliminate","encouragement","exit",
+#"penalty","performance","play","player","positive","preparation","pressure","prove","public",
+# "team", "winner","worry","victory", "young"
 
 def test():
 	n=Network()
-	expand_network_from_seed(SMALL_SEED,max_nodes=100,network=n)
-	n.save_to_JSON_stream("network_example/network_example_2")
-	nx.draw(n.network)
-	#plt.show()
-	plt.savefig("network_example/network_example_2.png")
+	expand_network_from_seed(SMALL_SEED,max_nodes=10,network=n)
+	n.save_to_JSON_stream("network_example/network_example_5")
+	n.draw("network_example/network_example_5.png")
+
 
 test()
-
+#str="test_test"
+#print len(str.split("_"))
 
 #print polysemy('human')
 
