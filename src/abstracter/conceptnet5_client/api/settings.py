@@ -1,4 +1,8 @@
 
+
+LANGUAGE="en"
+
+
 # These URLs basically points to MIT's conceptnet5 setup for Web API
 BASE_LOOKUP_URL = 'http://conceptnet5.media.mit.edu/data/5.3'
 BASE_SEARCH_URL = 'http://conceptnet5.media.mit.edu/data/5.3/search'

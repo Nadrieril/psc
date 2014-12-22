@@ -6,8 +6,9 @@ from abstracter.concepts_network import Network
 import abstracter.parsers.tokenizer as tok
 import abstracter.parsers.concepts_retriever as cr
 from abstracter.util import json_stream
-from abstracter.conceptnet5_client.conceptnet5 import conceptnet5 as cn5
+from abstracter.conceptnet5_client.api import api as cn5
 import json
+import os
 
 """
 These methods do not intend to be optimal, 
@@ -216,7 +217,7 @@ def create_network_from_words(wordnet_tagged_list):
 				if (not v==v2) and wnsynsets[v] and wnsynsets[v2]:
 					tmp=wnsynsets[v].path_similarity(wnsynsets[v2])
 					if tmp >0.1:
-						concepts.add_edge(fromId=v,toId=v2,weight=tmp)
+						concepts.add_edge(fromId=v,toId=v2,w=tmp)
 	return concepts
 
 
@@ -227,18 +228,18 @@ def polysemy(word):
 
 
 
-def expand_concept(concept,network,one_word=False):
+def expand_concept(concept,network):
 	"""
 	network : Network object
 	"""
-	edges=cn5.get_edges(concept)
+	edges=cn5.search_edges_from(concept)
 	for e in edges:
-		if (one_word and '_' not in e.end and '_' not in e.start) or not one_word:
-			network.add_edge(fromId=e.start,toId=e.end,weight=e.weight,relation=e.rel)
+		network.add_edge(fromId=e.start,toId=e.end,w=e.weight,r=e.rel)
 	return
 
 
-def expand_network_from_seed(list,max_nodes=10,network=Network(),max=2):
+
+def expand_network_from_seed(words,max_nodes=10,network=Network(),max=2):
 	"""
 	Given list of some relevant concepts, we create a conceptnetwork using :
 	-conceptnet5 data
@@ -252,8 +253,8 @@ def expand_network_from_seed(list,max_nodes=10,network=Network(),max=2):
 	list2=[]
 	while nodenumber<max_nodes and k<max:
 		k+=1
-		print(len(list))
-		for word in list:
+		print(len(words))
+		for word in words:
 			#print(word)
 			conceptic=polysemy(word)
 			if conceptic==0:#TODO : check if it's a name
@@ -265,7 +266,7 @@ def expand_network_from_seed(list,max_nodes=10,network=Network(),max=2):
 				expand_concept(word,network)
 				for word2 in network.successors(word):
 					list2.append(word2)
-		list=list2
+		words=list2
 
 
 			
@@ -284,9 +285,24 @@ def test():
 	seed=SMALL_SEED
 	with open("data/sample_concepts.txt",'r') as file:
 		seed=json.load(file)
-	expand_network_from_seed(seed,max_nodes=10,network=n)
+	expand_network_from_seed(seed[1:5],max_nodes=10,network=n)
 	n.save_to_JSON_stream("network_example/network_example_5")
 	n.draw("network_example/network_example_5.png")
 
-test()
+#does not work
+def clean_cached_data():
+	for file in os.listdir("src/cached_data"):
+		os.remove(file)
+
+
 #read_concepts(filename="data/sample")
+
+test()
+
+#for e in (cn5.search_edges(start="/c/en/sport",limit=10,toto="bouh")):
+#	e.print_edge()
+
+#for e in (cn5.search_edges_from("hockey")):
+#	e.print_edge()
+
+#print(cn5.get_similar_concepts('dog'))

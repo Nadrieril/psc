@@ -3,19 +3,15 @@ from networkx.readwrite import json_graph
 from math import log
 import matplotlib.pyplot as plt
 import json
-from abstracter.util.json_stream import *
+try:
+    from abstracter.util.json_stream import *
+except ImportError:
+    pass
 
 #import os.path, sys
 #sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
 
 #TODO : SEE FOR ARC AND CONCEPT the adjustments to made in the constructors
-
-#:param arg1: description
-#:param arg2: description
-#:type arg1: type
-#:type arg1: type
-#:return: description de la valeur de retour
-#:rtype: type de la valeur de retour
 
 def returnsConceptIterator(f):
     def wrap(self, *args, **kwargs):
@@ -47,6 +43,9 @@ class Network:
     -successors
     -predecessors
     -JSON generating & loading
+
+    A concept has an activation (a), importance conceptuelle (ic)
+    An edge has a weight (w) (always) and a relation (r), maybe more data
     """
     def __init__(self):
         self.network = nx.MultiDiGraph()
@@ -67,7 +66,7 @@ class Network:
     def add_node(self,id,ic=2,activation=0):
         self.network.add_node(id)
         self[id]['ic']=ic
-        self[id]['activation']=activation
+        self[id]['a']=activation
 
     def add_edge(self,fromId,toId,key=0,**kwargs):
         """
@@ -83,7 +82,14 @@ class Network:
             key=key+1
         self.network.add_edge(fromId,toId,key)
         for akey,avalue in kwargs.items():
-           self.network[fromId][toId][key][akey]=avalue
+            if akey=="relation":
+                akey='r'
+            elif akey=="weight":
+                akey="w"
+            if isinstance(avalue,float):
+                self.network[fromId][toId][key][akey]=int(100*avalue)/100
+            else:
+                self.network[fromId][toId][key][akey]=avalue
   
     def remove_node(self,id):
         self.network.remove_node(id)
@@ -131,11 +137,11 @@ class Network:
         divlog = 1  # deactivated for now
         i = 0
         for arc in self.inArcs(id):
-            i = i + (arc.weight or 0) * self[arc.fromId]['activation']
-        act = self[id]['activation']
+            i = i + (arc.w or 0) * self[arc.fromId]['a']
+        act = self[id]['a']
         i = i / (100 * divlog)  # neighbours
         d = act / (100 * (self[id]['ic'] or 1))  # self desactivation
-        self[id]['activation'] = min(act + i - d, 100)  # we do not go beyond 100
+        self[id]['a'] = int(min(act + i - d, 100))  # we do not go beyond 100, and activation is an integer
 
 
 
@@ -282,17 +288,17 @@ if __name__ == '__main__':
     n=Network()
     n.add_node(id="toto",activation=70,ic=5)
     n.add_node(id="babar",activation=0,ic=6)
-    n.add_edge(fromId="toto",toId="babar",key=0,autreargdumythe="haha",weight=50)
-    n.add_edge("toto","babar",relation="hihi",weight=10)
+    n.add_edge(fromId="toto",toId="babar",key=0,autreargdumythe="haha",w=50)
+    n.add_edge("toto","babar",r="hihi",w=10.261645654)
     print(n.get_edge("toto","babar",0))
     print(n.get_edge("toto","babar",1))
 
     for v in n.outArcs("toto"):
         print(v)
 
-    print(n["toto"]['activation'])
+    print(n["toto"]['a'])
     n.compute_activation("babar")
-    print(n["babar"]["activation"])
+    print(n["babar"]["a"])
     n.remove_edge("toto","babar",all=False,key=1)
     #nx.draw(n.network)
     #plt.show()

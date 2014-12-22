@@ -5,14 +5,9 @@ from urllib.error import HTTPError, URLError
 
 import codecs
 reader = codecs.getreader("utf-8")
-
-try: 
-    import simplejson as json
-except ImportError: 
-    import json
+import json
 
 
-from abstracter.conceptnet5_client.utils.debug import print_debug
 from abstracter.conceptnet5_client.cache.file_cache import cache
 
 
