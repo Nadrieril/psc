@@ -17,7 +17,10 @@ def search(lang='en',**kwargs):
 	data={'key' : USER_KEY}
 	data['lang']=lang
 	for key,val in kwargs.items():
-		data[key]=val
+		if key in SEARCH_PARAMETERS:
+			data[key]=val
+		else:
+			pass
 	url_values = urllib.parse.urlencode(data)
 	print("searching freebase : "+url_values)
 	full_url = URL + '?' + url_values
@@ -28,6 +31,7 @@ def search(lang='en',**kwargs):
 
 if __name__=="__main__":
 
-	print (search(query='barack obama',lang='en',filter='(any type:/people/person)'))
+	#print (search(query='barack obama',lang='en',filter='(any type:/people/person)'))
+	print (search(query='wayne rooney',lang='en',filter='(any type:/people/person)'))
 
 
