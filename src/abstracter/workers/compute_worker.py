@@ -1,32 +1,29 @@
-from concept_network import *
+from workers.workers_settings import *
+from workers import *
 
-COMPUTE_URGENCY = 50
-COMPUTE_DELTA_TIME=1
 
 class ComputeWorker(Worker):
     """
     Workers which compute nodes' activation.
     """
 
-    def __init__(self, target_node):
+    def __init__(self, target_id):
         """
-        It is important to compute node's activation, but there are things more important to do.
-        Thus, the worker's importance is set to 50
+        :param target_id: id of the node to activate (a node in the conceptnetwork)
+        :type target_id: str
         """
         super(ComputeWorker, self).__init__(COMPUTE_URGENCY)
-        self.target_node = target_node#which is a string
+        self.target_id = target_id
 
     def run(self, context):
         """
         Computes node's activation.
         Then pushes new compute workers for each neighbour node in the workspace.
-        Also, send a signal to the node's observer if there is one.
         """
-        self.target_node.compute_activation()
-        for n in self.target_node.successors():
-            context.workers.pushRandom(ComputeWorker(n))
+        context.network.compute_activation(self.target_id)
+        for n in context.network.successors(self.target_id):
+            context.workersManager.push(ComputeWorker(n))
         return(COMPUTE_DELTA_TIME)
 
     def __str__(self):
-        return "Calculation of concept " + self.target_node + \
-            "\'s activation"
+        return "Calculating act of concept " + self.target_id

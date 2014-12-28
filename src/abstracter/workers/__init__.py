@@ -21,7 +21,7 @@ class Worker:
         self.urgency = urgency
 
     def run(self, context):
-        pass
+        return 0
 
     def __str__(self):
         return("Worker, urgency : " + self.urgency)
@@ -29,17 +29,17 @@ class Worker:
 
 class WorkersManager:
     def __init__(self):
-        self.workersQueue = []
+        self.workers = []
         self.time = 0
 
 
     def pop(self):
         return self.workers.pop(0)
 
-    def push(self, w):
+    def pushEnd(self, w):
         self.workers.append(w)
 
-    def pushRandom(self, w):
+    def push(self, w):
         """
         Push a new worker into the queue, but randomly
         (it has to depend on the urgency of the worker)
@@ -50,6 +50,8 @@ class WorkersManager:
         i += int((random() - 0.5) * len(self.workers) / 15)
         self.workers.insert(i, w)
 
+    def isEmpty(self):
+        return self.workers==[]
 
     def runWorker(self, context, w=None):
         w = w or self.pop()
@@ -58,5 +60,8 @@ class WorkersManager:
 
 
     def __str__(self):
+        res="WorkersManager : \nTime = "+self.time.__str__() \
+        +"\n"+len(self.workers).__str__()+" workers :"
         for w in self.workers:
-            print(w)
+            res+="\n"+w.__str__()
+        return res

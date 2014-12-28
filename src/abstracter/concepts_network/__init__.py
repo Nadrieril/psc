@@ -63,10 +63,12 @@ class Network:
     def get_node(self,id):
         return self.network.node[id]
 
-    def add_node(self,id,ic=2,activation=0):
+    def add_node(self,id,ic=2,activation=0,**kwargs):
         self.network.add_node(id)
         self[id]['ic']=ic
         self[id]['a']=activation
+        for akey,avalue in kwargs.items():
+            self[id][akey]=avalue
 
     def add_edge(self,fromId,toId,key=0,**kwargs):
         """
@@ -75,9 +77,9 @@ class Network:
         but we can deal without (no weight is treated like a weight 0)
         """
         if not self.network.has_node(fromId):
-            self.network.add_node(fromId)
+            self.add_node(id=fromId)
         if not self.network.has_node(toId):
-            self.network.add_node(toId)
+            self.add_node(id=toId)
         if self.network.has_edge(fromId,toId,key):
             key=key+1
         self.network.add_edge(fromId,toId,key)
@@ -284,23 +286,24 @@ class Arc:
     def __str__(self):
         return ("%s --> %s, %d, data=" % (self.fromId,self.toId,self.key) + self.data.__str__())
 
+
 if __name__ == '__main__':
-    n=Network()
-    n.add_node(id="toto",activation=70,ic=5)
-    n.add_node(id="babar",activation=0,ic=6)
-    n.add_edge(fromId="toto",toId="babar",key=0,autreargdumythe="haha",w=50)
-    n.add_edge("toto","babar",r="hihi",w=10.261645654)
-    print(n.get_edge("toto","babar",0))
-    print(n.get_edge("toto","babar",1))
+    def test():
+        n=Network()
+        n.add_node(id="toto",activation=70,ic=5)
+        n.add_node(id="babar",activation=0,ic=6)
+        n.add_edge(fromId="toto",toId="babar",key=0,autreargdumythe="haha",w=50)
+        n.add_edge("toto","babar",r="hihi",w=10.261645654)
+        print(n.get_edge("toto","babar",0))
+        print(n.get_edge("toto","babar",1))
+        for v in n.outArcs("toto"):
+            print(v)
+        print(n["toto"]['a'])
+        n.compute_activation("babar")
+        print(n["babar"]["a"])
+        n.remove_edge("toto","babar",all=False,key=1)
+        nx.draw(n.network)
+        plt.show()   
 
-    for v in n.outArcs("toto"):
-        print(v)
+    pass
 
-    print(n["toto"]['a'])
-    n.compute_activation("babar")
-    print(n["babar"]["a"])
-    n.remove_edge("toto","babar",all=False,key=1)
-    #nx.draw(n.network)
-    #plt.show()
-    for n in n.successors("toto"):
-        print(n)

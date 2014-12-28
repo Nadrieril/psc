@@ -11,6 +11,9 @@ Conceptnet5 supports 3 API :
 -LookUp
 -Search (searching for edges)
 -Association (get similarity between concepts)
+ Lookup is for when you know the URI of an object in ConceptNet, and want to see a list of edges 
+ that include it. Search finds a list of edges that match certain criteria.
+  Association is for finding concepts similar to a particular concept or a list of concepts.
 """
 
 
@@ -70,7 +73,23 @@ def get_similar_concepts(concept='dog',filter='/c/en/',limit=10,**kwargs):
     return parse_similar_concepts(json_data)
 
 
-#does not work properly
+def get_similarity(concept1='dog',concept2='dog'):
+    """
+    Returns a similarity score between two concepts.
+    """
+    query_args={"filter" : '/c/'+settings.LANGUAGE+"/"+concept2}
+    enc_query_args = urllib.parse.urlencode(query_args)
+    url = ''.join(['%s/c/%s/%s?' % (settings.BASE_ASSOCIATION_URL, settings.LANGUAGE,concept1)]) + enc_query_args
+    json_data = make_http_request(url)
+    parsed=parse_similar_concepts(json_data)
+    if parsed:
+        return parsed[0][1]
+    else:
+        return 0
+
+
+
+#http://conceptnet5.media.mit.edu/data/5.3/assoc/list/en/wayne_rooney,sport
 def get_similar_concepts_by_term_list(term_list,filter='/c/en/',limit=10,**kwargs):
     terms = ','.join(term_list)
     query_args={"filter" : filter, "limit" : limit}
@@ -80,7 +99,7 @@ def get_similar_concepts_by_term_list(term_list,filter='/c/en/',limit=10,**kwarg
         else:
             raise Exception("Association argument '"+key+"' incorrect.")
     enc_query_args = urllib.parse.urlencode(query_args)
-    url = ''.join(['%s/c/%s/%s?' % (settings.BASE_ASSOCIATION_URL, settings.LANGUAGE,terms)]) + enc_query_args
+    url = ''.join(['%s/list/%s/%s?' % (settings.BASE_ASSOCIATION_URL, settings.LANGUAGE,terms)]) + enc_query_args
     json_data = make_http_request(url)
     return parse_similar_concepts(json_data)
 
@@ -112,3 +131,7 @@ def search_edges_from(concept='dog'):
 def search_edges_to(concept='dog'):
     return search_edges(end='/c/en/'+concept,minWeight=2)
 
+def search_edge(start,end):
+    edges=search_edges(start='/c/'+settings.LANGUAGE+'/'+start,end='/c/'+settings.LANGUAGE+'/'+end)
+    if edges:
+        return edges[0]

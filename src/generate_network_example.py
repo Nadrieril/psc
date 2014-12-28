@@ -107,18 +107,6 @@ def read_text(filename="data/sample"):
 	conceptnetwork.save_to_JSON(filename+"_network.txt")
 	
 
-def parse_nouns(word_list):
-	return word_list
-
-def get_concepts(filename="data/sample"):
-	with open(filename+".txt",'r') as file:
-		raw_text=file.read()
-		word_list=parse_nouns(tokenize(raw_text))
-		tagged=pos_tag(word_list)
-		for w in tagged:
-			v=w[0]
-			tag=w[1]
-
 
 def tag_words_for_wordnet(tagged_list):
 	#nltk.pos_tag uses the Penn Treebank project
@@ -228,6 +216,8 @@ def polysemy(word):
 
 
 
+
+
 def expand_concept(concept,network):
 	"""
 	network : Network object
@@ -297,7 +287,8 @@ def clean_cached_data():
 
 #read_concepts(filename="data/sample")
 
-test()
+
+#print(cn5.get_similarity('sport','wayne_rooney'))
 
 #for e in (cn5.search_edges(start="/c/en/sport",limit=10,toto="bouh")):
 #	e.print_edge()
@@ -305,4 +296,97 @@ test()
 #for e in (cn5.search_edges_from("hockey")):
 #	e.print_edge()
 
-#print(cn5.get_similar_concepts('dog'))
+#print(cn5.get_similar_concepts('america'))
+#for e in cn5.search_edges(start="/c/en/america"):
+#	e.print_edge()
+
+#print(cn5.get_similarity(concept1="democracy",concept2="sport"))
+
+def expand_by_similarity(concept,network):
+	"""
+	network : Network object
+	"""
+	concepts=cn5.get_similar_concepts(concept)
+	for c in concepts:
+		if not network.has_node(c[0]):
+			conceptic=polysemy(c[0])
+			if conceptic==0:#TODO : check if it's a name
+				conceptic=7
+			network.add_node(id=c[0],ic=conceptic)
+		edge=cn5.search_edge(start=concept,end=c[0])
+		if edge:
+			network.add_edge(fromId=concept,toId=edge.end,w=edge.weight/5,r=edge.rel)
+		else:
+			network.add_edge(fromId=concept,toId=c[0],w=c[1],r='SimilarTo')
+
+def create_node(concept,network):
+	if not network.has_node(concept):
+		conceptic=polysemy(concept)
+		if conceptic==0:#TODO : check if it's a name
+			conceptic=7
+		network.add_node(id=concept,ic=conceptic)	
+
+def test2():
+	n=Network()
+	seed=SMALL_SEED
+	with open("data/sample_concepts.txt",'r') as file:
+		seed=json.load(file)
+	for word in seed[1:4]:
+		conceptic=polysemy(word)
+		if conceptic==0:#TODO : check if it's a name
+			conceptic=7
+		if not n.has_node(word):
+			n.add_node(id=word,ic=conceptic)
+			expand_by_similarity(word,n)
+	n.save_to_JSON_stream("network_example/network_example_6")
+	n.draw("network_example/network_example_6.png")
+
+
+MINIMUM_SIMILARITY=0.1
+
+def expand_by_similarity_to(concept,network,filter):
+	edges=cn5.search_edges_from(concept)
+	for e in edges:
+		sim=cn5.get_similarity(e.end,filter)
+		if sim>MINIMUM_SIMILARITY and e.end != concept:
+			create_node(e.end,network)
+			network.add_edge(fromId=concept,toId=e.end,w=e.weight/5,r=e.rel)
+
+
+def remove_leaves(network):
+	tosuppr=[]
+	for n in network.network.node:
+		has_succ=False
+		for s in network.successors(n):
+			has_succ=True
+			pass
+		if not has_succ:
+			tosuppr.append(n)
+	for n in tosuppr:
+		network.remove_node(n)
+
+def test3():
+	n=Network()
+	seed=SMALL_SEED	
+	with open("data/sample_concepts.txt",'r') as file:
+		seed=json.load(file)
+	for word in seed:
+		create_node(word,n)
+		expand_by_similarity_to(word,n,filter="sport")
+	n.save_to_JSON_stream("network_example/network_example_6")
+	n.draw("network_example/network_example_6.png")
+
+def test4():
+	n=Network()
+	seed=SMALL_SEED	
+	with open("data/sample_concepts.txt",'r') as file:
+		seed=json.load(file)
+	for word in seed[1:10]:
+		create_node(word,n)
+		expand_by_similarity(word,n)
+	n.save_to_JSON_stream("network_example/network_example_6")
+	n.draw("network_example/network_example_6.png")
+
+#print(cn5.get_similar_concepts_by_term_list(term_list=["america"]))
+test4()
+

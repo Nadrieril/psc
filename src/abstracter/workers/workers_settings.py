@@ -1,0 +1,11 @@
+"""
+Settings for the different types of workers : urgency, delta_time
+"""
+
+
+COMPUTE_URGENCY = 50
+COMPUTE_DELTA_TIME=1
+
+ACTIVATE_URGENCY = 100
+ACTIVATION_ENABLING_CONCEPT_INSTANTIATION = 80
+ACTIVATE_DELTA_TIME=1

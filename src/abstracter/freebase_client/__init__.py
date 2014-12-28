@@ -13,8 +13,9 @@ def keep_relevant(query_response):
 		if result['score']>MINIMUM_RESULT_SCORE:
 			yield result
 
-def search(**kwargs):
+def search(lang='en',**kwargs):
 	data={'key' : USER_KEY}
+	data['lang']=lang
 	for key,val in kwargs.items():
 		data[key]=val
 	url_values = urllib.parse.urlencode(data)

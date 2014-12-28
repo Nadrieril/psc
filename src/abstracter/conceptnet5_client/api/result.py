@@ -64,14 +64,14 @@ class Edge(object):
         '''
         Prints the lemmas of this edge with start, rel, end lemmas.
         '''
-        print_debug('%s %s %s' % (self.start_lemmas, self.rel, self.end_lemmas))
+        print('%s %s %s' % (self.start_lemmas, self.rel, self.end_lemmas))
 
     
     def print_edge(self):
         '''
         Prints the normalized edge data with start node, rel, end node.
         '''
-        print_debug('(%s -> %s -> %s , %d)' % (self.start, self.rel, self.end,self.weight))
+        print('(%s -> %s -> %s , %d)' % (self.start, self.rel, self.end,self.weight))
 
     
     def print_all_attrs(self):
@@ -79,4 +79,4 @@ class Edge(object):
         Prints all attributes regarding to this edge.
         '''
         attrs = vars(self)
-        print_debug('\n'.join('%s: %s' % item for item in attrs.items()))
+        print('\n'.join('%s: %s' % item for item in attrs.items()))
