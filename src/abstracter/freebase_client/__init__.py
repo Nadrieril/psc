@@ -6,16 +6,14 @@ from settings import *
 
 reader = codecs.getreader("utf-8")
 
-#https://developers.google.com/freebase/v1/search-cookbook
-
+#TODO : PARSE QUERY RESULTS
 def keep_relevant(query_response):
 	for result in response['result']:
 		if result['score']>MINIMUM_RESULT_SCORE:
 			yield result
 
-def search(lang='en',**kwargs):
-	data={'key' : USER_KEY}
-	data['lang']=lang
+def search(lang='en',limit=10,**kwargs):
+	data={'key' : USER_KEY, 'lang' : lang, 'limit' : limit}
 	for key,val in kwargs.items():
 		if key in SEARCH_PARAMETERS:
 			data[key]=val
@@ -32,6 +30,6 @@ def search(lang='en',**kwargs):
 if __name__=="__main__":
 
 	#print (search(query='barack obama',lang='en',filter='(any type:/people/person)'))
-	print (search(query='wayne rooney',lang='en',filter='(any type:/people/person)'))
-
-
+	#print (search(query='barack_obama',lang='en',filter='(any type:/people/person)',limit=2,exact=True))
+	print (search(filter='(all type:/people/person member_of:france)',limit=10,exact=False))
+#	print(search(filter='(all discovered_by:heisenberg)',limit=10))

@@ -67,196 +67,11 @@ def read_concepts(filename="data/sample"):
 
 
 
-#######################################################################################
-################deprecated ! use only module concepts_retriever
-##############################################################
-
-def read_and_tokenize(filename="data/sample"):
-	"""
-	We read the text and tokenize it, but we don't create the network.
-	"""
-	with open(filename+".txt",'r') as file,open(filename+"_words.txt",'w') as wordsfile:
-		word_list=tokenize(file.read())
-		print("Writing words down...")
-		json.dump(word_list,wordsfile)
-	tagged_list=pos_tag(word_list)
-	with open(filename+"_tags.txt",'w') as tagsfile:
-		print("Writing POS-tagged words down...")
-		json.dump(tagged_list,tagsfile)
-	print("All done.")
-
-
-def read_text(filename="data/sample"):
-	"""
-	Write down a new file at each state, to see how it progresses
-	"""
-	with open(filename+".txt",'r') as file,open(filename+"_words.txt",'w') as wordsfile:
-		word_list=tokenize(file.read())
-		print("Writing words down...")
-		json.dump(word_list,wordsfile)	
-	tagged_list=pos_tag(word_list)
-	with open(filename+"_tags.txt",'w') as tagsfile:
-		print("Writing POS-tagged words down...")
-		json.dump(tagged_list,tagsfile)
-	wordnet_tagged_list=tag_words_for_wordnet(tagged_list)
-	with open(filename+"_wordnet_parsed.txt",'w') as wfile:
-		print("Writing wordnet-tagged words down...")
-		json.dump(wordnet_tagged_list,wfile)
-	print("Generating network...")
-	conceptnetwork=create_network_from_words(wordnet_tagged_list)
-	conceptnetwork.save_to_JSON(filename+"_network.txt")
-	
-
-
-def tag_words_for_wordnet(tagged_list):
-	#nltk.pos_tag uses the Penn Treebank project
-	#list of tags available at : http://www.ling.upenn.edu/courses/Fall_2007/ling001/penn_treebank_pos.html
-	wordnet_tagged_list=[]
-	final_list=[]
-	
-	for w in tagged_list:
-		v=w[0]
-		tag=w[1]
-		if v in DISMISSED_WORDS:
-			pass
-		elif tag=='FW':#foreign word
-			t=wnc.NOUN
-			wordnet_tagged_list.append([v,t])
-		elif tag in ["JJ","JJR","JJS"]:
-			t=wnc.ADJ
-			wordnet_tagged_list.append([v,t])
-		elif tag in ["MD","NN","NNS"]:
-			t=wnc.NOUN
-			wordnet_tagged_list.append([v,t])
-		elif tag in ["NNP","NNPS"]:#not tag
-			t=None
-			final_list.append([v,t])
-		elif tag in ["RB","RBR","RBS"]:
-			t=wnc.ADV
-			wordnet_tagged_list.append([v,t])
-		elif tag in ["VB","VBD","VBG","VBN","VBP","VBZ"]:
-			t=wnc.VERB
-			wordnet_tagged_list.append([v,t])
-		#we're not interested by other tags (especially small words)
-
-	#the .01 here refers is a lexical id, used by wordnet to make 
-	#a difference between different senses of the same word
-	#n for nou, v for verb, a for adjective, r for adverb
-	
-	#correspondance={wnc.NOUN : ".n.01", wnc.ADJ : ".a.01", wnc.ADV : ".r.01", wnc.VERB : ".v.01"}
-	for (v,tag) in wordnet_tagged_list:
-		vmorphed=wnc.morphy(v,tag)
-		if vmorphed and [vmorphed,tag] not in final_list:
-			final_list.append([vmorphed,tag])
-		elif [v,tag] not in final_list:
-			final_list.append([v,tag])
-	final_list.sort()
-	return final_list
-	
-
-def remove_co_occurrences(wordnet_tagged_list):
-	"""
-	could have been useful, but already done in the method
-	tag_words_for_wordnet
-	"""
-	pass
-
-
-def create_network_from_words(wordnet_tagged_list):
-	"""
-	Create network (small one)
-	We use wordnet data to approach ic, by using polysemy
-	Idea : the more a word is an abstract concept, the more 
-	it has different meanings
-	First, we create all concepts with this approach
-	If it's a proper noun, it has no wordnet tag, thus we only create
-	a corresponding concept with high ic
-
-
-	Then, we create edges.
-	We create a dictionary of synsets for each concept.
-	We keep only one sens possible, the first, which is not good
-	(we could capture the real sense in the text)
-
-	We use a similarity measure in term of path between node, based
-	on the shortest path connecting the node in the is-a relationship
-	(from 0 to 1, with 1 they are synonyms)
-
-
-	"""
-	concepts=Network()
-	for v,tag in wordnet_tagged_list:
-		if tag:
-			polysemy=len(wnc.synsets(v,pos=tag))
-			concepts.add_node(id=v,ic=polysemy)
-		else:#no tag, such as a proper noun
-			concepts.add_node(id=v,ic=5)
-	#at this point, all nodes have been created
-	#then, we study edges
-	#following code to build edges from wordnet, using isa relations
-	wnsynsets={}
-	for v,tag in wordnet_tagged_list:
-		if tag and wnc.synsets(v,pos=tag):#if it s not empty
-			wnsynsets[v]=wnc.synset(wnc.synsets(v,pos=tag)[0].name())
-	#not beautiful : only keeping the first sense possible of the word
-	for v,tag in wordnet_tagged_list:
-		for v2,tag2 in wordnet_tagged_list:
-			if v in wnsynsets and v2 in wnsynsets:
-				if (not v==v2) and wnsynsets[v] and wnsynsets[v2]:
-					tmp=wnsynsets[v].path_similarity(wnsynsets[v2])
-					if tmp >0.1:
-						concepts.add_edge(fromId=v,toId=v2,w=tmp)
-	return concepts
-
-
-####################################################################
 
 def polysemy(word):
 	return len(wnc.synsets(word,pos=None)) 
 
 
-
-
-
-def expand_concept(concept,network):
-	"""
-	network : Network object
-	"""
-	edges=cn5.search_edges_from(concept)
-	for e in edges:
-		network.add_edge(fromId=e.start,toId=e.end,w=e.weight,r=e.rel)
-	return
-
-
-
-def expand_network_from_seed(words,max_nodes=10,network=Network(),max=2):
-	"""
-	Given list of some relevant concepts, we create a conceptnetwork using :
-	-conceptnet5 data
-	-wordnet polysemy
-	Notes :
-	- a node can't expand more than a fixed number of edges (see conceptnet5.py)
-	- there is a random component when we get the edges from conceptnet5
-	"""
-	nodenumber=0
-	k=0
-	list2=[]
-	while nodenumber<max_nodes and k<max:
-		k+=1
-		print(len(words))
-		for word in words:
-			#print(word)
-			conceptic=polysemy(word)
-			if conceptic==0:#TODO : check if it's a name
-					conceptic=7
-			#print(conceptic)
-			if not network.has_node(word):
-				network.add_node(id=word,ic=conceptic)
-				nodenumber+=1
-				expand_concept(word,network)
-				for word2 in network.successors(word):
-					list2.append(word2)
-		words=list2
 
 
 			
@@ -270,20 +85,10 @@ SMALL_SEED=["America","Arsenal","Brazil","Cup","England","wayne_rooney","appoint
 #"penalty","performance","play","player","positive","preparation","pressure","prove","public",
 # "team", "winner","worry","victory", "young"
 
-def test():
-	n=Network()
-	seed=SMALL_SEED
-	with open("data/sample_concepts.txt",'r') as file:
-		seed=json.load(file)
-	expand_network_from_seed(seed[1:5],max_nodes=10,network=n)
-	n.save_to_JSON_stream("network_example/network_example_5")
-	n.draw("network_example/network_example_5.png")
 
-#does not work
-def clean_cached_data():
-	for file in os.listdir("src/cached_data"):
-		os.remove(file)
-
+#####################################################################
+#DEPRECATED
+#####################################################################
 
 #read_concepts(filename="data/sample")
 
@@ -353,6 +158,32 @@ def expand_by_similarity_to(concept,network,filter):
 			network.add_edge(fromId=concept,toId=e.end,w=e.weight/5,r=e.rel)
 
 
+def remove_not_activated(network):
+	for n in network.network.node:
+		if n['a'] ==0:
+			network.remove_node(n)
+
+
+def expand_with_conceptnetwork(concept,network):
+	edges=cn5.search_edges(minWeight=2,start='/c/en/'+concept)
+	for e in edges:
+		if e.end != concept:
+			create_node(e.end,network)
+			network.add_edge(fromId=concept,toId=e.end,w=e.weight*20,r=e.rel)
+	concepts=cn5.get_similar_concepts(concept=concept,limit=4)
+	for c in concepts:
+		if not network.has_node(c[0]):
+			conceptic=polysemy(c[0])
+			if conceptic==0:#TODO : check if it's a name
+				conceptic=7
+			network.add_node(id=c[0],ic=conceptic)
+		edge=cn5.search_edge(start=concept,end=c[0])
+		if edge:
+			network.add_edge(fromId=concept,toId=edge.end,w=edge.weight/5,r=edge.rel)
+		else:
+			network.add_edge(fromId=concept,toId=c[0],w=c[1],r='SimilarTo')		
+
+
 def remove_leaves(network):
 	tosuppr=[]
 	for n in network.network.node:
@@ -388,5 +219,131 @@ def test4():
 	n.draw("network_example/network_example_6.png")
 
 #print(cn5.get_similar_concepts_by_term_list(term_list=["america"]))
-test4()
 
+
+def test5():
+	n=Network()
+	seed=SMALL_SEED	
+	with open("data/sample_concepts.txt",'r') as file:
+		seed=json.load(file)
+	print("etape 1...")
+	for word in seed:
+		create_node(word,n)
+		n[word]['a']=50
+		expand_with_conceptnet(word,n)
+	print("activating...")
+	activate_all_linked(n)
+	print("etape 2...")
+	temp=n.network.node.copy()
+	for word in temp:
+		if word not in seed and n[word]['a'] != 0:
+			expand_with_conceptnet(word,n)
+	print("activating...")
+	activate_all_linked(n)
+	print("saving...")
+	n.save_to_JSON_stream("network_example/network_example_6")
+	n.draw("network_example/network_example_6.png")
+
+
+def test6():
+	n=Network()
+	n.load_from_JSON_stream(nodes_files=["network_example/network_example_6_nodes.jsons"],
+		edges_files=["network_example/network_example_6_edges.jsons"])
+	activate_all_linked(n)
+	remove_not_activated(n)
+	n.save_to_JSON_stream("network_example/network_example")
+	n.draw("network_example/network_example.png")
+
+#####################################################################
+
+
+
+
+def create_node(concept,network):
+	if not network.has_node(concept):
+		conceptic=polysemy(concept)
+		if conceptic==0:#TODO : check if it's a name
+			conceptic=7
+		network.add_node(id=concept,ic=conceptic)	
+		return True
+	return False
+
+
+def remove_not_activated(network):
+	temp=network.network.node.copy()
+	for n in temp:
+		if network[n]['a'] ==0:
+			network.remove_node(n)
+
+
+def expand_with_conceptnet(concept,network):
+	#1 : expand with traditional links
+	edges=cn5.search_edges(minWeight=1.8,start='/c/en/'+concept)
+	for e in edges:
+		if e.end != concept:
+			create_node(e.end,network)
+			if not network.has_edge(concept,e.end):
+				network.add_edge(fromId=concept,toId=e.end,w=e.weight*20,r=e.rel)
+	#2 : expand by similarity
+	concepts=cn5.get_similar_concepts(concept=concept,limit=3)
+	for c in concepts:
+		if not network.has_node(c[0]):
+			create_node(c[0],network)
+		#edge=cn5.search_edge(start=concept,end=c[0])
+		#if edge:
+		#	network.add_edge(fromId=concept,toId=edge.end,w=edge.weight/5,r=edge.rel)
+		#else:
+			if not network.has_edge(concept,c[0]):
+				network.add_edge(fromId=concept,toId=c[0],w=c[1]*70,r='SimilarTo')		
+
+def activate_all_linked(network):
+	for n in network.network.node:
+		if network[n]['a']==0:
+			has_linked=False
+			for s in network.successors(n):
+				has_linked=True
+				pass
+			elts=0
+			for s in network.predecessors(n):
+				elts+=1
+				if elts>1:
+					has_linked=True
+					pass
+			if has_linked:
+				network[n]['a']=50
+
+
+
+
+def add_to_network(nextname=None,seedname="data/sample.txt",networkname="network_example/network_example"):
+	n=Network()
+	seed=[]	
+	with open(seedname,'r') as file:
+		seed=json.load(file)
+	n.load_from_JSON_stream(nodes_files=[networkname+"_nodes.jsons"],
+		edges_files=[networkname+"_edges.jsons"])		
+	previous=n.network.node.copy()
+	print("etape 1...")
+	for word in seed:
+		create_node(word,n)
+		n[word]['a']=50
+		expand_with_conceptnet(word,n)
+	print("activating...")
+	activate_all_linked(n)
+	print("etape 2...")
+	temp=n.network.node.copy()
+	for word in temp:
+		if word not in previous and word not in seed and n[word]['a'] != 0:
+			expand_with_conceptnet(word,n)
+	print("activating...")
+	activate_all_linked(n)
+	print("saving...")	
+	if not nextname:
+		nextname=networkname+"2"
+	n.save_to_JSON_stream(nextname)
+	n.draw(filename=nextname+".png")
+
+
+
+add_to_network(seedname="data/concepts.txt",networkname="network_example/network_example",
+	nextname="network_example/network_example_2")

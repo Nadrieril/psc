@@ -188,6 +188,8 @@ class Network:
 
     def draw(self,filename=None):
         nx.draw(self.network)
+        pos=nx.spring_layout(self.network)
+        nx.draw_networkx_labels(self.network,pos=pos,font_family='sans-serif')
         if filename:
             plt.savefig(filename)
         plt.show()

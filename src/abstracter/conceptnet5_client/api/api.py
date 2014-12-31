@@ -91,6 +91,9 @@ def get_similarity(concept1='dog',concept2='dog'):
 
 #http://conceptnet5.media.mit.edu/data/5.3/assoc/list/en/wayne_rooney,sport
 def get_similar_concepts_by_term_list(term_list,filter='/c/en/',limit=10,**kwargs):
+    """
+    Returns concepts similar to the list. 
+    """
     terms = ','.join(term_list)
     query_args={"filter" : filter, "limit" : limit}
     for key, value in kwargs.items():
@@ -109,11 +112,12 @@ def get_similar_concepts_by_term_list(term_list,filter='/c/en/',limit=10,**kwarg
 ############################################################################
 
 
-def search_edges(**kwargs):
+def search_edges(filter='/c/en/',limit=10,**kwargs):
     """
     :rtype: Edge list
     """
-    query_args = {}
+    query_args={"filter" : filter, "limit" : limit}
+    #query_args = {}
     for key, value in kwargs.items():
         if key in settings.SUPPORTED_SEARCH_ARGS:
             query_args[key] = value

@@ -36,7 +36,7 @@ def parse_relevant_edges(json_data,clean_self_ref=True):
         return edges
     for edge_str in json_data['edges']:
         e = Edge(edge_str)
-        if e.rel in USEFUL_CONCEPTNET_EDGES and e.weight*USEFUL_CONCEPTNET_EDGES[e.rel] > MINIMUM_WEIGHT_ALLOWED:
+        if e.rel in USEFUL_CONCEPTNET_EDGES:# and e.weight*USEFUL_CONCEPTNET_EDGES[e.rel] > MINIMUM_WEIGHT_ALLOWED: unuseful
             e.rel=rel_to_word(e.rel)
             e.start=concept_to_word(e.start)
             e.end=concept_to_word(e.end)

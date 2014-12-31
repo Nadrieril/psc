@@ -4,13 +4,12 @@ USEFUL_CONCEPTNET_EDGES = { '/r/IsA' : 1,
 '/r/CapableOf' : 0.3,
 '/r/AtLocation' : 0.7,
 '/r/Antonym' : 0.2,
-'/r/Desires' : 0.2,
 '/r/HasProperty' : 0.8,
 '/r/HasA' : 0.7,
 '/r/UsedFor' : 0.4
 }
 
-NOT_USEFUL_CONCEPTNET_EDGES = ['/r/NotCapableOf','/r/ReceivesAction','/r/RelatedTo']
+NOT_USEFUL_CONCEPTNET_EDGES = ['/r/NotCapableOf','/r/ReceivesAction','/r/RelatedTo','/r/Desires']
 
 MINIMUM_WEIGHT_ALLOWED = 0.5#which is weight of the edge in conceptnet5 * arbitrary 
 #weight to keep most important information

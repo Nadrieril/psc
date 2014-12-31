@@ -1,5 +1,9 @@
-from concepts_network import *
-from workers.activate_worker import *
+try:
+    from concepts_network import *
+    from workers.activate_worker import *
+except ImportError:
+    pass
+
 
 
 class Context:
