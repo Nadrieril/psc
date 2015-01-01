@@ -1,5 +1,5 @@
 ##############################################
-##CODE FROM CONCEPTNET5
+##CODE FROM CONCEPTNET5 slightly modified
 ################################################
 
 
@@ -15,11 +15,11 @@ modified version of Morphy, the stemmer (lemmatizer) used in WordNet.  The
 modifications mostly involve heuristics for when to apply noun or verb
 transformations to words whose part of speech is ambiguous.
 """
-import nltk
 from nltk.corpus import wordnet
-from .token_utils import untokenize, tokenize
 import re
+from abstracter.parsers.tokenizer import tokenize, normalizer_tokenize,get_named_entities,concepts_tokenize
 morphy = wordnet._morphy
+
 
 STOPWORDS = ['the', 'a', 'an']
 
@@ -92,6 +92,8 @@ AMBIGUOUS_EXCEPTIONS = {
     'won': 'win',
     'feed': 'feed',
 }
+
+
 
 
 def _word_badness(word):
@@ -169,7 +171,7 @@ def good_lemma(lemma):
     return lemma and lemma not in STOPWORDS and lemma[0].isalnum()
 
 
-def normalize_as_list(text):
+def normalize(text,named_entities):
     """
     Get a list of word stems that appear in the text. Stopwords and an initial
     'to' will be stripped, unless this leaves nothing in the stem.
@@ -181,8 +183,8 @@ def normalize_as_list(text):
     >>> normalize_as_list('the')
     ['the']
     """
-    pieces = [morphy_stem(word) for word in tokenize(text)]
-    pieces = [piece for piece in pieces if good_lemma(piece)]
+    pieces = [[morphy_stem(word,pos),pos] for word,pos in normalizer_tokenize(text,named_entities)]
+    pieces = [[piece,pos] for piece,pos in pieces if good_lemma(piece)]
     if not pieces:
         return [text]
     if pieces[0] == 'to':
@@ -190,27 +192,69 @@ def normalize_as_list(text):
     return pieces
 
 
-def normalize(text):
-    """
-    Get a string made from the non-stopword word stems in the text. See
-    normalize_as_list().
-    """
-    return untokenize(normalize_as_list(text))
+#def normalize(text):
+#    """
+#    Get a string made from the non-stopword word stems in the text. See
+#    normalize_as_list().
+#    """
+#    return untokenize(normalize_as_list(text))
 
 
-def normalize_topic(topic):
-    """
-    Get a canonical representation of a Wikipedia topic, which may include
-    a disambiguation string in parentheses.
+#def normalize_topic(topic):
+#    """
+#    Get a canonical representation of a Wikipedia topic, which may include
+#    a disambiguation string in parentheses.
+#    Returns (name, disambig), where "name" is the normalized topic name,
+#   and "disambig" is a string corresponding to the disambiguation text or
+#   None.
+#    """
+#    # find titles of the form Foo (bar)
+#    topic = topic.replace('_', ' ')
+#    match = re.match(r'([^(]+) \(([^)]+)\)', topic)
+#    if not match:
+#        return normalize(topic), None
+#    else:
+#        return normalize(match.group(1)), 'n/' + match.group(2).strip(' _')
 
-    Returns (name, disambig), where "name" is the normalized topic name,
-    and "disambig" is a string corresponding to the disambiguation text or
-    None.
+
+
+def _links_to(entity_list,name):
     """
-    # find titles of the form Foo (bar)
-    topic = topic.replace('_', ' ')
-    match = re.match(r'([^(]+) \(([^)]+)\)', topic)
-    if not match:
-        return normalize(topic), None
-    else:
-        return normalize(match.group(1)), 'n/' + match.group(2).strip(' _')
+    :param entity_list: List of entities (string)
+    :type name: str
+    :rtype: boolean
+    """
+    if entity_list:
+        for e in entity_list:
+            if name in e:
+                return True
+    return False
+
+
+def retrieve_concepts(text):
+    names=list(s.lower() for s in get_named_entities(text))
+    words=concepts_tokenize(text)#words with POS, without names
+    namescopy=names.copy()
+    concepts=[]
+    #suppress duplicated names and add names to concept
+    for name in namescopy:
+        names.remove(name)
+        if not _links_to(names,name):
+            concepts.append(name)
+            names.append(name)
+    #here : concepts contains all useful names
+    #morph other words
+    pieces = [morphy_stem(word,pos) for word,pos in words]
+    pieces = [piece for piece in pieces if good_lemma(piece)]
+    if not pieces:
+        return []
+    for word in pieces:
+        if word not in concepts:
+            concepts.append(word)
+    #sort the list
+    concepts.sort()
+    return concepts
+
+
+if __name__=="__main__":
+    pass

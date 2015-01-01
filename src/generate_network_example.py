@@ -343,7 +343,35 @@ def add_to_network(nextname=None,seedname="data/sample.txt",networkname="network
 	n.save_to_JSON_stream(nextname)
 	n.draw(filename=nextname+".png")
 
+import re
 
+def add_jsons_to_network(nextname=None,seedname="data/concepts1.jsons",networkname="network_example/network_example"):
+	n=Network()
+	#seed=[]	
+	n.load_from_JSON_stream(nodes_files=[networkname+"_nodes.jsons"],
+		edges_files=[networkname+"_edges.jsons"])		
+	previous=n.network.node.copy()
+	print("etape 1...")
+	for word in json_stream.read_json_stream(seedname):
+		mot=word[0]
+		if re.match('^[a-zA-Z\s-]*$',mot) and word[1]>0:
+			print(mot)
+			create_node(word[0],n)
+			n[word[0]]['a']=50
+			expand_with_conceptnet(word[0],n)
+	print("activating...")
+	activate_all_linked(n)
+	print("etape 2...")
+	#temp=n.network.node.copy()
+	#for word in temp:
+	#	if word not in previous and word not in seed and n[word]['a'] != 0:
+	#		expand_with_conceptnet(word,n)
+	#print("activating...")
+	#activate_all_linked(n)
+	#print("saving...")	
+	if not nextname:
+		nextname=networkname+"2"
+	n.save_to_JSON_stream(nextname)
+	n.draw(filename=nextname+".png")
 
-add_to_network(seedname="data/concepts.txt",networkname="network_example/network_example",
-	nextname="network_example/network_example_2")
+add_jsons_to_network(networkname="network_example/network_example",nextname="network_example/wayne")

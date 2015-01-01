@@ -1,3 +1,8 @@
+#####################################################################
+####DEPRECATED : USE CONCEPT_RETRIEVER IN NORMALIZE
+#####################################################################
+
+
 from nltk.corpus import wordnet as wn
 from nltk import word_tokenize, sent_tokenize, pos_tag
 try:
