@@ -1,0 +1,253 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[latin1]{inputenc}%%seul package à charger : pour éviter les problèmes sordides d'encodage
+\usepackage[fiche,psc]{andre}%%bon eh bien sûr...
+%%fiche, psc pour faire une fiche
+%%rapport, psc pour faire un rapport
+
+\title{Réseau de concepts et architecture}
+\author{\membres} %%\membres uniquement avec l'option psc
+\date{24 octobre 2014}
+
+\begin{document}
+
+%\titrelong%%une page complète
+\titrecourt %titre plus court, typiquement pour les fiches
+
+Document de travail constituant aussi un test du package \verb|andre| qui permettrait d'uniformiser nos documents. Vous remarquerez en particulier la simplification extrême du code de ce document.
+
+\section{Contenu de cette fiche}
+
+Une description à jour de l'architecture que nous envisageons pour la partie "intelligente" de notre programme, dont le réseau de concepts (RC), ainsi qu'une reprise de la fiche précédente.
+
+\section{Structure générale}
+
+
+\subsection{RC}
+
+\begin{definition}[Réseau de concepts]
+Le réseau de concepts est la "mémoire à long terme" de Copycat, et de notre programme.
+
+Ce réseau est au carrefour entre les réseaux sémantiques et les réseaux de neurones. Les n\oe uds du réseau ne représentent pas des concepts à proprement parler ; en revanche, les concepts sont vus comme regroupant des n\oe uds fortement interconnectés.
+\end{definition}
+
+Le RC est constitué de n\oe uds. Chaque n\oe ud comporte :
+\begin{itemize}
+  \item Une étiquette (mot) ;
+ \item Une importance conceptuelle (IC) ou profondeur conceptuelle ;
+ \item Une activation (A) initialement nulle ;
+ \item Un certain nombre de liens à d'autres n\oe uds.
+\end{itemize}
+
+Chaque lien comporte :
+\begin{itemize}
+ \item Une proximité conceptuelle (P) ;
+ \item Éventuellement, une étiquette qui est un des n\oe uds du RC.
+\end{itemize}
+
+
+\subsection{Workspace}
+
+
+\begin{definition}[Workspace]
+Le Workspace est l'espace de travail de Copycat, comme de notre programme.
+
+Il contient un certain nombre de structures. 
+
+Ces structures représentent l'état de la mémoire à court terme du programme ; à la fin de l'exécution, le résultat est l'état du Workspace.
+
+\end{definition}
+
+Les structures du Workspace sont des graphes de petite taille construits progressivement, n\oe ud après n\oe ud :
+\begin{itemize}
+ \item Ces n\oe uds représentent des \textbf{instances} des n\oe uds du RC ;
+ \item Ces n\oe uds contiennent éventuellement plus d'informations ;
+ \item Le Workspace comporte des distances entre les n\oe uds, qui sont différentes des proximités conceptuelles du RC.
+\end{itemize}
+
+\subsection{Tâches}
+
+\begin{definition}[Tâches]
+Les tâches sont un ensemble de travaux à effectuer par le programme. 
+
+Copycat et BAsCET considèrent ces tâches comme un ensemble de \textbf{codelets}.
+
+Les tâches à effectuer sont stockées dans un espace que nous n'avons pas encore défini.
+
+\end{definition}
+
+\begin{definition}[Codelet]
+Les codelets sont des agents indépendants créés au cours de l'exécution du programme, dans Copycat.
+
+Différentes situations, comme l'activation d'un n\oe ud, peuvent créer un codelet ; celui-ci est alors envoyé dans une "salle d'attente" ou Coderack, dans laquelle les codelets sont sélectionnés de manière aléatoire pour effectuer leurs actions.
+
+\end{definition}
+
+Nous estimons que la représentation des tâches sous forme de codelets est séduisante (Copycat est donc un système multi-agents, comme le souligne Parmentier), mais très complexe à mettre en \oe uvre et moins compréhensible qu'une banale "liste de tâches".\\
+
+Ces tâches peuvent comporter :
+\begin{itemize}
+ \item La propagation d'activations dans le RC ;
+ \item La lecture du texte ;
+ \item La création d'instances dans le Workspace, de liens entre ces instances, leur modification.
+\end{itemize}
+Toutefois, la liste ci-dessus n'est pas exhaustive.
+
+Lire le texte n'est pas le seul but du programme. Il faut aussi qu'il puisse travailler en interne une fois le texte lu en entier (afin d'examiner le texte dans son ensemble). Les actions seront certainement choisies de manière semi-aléatoire.
+
+\subsection{Terminaison du programme}
+
+Nous avons plusieurs possibilités et nous n'avons pas encore choisi laquelle utiliser :
+\begin{itemize}
+ \item Utiliser une \textbf{température} pour commander l'arrêt du programme ;
+ \item Arrêter à partir d'un certain degré de complexité ou de taille des structures du Workspace ;
+ \item Mesurer à chaque tâche effectuée si celle-ci a fait un \textbf{progrès}, et arrêter lorsqu'il n'y a plus de progrès.
+\end{itemize}
+
+
+\begin{definition}[Température]
+La température est utilisée dans Copycat pour influencer le degré de hasard lors de la prise de décisions.
+
+Elle mesure le degré d'organisation des structures construites ; en particulier, à partir d'une certaine valeur, le programme est arrêté.
+\begin{itemize}
+ \item De hautes températures : les structures sont peu fiables, donc on va prendre des décisions aléatoires avec équiprobabilité ;
+ \item De basses températures : on travaille sur des structures fiables ;
+ \item La température est aussi mesure de la qualité de la réponse.
+\end{itemize}
+
+\end{definition}
+
+
+
+
+\section{Construction et utilisation du RC}
+
+\subsection{Des détails sur l'implémentation possible}
+
+\paragraph{D'où viennent les noeuds du RC ?}
+\begin{itemize}
+ \item De FreeBase
+ \item De notre TF-IDF pour les concepts importants
+ \item Pour tous les mots d'usage courants sur lesquels on tombe, il faut créér des concepts correspondants. Cela peut se faire sur place. Ces mots sont reconnus et la synonymie est reconnue à l'aide de WordNet (utilisable directement avec nltk)
+\end{itemize}
+
+\paragraph{D'où viennent les informations de base sur les noeuds du RC ?}
+\begin{itemize}
+ \item A l'intérieur d'une même phrase, ou d'une même proposition, si deux concepts ont tendance à être tous les deux souvent présents, leur proximité augmente en conséquence. On peut le faire sur une étude statistique
+ \item On peut aussi ajouter des infos "à la main" si nécessaire
+ \item FreeBase pourvoit aussi en informations sur un certain nombre de nos concepts (comme il y aura beaucoup de noms...)
+\end{itemize}
+
+\paragraph{Utilisation}
+Nous envisageons un schéma général suivant :
+\begin{itemize}
+ \item Lecture de phrases, ou d'un paragraphe ;
+ \item Propagation des activations ;
+ \item Création d'instances des n\oe uds activés et de liens entre ces instances ;
+ \item Lecture de nouvelles phrases, etc ; éventuellement suppression des activations du RC à certains moments ;
+ \item Après lecture du texte, travail supplémentaire pour créer de nouveaux liens dans le Workspace ;
+ \item Elagage du Workspace (suppression des structures moins importantes) ;
+ \item Les instances des n\oe uds les plus activés représentent alors les concepts les plus importants. Dans la mesure du possible, des concepts devront diriger (sujet ou objet) les phrases traduites à la fin du programme.
+\end{itemize}
+
+L'ordre des phrases est un facteur de proximité supplémentaire qui doit intervenir dans le Workspace, mais pas dans le RC. Par exemple, deux objets auquels on fait appel dans deux phrases successives et qui sont instances d'un même n\oe ud du RC ont de fortes chances d'être identiques.
+
+Le Workspace est beaucoup plus souple que le RC et on peut imaginer des fusions entre certains n\oe uds, des suppressions de n\oe uds.
+
+
+\section{Exemple}
+
+
+\subsection{Du texte}
+
+From <http://www.bbc.com/sport/0/football/28947896>\\
+
+Wayne Rooney celebrated his appointment as England captain with the winner against Norway on a night when fans turned their back on the team following their dismal World Cup exit.\\
+
+
+\subsection{Réseau de concepts associé}
+
+Sur mon exemple je reprends :
+\begin{itemize}
+ \item La proximité conceptuelle (de 0 à 100, à 100 ce sont des synonymes)
+ \item Le fait que les noeuds du RC peuvent aussi être sur des liens du RC (l'activation de noeuds présents sur des liens augmente la proximité conceptuelle de ces liens)
+ \item Le taux d'activation (de 0 à 100)
+\end{itemize}
+
+
+\subsection{Exécution du programme}
+
+Par exemple, subdivisons la phrase en trois blocs :
+\begin{enumerate}
+  \item \verb|Wayne Rooney, celebrated, his appointement, as, England captain, |
+  \item \verb|with, the winner, against, Norway |
+  \item \verb|on, a night, when, fans, turned their back, on, the team|
+\end{enumerate}
+
+La lecture des mots génère :
+ \begin{itemize}
+  \item L'activation des n\oe uds correspondant dans le RC ;
+  \item La propagation de cette activation aux noeuds voisins. Ex. : à la lecture de \textit{Wayne Rooney}, le noeud \textit{football} est aussi activé ;
+  \item La création d'objets dans le workspace pour tous les noeuds d'activation suffisante. Cette étape est très simplifiée sur l'exemple ;
+  \item La modification des proximités entre noeuds du RC en fonction de l'activation des noeuds qui sont sur les liens (ambigu)
+ \end{itemize}
+ 
+ 
+ %grandefig{nomfichier}{Légende}{label}
+ \grandefig{RCetape0.eps}{Réseau de concepts initial}{RC0}
+
+ 
+ \subsection{Etape 1}
+ Les noeuds sont activés, je propage les activations aux noeuds voisins à la louche, il y a une très bonne formule pour faire tout intervenir en même temps. Pour que ce soit plus lisible je désactive plusieurs noeuds d'un coup.
+
+ À ce moment sont activés en priorité les noeuds : \verb|Wayne Rooney|, \verb|England|, \verb|Captain|, \verb|appointment| ; ainsi que \verb|celebrate| et \verb|football|.
+ 
+ \verb|Appointment| et \verb|celebrate| vont plus rapidement se désactiver, car leur importance (profondeur) est faible.
+
+ IMPORTANT : LE WORKSPACE NE DEVRAIT PAS CREER AUTANT DE NOEUDS TOUT DE SUITE IL FAUT CHANGER CET EXEMPLE !!!!!!
+ 
+ \grandefig{RCetape1.eps}{Réseau de concepts étape }{RC1}
+
+ \grandefig{workspace1.eps}{Workspace étape 1}{W1}
+
+
+ \subsection{Etape 2}
+
+ Je continue avec le deuxième morceau de phrase. Le principe est que les noeuds perdent de l'activation, mais restent au fur et à mesure en sommeil.
+ 
+ IMPORTANT : EST CE QU'ILS PERDENT TANT D'ACTIVATION QUE ÇA ??????
+ 
+  \grandefig{RCetape2.eps}{Réseau de concepts étape 2}{RC2}
+
+ \grandefig{workspace2.eps}{Workspace étape 2}{W2}
+
+
+
+ \subsection{Etape 3}
+
+ \grandefig{RCetape3.eps}{Réseau de concepts étape 3}{RC3}
+
+ \grandefig{workspace3.eps}{Workspace étape 3}{W3}
+
+ 
+ Comme ce n'est pas clair du tout, prenons des exemples de noeuds :
+ \begin{itemize}
+  \item Le noeud \texttt{captain} : activé une première fois, il s'est désactivé lentement car c'est un noeud d'assez grande importance. Il a été réactivé par propagation de l'activation du noeud team. A la fin de la lecture, c'est donc un noeud d'assez grande importance
+  \item Le noeud \texttt{Wayne Rooney} : forte importance conceptuelle et beaucoup de voisins (c'est un paramètre à prendre naturellement en compte, pas sur mon exemple qui est trop petit). Il se désactive peu vite et il est réactivé à chaque fois qu'on parle de WR ou de quelque chose de proche... c'est-à-dire dans tout l'article
+  \item Le noeud \texttt{England} : d'importance égale à \texttt{Norway}, il se désactivera moins vite car l'activation d'autres noeuds se propage vers lui (il est plus question de l'angleterre que de la norvège dans cet article)
+ \end{itemize}
+
+
+
+\subsection{Bilan}
+\begin{itemize}
+ \item Clairement, l'information la plus importante est que WR a été nommé capitaine. Mais rien n'empêche une réactivation des autres noeuds lors de la lecture de la suite de l'article ;
+ \item Le terme celebrated a été supprimé ;
+ \item De nombreux liens existent dans le RC (liens récupérés après une analyse type TF-IDF de proximité conceptuelle), donc avec tous ces liens et toutes ces activations, l'exécution est bien plus complexe que cet exemple et aussi bien plus fiable.
+\end{itemize}
+
+
+ 
+\end{document}
+
+
+

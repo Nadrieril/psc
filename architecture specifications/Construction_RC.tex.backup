@@ -1,0 +1,150 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[latin1]{inputenc}%%seul package à charger : pour éviter les problèmes sordides d'encodage
+\usepackage[fiche,psc]{andre}%%bon eh bien sûr...
+%%fiche, psc pour faire une fiche
+%%rapport, psc pour faire un rapport
+%%pour insérer du code : \langage{java} , puis \begin{lstlisting} \end{lstlisting}
+%%pour insérer des guillemets : \eg \og
+
+\title{La création d'un réseau de concepts}
+\author{\membres} %%\membres uniquement avec l'option psc
+\date{8 décembre 2014}
+
+\begin{document}
+
+%\titrelong%%une page complète
+\titrecourt %titre plus court, typiquement pour les fiches
+
+\section{Structure}
+
+
+\begin{definition}[Réseau de concepts]
+Le réseau de concepts est la "mémoire à long terme" de notre programme.
+
+Ce réseau est au carrefour entre les réseaux sémantiques et les réseaux de neurones. Les n\oe uds du réseau ne représentent pas des concepts à proprement parler ; en revanche, les concepts sont vus comme regroupant des n\oe uds fortement interconnectés.
+\end{definition}
+
+Le RC est constitué de n\oe uds. Chaque n\oe ud comporte :
+\begin{itemize}
+  \item Une étiquette (mot) ;
+ \item Une importance conceptuelle (IC) ou profondeur conceptuelle ;
+ \item Une activation (A) initialement nulle ;
+ \item Un certain nombre de liens à d'autres n\oe uds.
+\end{itemize}
+
+Chaque lien comporte :
+\begin{itemize}
+ \item Une proximité conceptuelle (P) ;
+ \item Une étiquette que nous reprenons sur le modèle de conceptnet
+\end{itemize}
+
+
+\section{Provenance des données ?}
+
+Le but est donc de créer un réseau de concepts de base, que nous puissions utiliser comme base de connaissances dans le domaine considéré (ici le sport, mais nous pourrions avoir sélectionné un autre domaine).
+
+Nous utilisons deux types de sources :
+\begin{itemize}
+ \item Des articles de sport (données brutes) qui contiennent entre autres "ce qu'il faut savoir" ;
+ \item Des données sémantiques libres.
+\end{itemize}
+
+\section{Construction du réseau, première étape}
+
+Après la lecture d'un grand nombre d'articles provenant de sources diverses (flux rss et sites d'information consacrés au sport), ceux-ci sont analysés pour en retirer un certain nombre de concepts sous forme normale. Cette opération se traduit dans la pratique en :
+\begin{itemize}
+ \item Découpage du texte en phrases et en mots (tokens) ;
+ \item Utilisation du part-of-speech tagger par défaut de nltk ;
+ \item Récupération des noms propres et mise à part de ceux-ci ;
+ \item Suppression des conjonctions de coordination, pronoms et autres mots qui ne sont pas de véritables concepts ;
+ \item Il reste alors des adjectifs, adverbes, noms et verbes. Nous utilisons morphy de wordnet, ainsi qu'un morceau de code déjà utilisé pour construire conceptnet5 à partir de wordnet (voir partie suivante), pour transformer chaque terme en sa forme normale. Les noms sont mis au singulier, les verbes à l'infinitif... ;
+ \item Les termes restants sont alors tous les concepts auxquels le texte fait appel. Nous savons désormais que ces concepts devront apparaître dans le réseau, sauf exception (erreur à l'une des étapes) ;
+ \item De manière générale, un concept qui apparaît au moins deux fois dans l'ensemble du corpus considéré peut être considéré comme valide (il y a toujours un risque d'erreur, mais il a été minimisé).
+\end{itemize}
+
+
+\section{Conceptnet5}
+
+ConceptNet est un projet libre de réseau sémantique représentant des connaissances usuelles, aussi bien de la vie de tous les jours, culturelles, scientifiques. Il fait partie du Commonsense Computing Initiative qui relie différents laboratoires, dont le MIT Media Lab, et entreprises.
+
+Il est important de noter que conceptnet5 est généré à partir de données brutes. Conceptnet5 est relié à DBPedia, une grande partie de ses connaissances provient de Wiktionary, une partie de WordNet.
+"The knowledge in ConceptNet is collected from a variety of resources, including crowd-sourced resources (such as Wiktionary and Open Mind Common Sense), games with a purpose (such as Verbosity and nadya.jp), and expert-created resources (such as WordNet and JMDict)."
+
+Page web du projet :
+http://conceptnet5.media.mit.edu/
+
+Le code python permettant de générer conceptnet5 à partir de données brutes est sur la page :
+https://github.com/commonsense/conceptnet5
+
+\subsection{Structure de conceptnet5}
+
+Conceptnet5 est un graphe sémantique de 
+les n\oe uds sont des mots et de courtes phrases, dans un certain nombre de langages possibles. Les arêtes qui relient ces n\oe uds expriment une connaissance, elles expriment chacune une relation particulière.
+
+Une arête possède aussi une source (d'où provient l'information) et un poids en fonction de cette source, selon l'importance de l'arête.
+
+Une relation concept-arête-concept exprime une assertion. Une même assertion peut être exprimée de différentes manières.
+
+Une assertion peut elle-même être utilisée comme un n\oe ud ou comme une arête (on peut avoir des assertions d'assertions).
+
+Les relations valables dans tout langage, pour ConceptNet5, sont par exemple : 
+\begin{itemize}
+ \item RelatedTo
+ \item IsA
+ \item PartOf
+ \item MemberOf
+ \item HasA
+ \item UsedFor
+ \item CapableOf
+ \item AtLocation
+ \item Causes
+ \item HasSubevent
+ \item HasFirstSubevent
+ \item HasLastSubevent
+ \item HasPrerequisite
+ \item HasProperty
+ \item MotivatedByGoal
+ \item ObstructedBy
+ \item Desires
+ \item CreatedBy
+ \item Synonym
+ \item Antonym
+ \item DerivedFrom
+ \item TranslationOf
+ \item DefinedAs
+\end{itemize}
+
+https://github.com/commonsense/conceptnet5/wiki/Relations
+
+La correspondance entre relations de WordNet et de Conceptnet est par exemple :
+\begin{itemize}
+ \item 'attribute': 'Attribute',
+ \item 'causes': 'Causes',
+ \item 'classifiedByRegion': 'HasContext',
+ \item 'classifiedByUsage': 'HasContext',
+ \item 'classifiedByTopic': 'HasContext',
+ \item 'entails': 'Entails',
+ \item 'hyponymOf': 'IsA',
+ \item 'instanceOf': 'InstanceOf',
+  \item  'memberMeronymOf': 'MemberOf',
+  \item  'partMeronymOf': 'PartOf',
+  \item  'sameVerbGroupAs': 'SimilarTo',
+  \item  'similarTo': 'SimilarTo',
+  \item  'substanceMeronymOf': '~MadeOf',
+  \item  'antonymOf': 'Antonym',
+  \item  'derivationallyRelated': '~DerivedFrom',
+  \item  'pertainsTo': 'PertainsTo',
+  \item  'seeAlso': 'RelatedTo',
+\end{itemize}
+
+    
+    
+    
+    
+    
+    
+    
+ 
+
+
+\end{document}
