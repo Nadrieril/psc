@@ -255,6 +255,38 @@ def retrieve_concepts(text):
     concepts.sort()
     return concepts
 
+def retrieve_words_only(text):
+    """
+    We retrieve words in their normal form
+    On the contrary to retrieve_concepts, if a concept is used n times,
+    it is counted n times.
+    """
+    words=concepts_tokenize(text)#words with POS, without names
+    #morph the words
+    concepts={}
+    pieces = [morphy_stem(word,pos) for word,pos in words]
+    pieces = [piece for piece in pieces if good_lemma(piece)]
+    if not pieces:
+        return []
+    for word in pieces:
+        if word in concepts:
+            concepts[word]+=1
+        else:
+            concepts[word]=1
+    #return the dictionary
+    return concepts
+
+def retrieve_names_only(text):
+    names=list(s.lower() for s in get_named_entities(text))
+    namescopy=names.copy()
+    res=[]
+    #suppress duplicated names and add names to res
+    for name in namescopy:
+        names.remove(name)
+        if not _links_to(names,name):
+            res.append(name)
+            names.append(name)  
+    return res  
 
 if __name__=="__main__":
     pass

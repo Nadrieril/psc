@@ -1,5 +1,5 @@
 *~
 *.pdf
-*.png
 *.pyc
+*__pycache__
 localConfig.py

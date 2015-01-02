@@ -1,34 +1,27 @@
-from abstracter.parsers.normalize import retrieve_concepts
+from abstracter.parsers.normalize import retrieve_words_only,retrieve_names_only
 from abstracter.parsers.tokenizer import get_named_entities
 from abstracter.util.json_stream import *
 import json
 import os
 
-text="""
 
-    
-Virgil van Dijk has already scored six times for Celtic this seasonThe defender says his attacking instincts were helped by Johan CruyffHe scored his first goal at Parkhead against Partick Thistle on Wednesday 
-Celtic defender Virgil van Dijk has revealed the attacking side of his game was indirectly influenced by the great Johan Cruyff.The Dutchman's talents as a centre-back have led to him being linked with a move to England in the January transfer window with Arsenal reportedly one of his suitors.However, he showed his prowess in the opposition penalty box against Partick Thistle on Wednesday night when he notched his sixth goal of the season - his first of his Hoops career at Parkhead - in the 1-0 home win to ease Celtic three points clear of Inverness at the top of the Scottish Premiership.      
-    Dutch defender Virgil van Dijk has scored six times already so far for Celtic  this season      
-    Van Dijk has revealed that his attacking flair is influenced by Holland legend Johan Cruyff (second left)The 23-year-old, who started his career as a youth at Willem II, claimed his sharpness in front of goal was honed as a kid playing on pitches named after Holland's most famous player -although he does not see his future as a striker.'I have never played as a striker regularly or anything but when I was younger I was always the winger or striker,' said the former Groningen player.'We have Johan Cruyff courts in Holland. They're small pitches where you play games of five-a-side.'The level is very high and a lot of professional footballers like to play there as well.'So that's what I did when I was younger and sometimes you can see it a little bit on the pitch.'But I love to defend as well, that's the main thing and the important thing for me.      
-    Van Dijk (second left) is mobbed by his team-mates after scoring against Partick Thistle on Wednesday      
-    Van Dijk's (centre) Celtic side are three points clear of Inverness at the top of the Scottish Premiership'I can't remember when I became a defender but when I was at Willem II I was a defender and I'm still a defender.'I want to be there for the rest of my career.'If I can score a goal and help the team and win games it's going to be fun as well.'Last year I think I had five in total and I always want to improve myself. I just want to win games and be a champion.'
-    
-    
-    
-    
-  
-"""
+#def parse_article_2(filename):
+#	with open(filename,'r') as file:
+#		return (retrieve_concepts(file.read())
+#	return []
+
 
 def parse_article(filename):
 	with open(filename,'r') as file:
-		return (retrieve_concepts(file.read()))
+		text=file.read() 
+		return [retrieve_words_only(text),retrieve_names_only(text)]
 	return []
 
 
 DEFAULT_DATA_DIRECTORY="crawlerpsc/2014_12_04/"
-DEFAULT_RESULTS_DIRECTORY="crawler_concepts/2014_12_04/"
-DEFAULT_CONCEPT_FILE="concepts.jsons"
+DEFAULT_RESULTS_DIRECTORY="concepts/2014_12_04/"
+DEFAULT_CONCEPTS_FILE="all_concepts.jsons"
+DEFAULT_NAMES_FILE="all_names.jsons"
 
 def parse_directory(max_subdirectories=10,max_files=100,data_directory=DEFAULT_DATA_DIRECTORY,
 	results_directory=DEFAULT_RESULTS_DIRECTORY):
@@ -40,8 +33,10 @@ def parse_directory(max_subdirectories=10,max_files=100,data_directory=DEFAULT_D
 		while(os.path.exists(data_directory+"%i/%i" % (i,j)) and j<max_files):
 			temp=parse_article(data_directory+"%i/%i" % (i,j))
 			if temp:
-				with open(results_directory+"%i_%i.json" % (i,j),'w') as file:
-					json.dump(temp,file)
+				with open(results_directory+"%i_%i_concepts.json" % (i,j),'w') as file:
+					json.dump(temp[0],file)
+				with open(results_directory+"%i_%i_names.json" % (i,j),'w') as file:
+					json.dump(temp[1],file)
 					print("successful with : "+data_directory+"%i/%i" % (i,j))
 			j+=1
 		j=0
@@ -49,36 +44,72 @@ def parse_directory(max_subdirectories=10,max_files=100,data_directory=DEFAULT_D
 
 
 
-def parse_files_and_retrieve_concepts(directory=DEFAULT_RESULTS_DIRECTORY,max_files=10,
-	concept_file=DEFAULT_CONCEPT_FILE):
+
+def unify_all_names(directory=DEFAULT_RESULTS_DIRECTORY,max_files=10,
+	names_file=DEFAULT_NAMES_FILE):
 	"""
-	Warning : concepts are put into a single list.
+	Retrieve all names and put them into a single dict.
+	The value associated to each name represents the number of articles in which it appears.
+	The result is put into a single jsonstream.
+	max_files : maximum number of files to analyze in the directory.
+	"""
+	i=0
+	j=0
+	all_names={}
+	k=0
+	while(os.path.exists(directory+"%i_%i_names.json" % (i,j)) and k<max_files):
+		while(os.path.exists(directory+"%i_%i_names.json" % (i,j)) and k<max_files):
+			k+=1
+			temp=[]
+			with open(directory+"%i_%i_names.json" % (i,j),'r') as file:
+				temp=json.load(file)
+				print("successful loading of "+directory+"%i/%i" % (i,j))
+			if temp:
+				for c in temp:
+					if c in all_names:
+						all_names[c]+=1
+					else:
+						all_names[c]=1
+			j+=1
+		j=0
+		i+=1	
+	writer=JSONStreamWriter(names_file)
+	for d in all_names.items():
+		writer.write(d)
+	writer.close()
+
+
+def unify_all_concepts(directory=DEFAULT_RESULTS_DIRECTORY,max_files=10,
+	concepts_file=DEFAULT_CONCEPTS_FILE):
+	"""
+	Retrieve all concepts and put them into a single dict.
+	The result is put into a single jsonstream.
+	max_files : maximum number of files to analyze in the directory.
 	"""
 	i=0
 	j=0
 	all_concepts={}
 	k=0
-	while(os.path.exists(directory+"%i_%i.json" % (i,j)) and k<max_files):
-		while(os.path.exists(directory+"%i_%i.json" % (i,j)) and k<max_files):
+	while(os.path.exists(directory+"%i_%i_concepts.json" % (i,j)) and k<max_files):
+		while(os.path.exists(directory+"%i_%i_concepts.json" % (i,j)) and k<max_files):
 			k+=1
 			temp=[]
-			with open(directory+"%i_%i.json" % (i,j),'r') as file:
+			with open(directory+"%i_%i_concepts.json" % (i,j),'r') as file:
 				temp=json.load(file)
 				print("successful loading of "+directory+"%i/%i" % (i,j))
 			if temp:
 				for c in temp:
 					if c in all_concepts:
-						all_concepts[c]+=1
+						all_concepts[c]+=temp[c]
 					else:
-						all_concepts[c]=0
+						all_concepts[c]=temp[c]
 			j+=1
 		j=0
 		i+=1	
-	writer=JSONStreamWriter(concept_file)
+	writer=JSONStreamWriter(concepts_file)
 	for d in all_concepts.items():
 		writer.write(d)
 	writer.close()
-
 
 def fusion(max_files=1000):
 	directory="crawler_concepts/2014_12_04/"
@@ -111,10 +142,13 @@ def fusion(max_files=1000):
 		writer.write(d)
 	writer.close()
 
-#fusion()
+###################################################
+####EXAMPLE
+###################################################
 
-#parse_directory(max_subdirectories=10,max_files=100,data_directory="crawlerpsc/2014_12_05/",results_directory="crawler_concepts/2014_12_04/")
-#parse_files_and_retrieve_concepts(max_files=1000)
+#parse_directory(max_subdirectories=10,max_files=100,data_directory="crawlerpsc/2014_12_05/",results_directory="concepts/2014_12_05/")
+#unify_all_names(directory="concepts/2014_12_05/",max_files=1000,names_file="all_names_2014_12_05.jsons")
+#unify_all_concepts(directory="concepts/2014_12_05/",max_files=1000,concepts_file="all_concepts_2014_12_05.jsons")
 
 
 
