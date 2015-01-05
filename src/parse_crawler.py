@@ -38,7 +38,7 @@ def parse_directory(max_subdirectories=10,max_files=100,data_directory=DEFAULT_D
 					json.dump(temp[0],file)
 				with open(results_directory+"%s/%i_%i_names.json" % (subdirectory,i,j),'w') as file:
 					json.dump(temp[1],file)
-					print("successful with : "+data_directory+"%i/%i" % (i,j))
+					print("successful with : "+data_directory+"%s/%i/%i" % (subdirectory,i,j))
 			j+=1
 		j=0
 		i+=1
@@ -207,8 +207,8 @@ def unify(directory=CONCEPTS_NAMES_DATA_DIRECTORY,max_files=10,names_file="names
 #parse_directory(max_subdirectories=10,max_files=100,data_directory="crawlerpsc/",
 #	results_directory="concepts/",subdirectory="2015_01_02")
 
-#parse_directory(max_subdirectories=10,max_files=100,subdirectory="2015_01_02")
-#unify_all_names(subdirectory="2015_01_02",max_files=1000)
-#unify_all_concepts(subdirectory="2015_01_02",max_files=1000)
+#parse_directory(max_subdirectories=10,max_files=100,subdirectory="2015_01_03")
+unify_all_names(subdirectory="2015_01_03",max_files=1000)
+unify_all_concepts(subdirectory="2015_01_03",max_files=1000)
 
 #unify()

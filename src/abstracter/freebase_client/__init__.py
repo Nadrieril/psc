@@ -1,21 +1,16 @@
-import json
-import codecs
 import urllib.request
 import urllib.parse
-try:
-	from abstracter.freebase_client.settings import *
-except ImportError:
-	from settings import *
+from abstracter.util.http import make_simple_request,make_http_request
+from abstracter.freebase_client.settings import *
 
-reader = codecs.getreader("utf-8")
 
-#TODO : PARSE QUERY RESULTS
 def keep_relevant(query_response):
 	for result in response['result']:
 		if result['score']>MINIMUM_RESULT_SCORE:
 			yield result
 
-def search(lang='en',limit=10,**kwargs):
+
+def search(cache=False,lang='en',limit=10,**kwargs):
 	data={'key' : USER_KEY, 'lang' : lang, 'limit' : limit}
 	for key,val in kwargs.items():
 		if key in SEARCH_PARAMETERS:
@@ -23,10 +18,13 @@ def search(lang='en',limit=10,**kwargs):
 		else:
 			pass
 	url_values = urllib.parse.urlencode(data)
-	#print("searching freebase : "+url_values)
 	full_url = URL + '?' + url_values
-	resp = urllib.request.urlopen(full_url)
-	return json.load(reader(resp))['result']
+	if(cache):
+		resp=make_http_request(full_url)
+	else:
+		resp = make_simple_request(full_url)
+	return resp['result']
+
 
 def search_name(name):
 	data=search(query=name,lang='en',limit=2)

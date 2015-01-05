@@ -1,10 +1,6 @@
 import hashlib
 import os
-
-try: 
-    import simplejson as json
-except ImportError: 
-    import json
+import json
 
 
 CACHE_DIR = 'cached_data/'
@@ -24,7 +20,7 @@ def cache(func):
         if not os.path.exists(CACHE_DIR):
             os.makedirs(CACHE_DIR)
 
-        #print('Looking for cache: %s' % args[0])
+        print('Looking for cache: %s' % args[0])
 
         # Check the value is cached, if cached return cached content
         for path, dirs, files in os.walk(CACHE_DIR):
@@ -35,7 +31,7 @@ def cache(func):
                     data = open(fullpath, 'r').read()
                     return json.loads(data)
         
-        #print('Cache not found, making request: %s' % args[0])
+        print('Cache not found, making request: %s' % args[0])
 
         # Cache returned data of the caller function and finally return the data
         json_data = func(*args, **kwargs) 

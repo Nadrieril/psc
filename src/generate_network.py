@@ -82,10 +82,24 @@ def generate(names_file="data/names.jsons",concepts_file="data/concepts.jsons",m
 	network.save_to_JSON_stream("wayne")
 
 
-generate(max1=4000,max2=1000)
+#generate(max1=4000,max2=1000)
+
+for e in cn5.search_edges_from("dog"):
+	print(e)
+
+def add_names_to_network(network):
+	"""
+	Select a file "all_names"
+	"""
+	pass
+
+def add_concepts_to_network(network):
+
+	pass
 
 
-
-
-
-
+def add_to_network(network_files,names_files,concepts_files):
+	"""
+	Load network, add information, save network in the same file.
+	"""
+	pass

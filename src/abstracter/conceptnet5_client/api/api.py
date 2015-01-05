@@ -1,7 +1,7 @@
 import urllib.parse
 
 from abstracter.conceptnet5_client.api.result import parse_relevant_edges,parse_similar_concepts
-from abstracter.conceptnet5_client.utils.http import make_http_request
+from abstracter.util.http import make_simple_request,make_http_request
 import abstracter.conceptnet5_client.api.settings as settings
 
 
@@ -112,7 +112,7 @@ def get_similar_concepts_by_term_list(term_list,filter='/c/en/',limit=10,**kwarg
 ############################################################################
 
 
-def search_edges(filter='/c/en/',limit=10,**kwargs):
+def search_edges(no_cache=True,filter='/c/en/',limit=10,**kwargs):
     """
     :rtype: Edge list
     """
@@ -126,6 +126,7 @@ def search_edges(filter='/c/en/',limit=10,**kwargs):
     enc_query_args = urllib.parse.urlencode(query_args)   
     url = ''.join(['%s%s' % (settings.BASE_SEARCH_URL, '?')]) + enc_query_args
     json_data = make_http_request(url)
+    #json_data = make_simple_request(url)
     return parse_relevant_edges(json_data)
 
 
