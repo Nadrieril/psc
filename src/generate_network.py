@@ -131,7 +131,7 @@ def expand_by_conceptnet(network,concept,importance):
 			if not network.has_edge(concept,c[0]):
 				network.add_edge(fromId=concept,toId=c[0],w=int(min(c[1]*70,100)),r='SimilarTo')	
 
-def add_concepts_to_network(file,network):
+def add_concepts_to_network(file,network,max=1000):
 	"""
 	Select a file "all_concepts" and add them to the network.
 	The file contains a json stream of ['word',importance] where importance is an int (number of occurrences)
@@ -139,14 +139,16 @@ def add_concepts_to_network(file,network):
 	print("adding words...")
 	k=0
 	for w in js.read_json_stream(file):
+		k+=1
 		#some verifications to do first
 		if re.match('^[a-zA-Z\s-]*$',w[0]) and len(w[0])<20 and w[1]>0 and not network.has_node(w[0]):
-			k+=1
 			expand_by_conceptnet(network=network,concept=w[0],importance=w[1])
 		if k%10 ==0:
 			print(k.__str__()+" queries done !")
+		if k>max:
+			break
 
-def add_names_to_network(file,network):
+def add_names_to_network(file,network,max=1000):
 	"""
 	Select a file "all_names" and add them to the network.
 	The file contains a json stream of ['word',importance] where importance is an int (number of occurrences)
@@ -154,14 +156,16 @@ def add_names_to_network(file,network):
 	print("adding names...")
 	k=0
 	for w in js.read_json_stream(file):
+		k+=1
 		if re.match('^[a-zA-Z\s-]*$',w[0]) and len(w[0])<20 and w[1]>0 and not network.has_node(w[0]):
-			k+=1
 			expand_by_freebase(network,name=w[0],importance=w[1])
 		if k%10==0:
 			print(k.__str__()+"queries done !")
+		if k>max:
+			break
 
 
-def add_to_network(nodes_file,edges_file,names_files,concepts_files,result):
+def add_to_network(nodes_file,edges_file,names_files,concepts_files,result,max=1000):
 	"""
 	Load network, add information, save network in the same file.
 	"""
@@ -170,9 +174,9 @@ def add_to_network(nodes_file,edges_file,names_files,concepts_files,result):
 	n=Network()
 	n.load_from_JSON_stream(nodes_files=[nodes_file],edges_files=[edges_file])
 	for f in names_files:
-		add_names_to_network(f,network=n)
+		add_names_to_network(f,network=n,max=max)
 	for f in concepts_files:
-		add_concepts_to_network(f,network=n)
+		add_concepts_to_network(f,network=n,max=max)
 	print("saving...")
 	n.save_to_JSON_stream(result)
 
@@ -180,20 +184,5 @@ DATA_DIR="concepts_names_data/"
 
 #add_to_network("wayne_nodes.jsons","wayne_edges.jsons",	names_files=[DATA_DIR+"2014_12_04_names.jsons"],
 #	concepts_files=[DATA_DIR+"2014_12_04_concepts.jsons"],result="wayne")
-#add_to_network("wayne_nodes.jsons","wayne_edges.jsons",	names_files=[DATA_DIR+"2014_12_04_all_names.jsons"],
-#	concepts_files=[],result="wayne")
-import tarfile
-import os
-import datetime
-import shutil
-import requests
-
-#url='http://nadrieril.fr/dropbox/crawlerpsc/' + datetime.date.today().strftime("%Y_%m_%d")+".tar.gz"
-url='http://nadrieril.fr/dropbox/crawlerpsc/' + "2015_01_06.tar.gz"
-
-print(url)
-
-r = requests.get(url,proxies={'http' : 'http://kuzh.polytechnique.fr:8080'})
-print(len(r.content))
-
-#print(fb.search_name("basle"))
+add_to_network("wayne_nodes.jsons","wayne_edges.jsons",	names_files=[],
+	concepts_files=[DATA_DIR+"2015_01_06_all_concepts.jsons"],result="wayne",max=100)

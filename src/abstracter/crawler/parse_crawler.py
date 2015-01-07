@@ -2,23 +2,65 @@ from abstracter.parsers.retriever import retrieve_words_names
 from abstracter.util.json_stream import *
 import json
 import os
+import tarfile,sys
+import requests
+import shutil
+
+DEFAULT_DATA_DIRECTORY="crawlerpsc/"
+DEFAULT_RESULTS_DIRECTORY="concepts/"
+CONCEPTS_NAMES_DATA_DIRECTORY="concepts_names_data/"
+CRAWLER_URL='http://nadrieril.fr/dropbox/crawlerpsc/'
+PROXY={'http' : 'http://kuzh.polytechnique.fr:8080'}
+#or None
+#default location of the data directory when it is downloaded and uncompressed
+DEFAULT_LOCATION="srv/ftp/crawlerpsc/"
+
+
+def download_crawler_data(date):
+	"""
+	Download raw data for a day.
+	Date : AAAA_MM_JJ, such as 2015_01_03
+	"""
+	full_url=CRAWLER_URL+date+".tar.gz"
+	print("downloading : "+full_url)
+	r = requests.get(full_url,proxies=PROXY)
+	#print(len(r.content))
+	with open(DEFAULT_DATA_DIRECTORY+date+".tar.gz",'wb') as f:
+		#f.write(r.content)
+		f.write(r.content)
+	#untar and extract in the same directory
+	tar=tarfile.open(DEFAULT_DATA_DIRECTORY+date+".tar.gz","r:gz")
+	tar.extractall(DEFAULT_DATA_DIRECTORY)
+	tar.close()
+	#move the directory
+	try:
+		shutil.move(os.path.join(DEFAULT_DATA_DIRECTORY,DEFAULT_LOCATION+date),DEFAULT_DATA_DIRECTORY)
+	except shutil.Error:
+		print("Error, maybe the directory "+date+" already exists")
+	os.remove(DEFAULT_DATA_DIRECTORY+date+".tar.gz")
+	#works but not useful
+	#shutil.rmtree(os.path.join(DEFAULT_DATA_DIRECTORY,"srv"))
+	print("Success with : "+date)
+
+
+
 
 
 def parse_article(filename):
+	"""
+	Parse an article from the crawler, retrieve words and names and write them.
+	"""
 	with open(filename,'r') as file:
 		text=file.read() 
 		return retrieve_words_names(text)
 	return []
 
 
-DEFAULT_DATA_DIRECTORY="crawlerpsc/"
-DEFAULT_RESULTS_DIRECTORY="concepts/"
-CONCEPTS_NAMES_DATA_DIRECTORY="concepts_names_data/"
-#DEFAULT_CONCEPTS_FILE="all_concepts.jsons"
-#DEFAULT_NAMES_FILE="all_names.jsons"
-
 def parse_directory(max_subdirectories=10,max_files=100,data_directory=DEFAULT_DATA_DIRECTORY,
 	results_directory=DEFAULT_RESULTS_DIRECTORY,subdirectory="2014_12_04"):
+	"""
+	Parse a directory from the crawler.
+	"""
 	if not os.path.isdir(results_directory+subdirectory+"/"):
 		os.makedirs(results_directory+subdirectory+"/")
 	i=0
@@ -57,7 +99,7 @@ def unify_all_names(directory=DEFAULT_RESULTS_DIRECTORY,max_files=10,subdirector
 			temp=[]
 			with open(directory+"%s/%i_%i_names.json" % (subdirectory,i,j),'r') as file:
 				temp=json.load(file)
-				print("successful loading of "+directory+"%i/%i" % (i,j))
+				#print("successful loading of "+directory+"%i/%i" % (i,j))
 			if temp:
 				for c in temp:
 					if c in all_names:
@@ -94,7 +136,7 @@ def unify_all_concepts(directory=DEFAULT_RESULTS_DIRECTORY,max_files=10,subdirec
 			temp=[]
 			with open(directory+"%s/%i_%i_concepts.json" % (subdirectory,i,j),'r') as file:
 				temp=json.load(file)
-				print("successful loading of "+directory+"%i/%i" % (i,j))
+				#print("successful loading of "+directory+"%i/%i" % (i,j))
 			if temp:
 				for c in temp:
 					if c in all_concepts:
@@ -113,36 +155,7 @@ def unify_all_concepts(directory=DEFAULT_RESULTS_DIRECTORY,max_files=10,subdirec
 		writer.write(d)
 	writer.close()
 
-def fusion(max_files=1000):
-	directory="crawler_concepts/2014_12_04/"
-	concept_file="concepts2.jsons"
-	i=0
-	j=0
-	all_concepts={}
-#	with open("concepts.jsons") as file:
-	for c in read_json_stream("concepts.jsons"):
-		all_concepts[c[0]]=c[1]
-	k=0
-	while(os.path.exists(directory+"%i_%i.json" % (i,j)) and k<max_files):
-		while(os.path.exists(directory+"%i_%i.json" % (i,j)) and k<max_files):
-			k+=1
-			temp=[]
-			with open(directory+"%i_%i.json" % (i,j),'r') as file:
-				temp=json.load(file)
-				print("successful loading of "+directory+"%i/%i" % (i,j))
-			if temp:
-				for c in temp:
-					if c in all_concepts:
-						all_concepts[c]+=1
-					else:
-						all_concepts[c]=0
-			j+=1
-		j=0
-		i+=1	
-	writer=JSONStreamWriter(concept_file)
-	for d in all_concepts.items():
-		writer.write(d)
-	writer.close()
+
 
 from re import match
 from glob import glob
@@ -187,6 +200,16 @@ def unify(directory=CONCEPTS_NAMES_DATA_DIRECTORY,max_files=10,names_file="names
 
 
 
+def download_and_parse_data(date="2015_01_05"):
+	"""
+	Download data for a day, parse it, unify the dicts of names and concepts and
+	write them in the default directory.
+	"""
+	download_crawler_data(date)
+	parse_directory(max_subdirectories=10,max_files=100,subdirectory=date)
+	unify_all_names(subdirectory=date,max_files=1000)
+	unify_all_concepts(subdirectory=date,max_files=1000)
+
 
 
 ###################################################
@@ -203,5 +226,3 @@ def unify(directory=CONCEPTS_NAMES_DATA_DIRECTORY,max_files=10,names_file="names
 #parse_directory(max_subdirectories=1,max_files=10,subdirectory="2015_01_03")
 #unify_all_names(subdirectory="2015_01_03",max_files=1000)
 #unify_all_concepts(subdirectory="2015_01_03",max_files=1000)
-
-#unify()
