@@ -1,9 +1,3 @@
-package abstracter contains most of our code (conceptnetwork and so on)
-package conceptnet5_client contains an old client, which works only with python2
-comes from : https://github.com/israkir/conceptnet5-client
-demo.py is a demo of the client.
-it has been configured with a proxy
-network_example contains network data
-data contains network data
-cached_data has been generated with concetpnet5_client
-generate_network_example is the python script for generating a concept network of any use (still not finished yet, first results available in the network_example directory)
+
+
+needs package requests

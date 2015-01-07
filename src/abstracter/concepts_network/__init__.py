@@ -88,10 +88,7 @@ class Network:
                 akey='r'
             elif akey=="weight":
                 akey="w"
-            if isinstance(avalue,float):
-                self.network[fromId][toId][key][akey]=int(100*avalue)/100
-            else:
-                self.network[fromId][toId][key][akey]=avalue
+            self.network[fromId][toId][key][akey]=avalue
   
     def remove_node(self,id):
         self.network.remove_node(id)

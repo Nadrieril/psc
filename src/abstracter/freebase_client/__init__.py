@@ -1,7 +1,11 @@
 import urllib.request
 import urllib.parse
-from abstracter.util.http import make_simple_request,make_http_request
+from abstracter.util.http import *
 from abstracter.freebase_client.settings import *
+#import abstracter.requests as requests
+import requests
+
+###WARNING : CURRENTLY USING REQUESTS BECAUSE HTTPS REQUESTS WITH URLLIB DON'T WORK THROUGH A PROXY
 
 
 def keep_relevant(query_response):
@@ -10,7 +14,7 @@ def keep_relevant(query_response):
 			yield result
 
 
-def search(cache=False,lang='en',limit=10,**kwargs):
+def search(lang='en',limit=10,**kwargs):
 	data={'key' : USER_KEY, 'lang' : lang, 'limit' : limit}
 	for key,val in kwargs.items():
 		if key in SEARCH_PARAMETERS:
@@ -19,10 +23,8 @@ def search(cache=False,lang='en',limit=10,**kwargs):
 			pass
 	url_values = urllib.parse.urlencode(data)
 	full_url = URL + '?' + url_values
-	if(cache):
-		resp=make_http_request(full_url)
-	else:
-		resp = make_simple_request(full_url)
+	#resp=make_http_request(full_url)
+	resp=requests.get(full_url,proxies={'https' : 'http://kuzh.polytechnique.fr:8080'}).json()
 	return resp['result']
 
 

@@ -59,10 +59,3 @@ SUPPORTED_ASSOCIATION_ARGS = ['limit', 'filter']
 SUPPORTED_SEARCH_ARGS = ['id', 'uri', 'rel', 'start', 'end', 'context', 'dataset', 
     'license', 'nodes', 'startLemmas', 'endLemmas', 'relLemmas', 'text',
     'surfaceText', 'minWeight', 'limit', 'offset', 'features', 'filter']
-
-#proxy server if you're on the campus
-#urllib2.install_opener(
-#    urllib2.build_opener(
-#        urllib2.ProxyHandler({'http': 'http://kuzh.polytechnique.fr:8080'})
-#    )
-#)

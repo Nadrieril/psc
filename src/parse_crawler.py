@@ -1,20 +1,13 @@
-from abstracter.parsers.normalize import retrieve_words_only,retrieve_names_only
-from abstracter.parsers.tokenizer import get_named_entities
+from abstracter.parsers.retriever import retrieve_words_names
 from abstracter.util.json_stream import *
 import json
 import os
 
 
-#def parse_article_2(filename):
-#	with open(filename,'r') as file:
-#		return (retrieve_concepts(file.read())
-#	return []
-
-
 def parse_article(filename):
 	with open(filename,'r') as file:
 		text=file.read() 
-		return [retrieve_words_only(text),retrieve_names_only(text)]
+		return retrieve_words_names(text)
 	return []
 
 
@@ -207,8 +200,8 @@ def unify(directory=CONCEPTS_NAMES_DATA_DIRECTORY,max_files=10,names_file="names
 #parse_directory(max_subdirectories=10,max_files=100,data_directory="crawlerpsc/",
 #	results_directory="concepts/",subdirectory="2015_01_02")
 
-#parse_directory(max_subdirectories=10,max_files=100,subdirectory="2015_01_03")
-unify_all_names(subdirectory="2015_01_03",max_files=1000)
-unify_all_concepts(subdirectory="2015_01_03",max_files=1000)
+#parse_directory(max_subdirectories=1,max_files=10,subdirectory="2015_01_03")
+#unify_all_names(subdirectory="2015_01_03",max_files=1000)
+#unify_all_concepts(subdirectory="2015_01_03",max_files=1000)
 
 #unify()

@@ -6,8 +6,7 @@
 
 #personal key used for retrieving freebase information
 #google knows who we are...
-USER_KEY="AIzaSyBPhRSY6Q1iPx82tnkoWAzbAc4JqhNjiJs"
-
+USER_KEY="AIzaSyDT_kRl5YXKUlha-RkH71-ojQRWLK69Xf4"
 #minimum score
 MINIMUM_RESULT_SCORE=100
 
