@@ -1,0 +1,321 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{andre}[2014/10/24 Package pour moi et mon groupe de psc]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%Packages requis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\RequirePackage{ifthen}%Pour la structure conditionnelle
+\RequirePackage{fancyhdr}%Pour les en-tetes - pieds de page
+\RequirePackage{titling}%Pour la redefinition de \maketitle
+\RequirePackage{graphicx}%Pour les logos inseres
+\RequirePackage[T1]{fontenc}
+
+\RequirePackage[french]{babel}
+\RequirePackage{amsmath}
+\RequirePackage{amsfonts}
+\RequirePackage{amssymb}
+\RequirePackage{fancyhdr}
+\RequirePackage{xcolor}
+\RequirePackage{pstricks,pst-plot,pst-math,pst-xkey}
+\RequirePackage{textcomp}
+\RequirePackage{xparse}
+\RequirePackage{listings}%%pour les insertions de code
+\RequirePackage[top=3cm, bottom=4cm, left=2cm, right=2cm,headsep = 0.5cm,headheight = 1cm, footskip = 1cm,marginparsep = 0cm,marginparwidth=0cm]{geometry} %%pour aller vite
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%quelques commandes et styles de pages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\grandefig}[3]{
+\begin{figure}[htp]
+ \centering
+  \includegraphics[width=\textwidth]{#1}
+ \caption{#2}
+ \label{fig:#3}
+\end{figure}
+}
+
+\newcommand{\tracefonc}[2]{
+\begin{figure}
+\begin{center}
+    \begin{pspicture}(0,0)(10,10)%%dimensions du dessin
+
+    \psaxes[ticks=none,labels=none]{->}(0,0)(10,10)
+    
+    %%sans algebraic c'est la notation polonaise inversée
+    \psplot[algebraic=true]{0}{9}{#1}
+    
+    \end{pspicture}
+\caption{#2}
+\end{center}
+\end{figure}
+}
+
+
+
+\newcommand{\tracefonction}[2]
+  {
+  \begin{figure}
+    \begin{center}
+    \begin{pspicture}(0,0)(10,10)%%dimensions du dessin
+
+    \psaxes[Dx=1,Dy=1,ticks=none,labels=none]{->}(-5,-5)(10,10)
+    
+  \plotmaxfonctions{#1}
+        \end{pspicture}
+  \caption{#2}
+  \end{center}
+  \end{figure}
+  }
+
+  
+  
+\NewDocumentCommand{\plotmaxfonctions}{>{\SplitList{;}}m}
+{
+      \ProcessList{#1}{\plotfonction}
+}
+ 
+\newcommand{\plotfonction}[1]{\psplot[algebraic=true]{0}{9}{#1}}
+
+
+
+\newcommand{\langage}[1]{
+
+\lstset{
+language=#1,
+basicstyle=\normalsize, % ou ça==> basicstyle=\scriptsize,
+upquote=true,
+aboveskip={1.5\baselineskip},
+columns=fullflexible,
+showstringspaces=false,
+extendedchars=true,
+breaklines=true,
+showtabs=false,
+showspaces=false,
+showstringspaces=false,
+identifierstyle=\ttfamily,
+keywordstyle=\color[rgb]{0,0,1},
+commentstyle=\color[rgb]{0.133,0.545,0.133},
+stringstyle=\color[rgb]{0.627,0.126,0.941},
+}
+
+}
+
+
+\newcommand{\titrecourt}{\maketitle}
+
+\newcommand{\titrelong}{
+\begin{titlepage}
+\maketitle
+\end{titlepage}
+}
+
+%%style pour les corps de documents divers
+%%la tête contient par défaut partie et sous-partie en cours
+\fancypagestyle{corps}{
+
+\renewcommand{\headrulewidth}{1pt}
+\ifthenelse{\lengthtest{\footskip<1.3cm}}{\setlength{\footskip}{1.3cm}}{}%Augmente la taille de la separation entre le texte et le pied si celle-ci est trop petite
+
+\fancyfoot[R]{\raisebox{0.3cm}\thetitle}
+\IfFileExists{logohori.eps}
+{\fancyfoot[L]{\includegraphics[height=1cm]{logohori}}}
+{\IfFileExists{logohori.jpg}
+{\fancyfoot[L]{\includegraphics[height=1cm]{logohori}}}
+{\fancyfoot[L]{}}}
+
+\fancyfoot[C]{\raisebox{0.3cm}\thepage}%Le raisebox est là pour mettre le numero de page au niveau du milieu vertical du logo
+\fancyhead[C]{}
+}
+
+%ce même style, adapté pour les documents du psc
+\fancypagestyle{psc}{
+
+  \fancyhead[L]{Projet Scientifique Collectif INF02}
+  \fancyhead[R]{Synth\'etiseur automatique de documents}
+  \renewcommand{\headrulewidth}{1pt}
+  \ifthenelse{\lengthtest{\footskip<1.3cm}}{\setlength{\footskip}{1.3cm}}{}%Augmente la taille de la separation entre le texte et le pied si celle-ci est trop petite
+
+\fancyfoot[R]{\raisebox{0.3cm}\thetitle}
+\IfFileExists{logohori.eps}
+{\fancyfoot[L]{\includegraphics[height=1cm]{logohori}}}
+{\IfFileExists{logohori.jpg}
+{\fancyfoot[L]{\includegraphics[height=1cm]{logohori}}}
+{\fancyfoot[L]{}}}
+
+\fancyfoot[C]{\raisebox{0.3cm}\thepage}%Le raisebox est là pour mettre le numero de page au niveau du milieu vertical du logo
+\fancyhead[C]{}
+
+
+}
+
+%commandes de base de mes documents
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{1pt}
+\author{Andr\'e Schrottenloher}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%options
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%l'option colle : tout ce dont j'ai besoin pour mes colles
+%%c'est-à-dire pas grand-chose !
+\DeclareOption{colle}{
+
+\AtBeginDocument{
+  %\pagestyle{fancy}
+  %\renewcommand{\headrulewidth}{1pt}
+  \fancyhead[L]{Informatique}
+  \fancyhead[R]{ENC}
+  \fancyfoot[L]{\thedate}
+  \fancyfoot[R]{\thepage}
+  \fancyfoot[C]{}
+  
+  \author{}
+}
+
+
+\pretitle{%Commandes qui s'appliqueront avant le titre
+	\begin{center}
+	\vspace{-2.5cm}
+	\rule{\textwidth}{2pt}%Le premier filet horizontal
+	\\\vspace{0.3cm}\LARGE%met le titre en grands
+}
+\posttitle{%Commandes qui s'appliqueront après le titre mais avant l'auteur
+	\\[-0.1cm]
+	\rule{\textwidth}{2pt}
+	\end{center}}
+
+  \predate{\vspace{-1cm}
+  \noindent
+  }
+  \postdate{}
+  
+}
+
+
+
+%%l'option psc : tout ce dont on peut avoir besoin pour le psc
+\DeclareOption{psc}{
+
+\newcommand{\auteurs}{
+\begin{itemize}
+ \item Fernandes-Pinto-Fachada Sarah, \textbf{$8^e$} compagnie, section \textbf{\'equitation};
+ \item Schrottenloher Andr\'e, \textbf{$8^e$} compagnie, section \textbf{escrime};
+ \item Angibault Antonin, \textbf{$8^e$} compagnie, section \textbf{escrime};
+ \item Hufschmitt Th\'eophane, \textbf{$8^e$} compagnie, section \textbf{escrime};
+ \item Cao Zhixing, \textbf{$9^e$} compagnie, section \textbf{escalade};
+ \item Boisseau Guillaume, \textbf{$6^e$} compagnie, section \textbf{natation};
+\end{itemize}
+}
+
+\newcommand{\membres}{Fernandes-Pinto-Fachada Sarah,\\
+Schrottenloher Andr\'e,\\
+Angibault Antonin,\\
+Hufschmitt Th\'eophane,\\
+Cao Zhixing,\\
+Boisseau Guillaume
+}
+
+\AtBeginDocument{
+
+  \pagestyle{psc}
+  
+}
+}
+
+%%option fiche : pour faire des fiches
+\DeclareOption{fiche}{
+
+\addto\captionsfrench{  \renewcommand{\contentsname}    {Sommaire}}
+
+\pretitle{%Commandes qui s'appliqueront avant le titre
+	\begin{center}
+	\vspace{0cm}
+	\rule{\textwidth}{2pt}%Le premier filet horizontal
+	\\\vspace{0.3cm}\Huge%met le titre en grands
+}
+\posttitle{%Commandes qui s'appliqueront après le titre mais avant l'auteur
+	\\[-0.1cm]
+	\rule{\textwidth}{2pt}
+	\end{center}}
+
+  \preauthor{\noindent}%Supprime l'indentation par défaut pour que le nom d'auteur soit colle a gauche
+  \postauthor{}
+
+  \predate{\hspace*{\fill}}
+  \postdate{}
+  
+  \AtBeginDocument{\pagestyle{corps}}
+  
+}
+
+
+%%l'option rapport : pour faire des rapports
+\DeclareOption{rapport}{
+
+\addto\captionsfrench{  \renewcommand{\contentsname}    {Sommaire}}
+
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\droptitle}{-1in}%Supprime la marge supplementaire que met LaTeX entre le haut de la page et le debut du titre
+
+\pretitle{%Commandes qui s'appliqueront avant le titre
+	\begin{center}
+	\vspace{3cm}
+	\IfFileExists{logovert.eps}{
+	\includegraphics[height=4cm]{logovert}\\\vspace{0.5cm}
+	}
+	{
+	\IfFileExists{logovert.jpg}{
+	\includegraphics[height=4cm]{logovert}\\\vspace{0.5cm}
+	}
+	{
+	}
+	}
+	
+	\rule{\textwidth}{2pt}%Le premier filet horizontal
+	%\end{center}
+	\\\vspace{0.3cm}\Huge%\sffamily%Met le titre en grand et en sans-serif
+}
+\posttitle{%Commandes qui s'appliqueront après le titre mais avant l'auteur
+	\\[-0.1cm]
+	\rule{\textwidth}{2pt}
+	\end{center}}
+
+\preauthor{\noindent}%Supprime l'indentation par défaut pour que le nom d'auteur soit colle a gauche
+\postauthor{}
+
+\predate{\hspace*{\fill}}
+\postdate{}
+
+\AtBeginDocument{\pagestyle{corps}}
+}
+
+
+
+
+%%code utilisé si on passe une autre option
+\DeclareOption*{
+
+}
+
+\ProcessOptions\relax
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%commandes mathématiques pratiques, et environnements
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\vecteur}[1]{\mathbf{#1}}
+\newcommand{\field}[1]{\mathbb{#1}}
+\newcommand{\C}{\field{C}}
+\newcommand{\R}{\field{R}}
+\renewcommand{\P}{\field{P}}
+
+\newtheorem{thm}{Th\'eor`eme}
+\newtheorem{lemme}{Lemme}
+\newtheorem{definition}{D\'efinition}
+\newtheorem{proposition}{Proposition}
