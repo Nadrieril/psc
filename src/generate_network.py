@@ -199,6 +199,6 @@ DATA_DIR="concepts_names_data/"
 #add_to_network("wayne_nodes.jsons","wayne_edges.jsons",	names_files=[DATA_DIR+"2015_01_04_all_names.jsons"],
 #	concepts_files=[DATA_DIR+"2015_01_04_all_concepts.jsons"],result="wayne",max=300)
 
-#if you are motivated (maybe 1 hour) :
-add_to_network("wayne_nodes.jsons","wayne_edges.jsons",	names_files=["names.jsons"],
-	concepts_files=["concepts.jsons"],result="wayne",max=2000)
+#if you are motivated :
+add_to_network("wayne_nodes.jsons","wayne_edges.jsons",	names_files=[],
+	concepts_files=["concepts.jsons"],result="wayne",max=10000)

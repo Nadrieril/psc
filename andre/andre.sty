@@ -9,13 +9,18 @@
 \RequirePackage{titling}%Pour la redefinition de \maketitle
 \RequirePackage{graphicx}%Pour les logos inseres
 \RequirePackage[T1]{fontenc}
+
+\RequirePackage{enumerate}
 \RequirePackage[french]{babel}
 \RequirePackage{amsmath}
 \RequirePackage{amsfonts}
 \RequirePackage{amssymb}
 \RequirePackage{fancyhdr}
 \RequirePackage{xcolor}
-\RequirePackage{pstricks,pst-plot,pst-math}
+\RequirePackage{pstricks,pst-plot,pst-math,pst-xkey}
+\RequirePackage{textcomp}
+\RequirePackage{xparse}
+\RequirePackage{listings}%%pour les insertions de code
 \RequirePackage[top=3cm, bottom=4cm, left=2cm, right=2cm,headsep = 0.5cm,headheight = 1cm, footskip = 1cm,marginparsep = 0cm,marginparwidth=0cm]{geometry} %%pour aller vite
 
 
@@ -32,8 +37,77 @@
 \end{figure}
 }
 
+\newcommand{\tracefonc}[2]{
+\begin{figure}
+\begin{center}
+    \begin{pspicture}(0,0)(10,10)%%dimensions du dessin
+
+    \psaxes[ticks=none,labels=none]{->}(0,0)(10,10)
+    
+    %%sans algebraic c'est la notation polonaise inversée
+    \psplot[algebraic=true]{0}{9}{#1}
+    
+    \end{pspicture}
+\caption{#2}
+\end{center}
+\end{figure}
+}
+
+
+
+\newcommand{\tracefonction}[2]
+  {
+  \begin{figure}
+    \begin{center}
+    \begin{pspicture}(0,0)(10,10)%%dimensions du dessin
+
+    \psaxes[Dx=1,Dy=1,ticks=none,labels=none]{->}(-5,-5)(10,10)
+    
+  \plotmaxfonctions{#1}
+        \end{pspicture}
+  \caption{#2}
+  \end{center}
+  \end{figure}
+  }
+
+  
+  
+\NewDocumentCommand{\plotmaxfonctions}{>{\SplitList{;}}m}
+{
+      \ProcessList{#1}{\plotfonction}
+}
+ 
+\newcommand{\plotfonction}[1]{\psplot[algebraic=true]{0}{9}{#1}}
+
+
+
+\newcommand{\langage}[1]{
+
+\lstset{
+language=#1,
+basicstyle=\normalsize, % ou ça==> basicstyle=\scriptsize,
+upquote=true,
+aboveskip={1.5\baselineskip},
+columns=fullflexible,
+showstringspaces=false,
+extendedchars=true,
+breaklines=true,
+showtabs=false,
+showspaces=false,
+showstringspaces=false,
+identifierstyle=\ttfamily,
+keywordstyle=\color[rgb]{0,0,1},
+commentstyle=\color[rgb]{0.133,0.545,0.133},
+stringstyle=\color[rgb]{0.627,0.126,0.941},
+}
+
+}
+
 
 \newcommand{\titrecourt}{\maketitle}
+
+\newcommand{\grandtitre}{\thetitle}
+\newcommand{\petittitre}{\thetitle}
 
 \newcommand{\titrelong}{
 \begin{titlepage}
@@ -48,7 +122,7 @@
 \renewcommand{\headrulewidth}{1pt}
 \ifthenelse{\lengthtest{\footskip<1.3cm}}{\setlength{\footskip}{1.3cm}}{}%Augmente la taille de la separation entre le texte et le pied si celle-ci est trop petite
 
-\fancyfoot[R]{\raisebox{0.3cm}\thetitle}
+\fancyfoot[R]{\raisebox{0.3cm}\petittitre}
 \IfFileExists{logohori.eps}
 {\fancyfoot[L]{\includegraphics[height=1cm]{logohori}}}
 {\IfFileExists{logohori.jpg}
@@ -63,11 +137,11 @@
 \fancypagestyle{psc}{
 
   \fancyhead[L]{Projet Scientifique Collectif INF02}
-  \fancyhead[R]{Synthétiseur automatique de documents}
+  \fancyhead[R]{Synth\'etiseur automatique de documents}
   \renewcommand{\headrulewidth}{1pt}
   \ifthenelse{\lengthtest{\footskip<1.3cm}}{\setlength{\footskip}{1.3cm}}{}%Augmente la taille de la separation entre le texte et le pied si celle-ci est trop petite
 
-\fancyfoot[R]{\raisebox{0.3cm}\thetitle}
+\fancyfoot[R]{\raisebox{0.3cm}\petittitre}
 \IfFileExists{logohori.eps}
 {\fancyfoot[L]{\includegraphics[height=1cm]{logohori}}}
 {\IfFileExists{logohori.jpg}
@@ -84,6 +158,7 @@
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{1pt}
 \author{Andr\'e Schrottenloher}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -103,9 +178,29 @@
   \fancyfoot[L]{\thedate}
   \fancyfoot[R]{\thepage}
   \fancyfoot[C]{}
+  
+  \author{}
 }
 
+
+\pretitle{%Commandes qui s'appliqueront avant le titre
+	\begin{center}
+	\vspace{-2.5cm}
+	\rule{\textwidth}{2pt}%Le premier filet horizontal
+	\\\vspace{0.3cm}\LARGE%met le titre en grands
 }
+\posttitle{%Commandes qui s'appliqueront après le titre mais avant l'auteur
+	\\[-0.1cm]
+	\rule{\textwidth}{2pt}
+	\end{center}}
+
+  \predate{\vspace{-1cm}
+  \noindent
+  }
+  \postdate{}
+  
+}
+
 
 
 %%l'option psc : tout ce dont on peut avoir besoin pour le psc
@@ -223,6 +318,7 @@ Boisseau Guillaume
 \newcommand{\C}{\field{C}}
 \newcommand{\R}{\field{R}}
 \renewcommand{\P}{\field{P}}
+\newcommand{\diff}[3][ ]{\frac{\partial^{#1} #2}{\partial #3^{#1}}}
 
 \newtheorem{thm}{Th\'eor`eme}
 \newtheorem{lemme}{Lemme}
