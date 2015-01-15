@@ -3,10 +3,6 @@ from networkx.readwrite import json_graph
 from math import log
 import matplotlib.pyplot as plt
 import json
-try:
-    from abstracter.util.json_stream import *
-except ImportError:
-    pass
 
 
 
@@ -84,7 +80,8 @@ class Network:
     def inArcs(self,id):
         return self.network.in_edges_iter(id, data=True, keys=True)
 
-
+    def nodes(self,data=True):
+        return self.network.nodes(data)
 
     ###########################################################
     ###JSON generating and decoding

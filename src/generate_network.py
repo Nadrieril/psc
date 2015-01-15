@@ -80,6 +80,69 @@ def expand_by_conceptnet(network,concept,importance):
 			if not network.has_edge(concept,c[0]):
 				network.add_edge(fromId=concept,toId=c[0],w=int(min(c[1]*70,100)),r='SimilarTo')	
 
+
+def expand_node(network,concept):
+	"""
+	Expands a node, but add edges only if they link to an already existing node.
+	If such an edge is created, node's activation becomes 100, for us to "tag" it as relevant.
+	If not, the node keeps its activation of 0, and it will be destroyed.
+	The function uses conceptnet5.
+	"""
+	#1 : expand with traditional links
+	try:
+		edges=cn5.search_edges(minWeight=1.5,start='/c/en/'+concept)
+	except Exception as e:
+		print("Warning, exception : ")
+		print(e)
+		edges=[]
+	for e in edges:
+		if e.end != concept and len(e.end)<30 and network.has_node(e.end):
+			network[concept]['a']=100
+			if not network.has_edge(concept,e.end):
+				network.add_edge(fromId=concept,toId=e.end,w=int(min(e.weight*30,100)),r=e.rel)
+	#2 : expand by similarity
+	try:
+		concepts=cn5.get_similar_concepts(concept=concept,limit=3)
+	except Exception as e:
+		concepts=[]
+		print("Warning, exception :")
+		print(e)
+	for c in concepts:
+		if c[0] !=concept and len(c[0])<30 and network.has_node(c[0]):
+			network[c[0]]['a']=100
+			if not network.has_edge(concept,c[0]):
+				network.add_edge(fromId=concept,toId=c[0],w=int(min(c[1]*70,100)),r='SimilarTo')		
+
+
+def expand_nodes(network,limit=1000):
+	k=0
+	for n,d in network.nodes():
+		k+=1
+		if d['a']==0:
+			expand_node(network,n)
+		if k%10==0:
+			print(k.__str__()+" nodes looked !")
+
+		if k>limit:
+			break
+
+def clear_nodes(network,limit=1000):
+	k=0
+	q=0
+
+	for n in network.nodes().copy():
+		k+=1
+		if network[n[0]]['a']==0:
+			network.remove_node(n[0])
+			q+=1
+		if q%100==0:
+			print(q.__str__()+" nodes removed !")
+		if k%100==0:
+			print(k.__str__()+" nodes looked !")
+
+		if k>limit:
+			break	
+
 def add_concepts_to_network(file,network,max=1000):
 	"""
 	Select a file "all_concepts" and add them to the network.
@@ -98,6 +161,7 @@ def add_concepts_to_network(file,network,max=1000):
 			print(q.__str__()+" queries done !")
 		if k>max:
 			break
+
 
 def add_names_to_network(file,network,max=1000):
 	"""
@@ -135,6 +199,31 @@ def add_to_network(nodes_file,edges_file,names_files,concepts_files,result,max=1
 	n.save_to_JSON_stream(result)
 	print("done !")
 
+def expand_network(nodes_file,edges_file,result,limit=1000):
+	print("loading...")
+	n=ConceptNetwork()
+	n.load_from_JSON_stream(nodes_files=[nodes_file],edges_files=[edges_file])
+	print("searching...")
+	expand_nodes(n,limit)
+	print("saving...")
+	n.save_to_JSON_stream(result)
+	print("done !")	
+
+def clear_network(nodes_file,edges_file,result,limit=1000):
+	"""
+	Suppress unactivated nodes, then desactivates the rest.
+	It it the last ation to perform, to make the network operational
+	"""
+	print("loading...")
+	n=ConceptNetwork()
+	n.load_from_JSON_stream(nodes_files=[nodes_file],edges_files=[edges_file])
+	print("searching...")
+	clear_nodes(n,limit)
+	print("saving...")
+	n.save_to_JSON_stream(result)
+	print("done !")	
+
+
 DATA_DIR="concepts_names_data/"
 
 #add_to_network("wayne_nodes.jsons","wayne_edges.jsons",	names_files=[DATA_DIR+"2014_12_04_names.jsons"],
@@ -143,5 +232,8 @@ DATA_DIR="concepts_names_data/"
 #	concepts_files=[DATA_DIR+"2015_01_04_all_concepts.jsons"],result="wayne",max=300)
 
 #if you are motivated :
-add_to_network("wayne_nodes.jsons","wayne_edges.jsons",	names_files=[],
-	concepts_files=["concepts.jsons"],result="wayne",max=100)
+add_to_network("wayne_nodes.jsons","wayne_edges.jsons",	names_files=["names.jsons"],
+	concepts_files=[],result="wayne",max=10000)
+
+#expand_network("wayne_nodes.jsons","wayne_edges.jsons",result="wayne",limit=10)
+#clear_network("wayne_nodes.jsons","wayne_edges.jsons",result="wayne2",limit=30000)
