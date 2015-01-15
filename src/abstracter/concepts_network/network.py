@@ -38,12 +38,6 @@ class Network:
         Of course, it's supposed to contain a weight and a relation,
         but we can deal without (no weight is treated like a weight 0)
         """
-        if not self.network.has_node(fromId):
-            self.add_node(id=fromId)
-        if not self.network.has_node(toId):
-            self.add_node(id=toId)
-        if self.network.has_edge(fromId,toId,key):
-            key=key+1
         self.network.add_edge(fromId,toId,key)
         for akey,avalue in kwargs.items():
             self.network[fromId][toId][key][akey]=avalue

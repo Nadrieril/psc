@@ -32,6 +32,12 @@ class ConceptNetwork(Network):
         w : weight
         r : relation
         """
+        if not self.network.has_node(fromId):
+            self.add_node(id=fromId,a=0,ic=0)
+        if not self.network.has_node(toId):
+            self.add_node(id=toId,a=0,ic=0)
+        if self.network.has_edge(fromId,toId,key):
+            key=key+1
         super(ConceptNetwork,self).add_edge(fromId=fromId,toId=toId,key=key,w=w,r=r)
 
     def compute_activation(self,id):
