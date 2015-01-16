@@ -1,0 +1,250 @@
+c.activate("manchester",60)
+c.run(10)
+
+##################################""
+
+WorkersManager : 
+Time = 0
+1 workers :
+Activation of concept manchester by 60
+WorkersManager : 
+Time = 1
+2 workers :
+Calculating act of concept location
+Calculating act of concept city/town/village
+WorkersManager : 
+Time = 2
+6 workers :
+Calculating act of concept place
+Calculating act of concept object
+Calculating act of concept studio
+Calculating act of concept workplace
+Calculating act of concept ocean
+Calculating act of concept city/town/village
+WorkersManager : 
+Time = 3
+5 workers :
+Calculating act of concept object
+Calculating act of concept studio
+Calculating act of concept workplace
+Calculating act of concept ocean
+Calculating act of concept city/town/village
+WorkersManager : 
+Time = 4
+10 workers :
+Calculating act of concept thing
+Calculating act of concept desk
+Calculating act of concept kitchen
+Calculating act of concept volume
+Calculating act of concept trash
+Calculating act of concept cabinet
+Calculating act of concept studio
+Calculating act of concept workplace
+Calculating act of concept ocean
+Calculating act of concept city/town/village
+WorkersManager : 
+Time = 5
+10 workers :
+Calculating act of concept comic_book_character
+Calculating act of concept desk
+Calculating act of concept kitchen
+Calculating act of concept volume
+Calculating act of concept trash
+Calculating act of concept cabinet
+Calculating act of concept studio
+Calculating act of concept workplace
+Calculating act of concept ocean
+Calculating act of concept city/town/village
+WorkersManager : 
+Time = 6
+9 workers :
+Calculating act of concept desk
+Calculating act of concept kitchen
+Calculating act of concept volume
+Calculating act of concept trash
+Calculating act of concept cabinet
+Calculating act of concept studio
+Calculating act of concept workplace
+Calculating act of concept ocean
+Calculating act of concept city/town/village
+WorkersManager : 
+Time = 7
+14 workers :
+Calculating act of concept furniture
+Calculating act of concept blotter
+Calculating act of concept work
+Calculating act of concept table
+Calculating act of concept drawer
+Calculating act of concept office_build
+Calculating act of concept kitchen
+Calculating act of concept volume
+Calculating act of concept trash
+Calculating act of concept cabinet
+Calculating act of concept studio
+Calculating act of concept workplace
+Calculating act of concept ocean
+Calculating act of concept city/town/village
+WorkersManager : 
+Time = 8
+23 workers :
+Calculating act of concept loft
+Calculating act of concept house
+Calculating act of concept room
+Calculating act of concept dinette
+Calculating act of concept at_home
+Calculating act of concept build
+Calculating act of concept rug
+Calculating act of concept bedroom
+Calculating act of concept friend_house
+Calculating act of concept your_house
+Calculating act of concept blotter
+Calculating act of concept work
+Calculating act of concept table
+Calculating act of concept drawer
+Calculating act of concept office_build
+Calculating act of concept kitchen
+Calculating act of concept volume
+Calculating act of concept trash
+Calculating act of concept cabinet
+Calculating act of concept studio
+Calculating act of concept workplace
+Calculating act of concept ocean
+Calculating act of concept city/town/village
+WorkersManager : 
+Time = 9
+30 workers :
+Calculating act of concept house
+Calculating act of concept apartment
+Calculating act of concept soho
+Calculating act of concept lodge
+Calculating act of concept home
+Calculating act of concept sleep_in
+Calculating act of concept sleep
+Calculating act of concept barn
+Calculating act of concept house
+Calculating act of concept room
+Calculating act of concept dinette
+Calculating act of concept at_home
+Calculating act of concept build
+Calculating act of concept rug
+Calculating act of concept bedroom
+Calculating act of concept friend_house
+Calculating act of concept your_house
+Calculating act of concept blotter
+Calculating act of concept work
+Calculating act of concept table
+Calculating act of concept drawer
+Calculating act of concept office_build
+Calculating act of concept kitchen
+Calculating act of concept volume
+Calculating act of concept trash
+Calculating act of concept cabinet
+Calculating act of concept studio
+Calculating act of concept workplace
+Calculating act of concept ocean
+Calculating act of concept city/town/village
+WorkersManager : 
+Time = 10
+29 workers :
+Calculating act of concept apartment
+Calculating act of concept soho
+Calculating act of concept lodge
+Calculating act of concept home
+Calculating act of concept sleep_in
+Calculating act of concept sleep
+Calculating act of concept barn
+Calculating act of concept house
+Calculating act of concept room
+Calculating act of concept dinette
+Calculating act of concept at_home
+Calculating act of concept build
+Calculating act of concept rug
+Calculating act of concept bedroom
+Calculating act of concept friend_house
+Calculating act of concept your_house
+Calculating act of concept blotter
+Calculating act of concept work
+Calculating act of concept table
+Calculating act of concept drawer
+Calculating act of concept office_build
+Calculating act of concept kitchen
+Calculating act of concept volume
+Calculating act of concept trash
+Calculating act of concept cabinet
+Calculating act of concept studio
+Calculating act of concept workplace
+Calculating act of concept ocean
+Calculating act of concept city/town/village
+comic_book_character : 1
+furniture : 4
+house : 5
+manchester : 60
+object : 9
+place : 11
+thing : 6
+desk : 4
+location : 21
+loft : 3
+[Finished in 2.2s]
+
+#####################################
+
+c.activate("francis_lastic",60)
+c.run(5)
+
+######################################
+WorkersManager : 
+Time = 0
+1 workers :
+Activation of concept francis_lastic by 60
+WorkersManager : 
+Time = 1
+1 workers :
+Calculating act of concept coach
+WorkersManager : 
+Time = 2
+0 workers :
+coach : 23
+francis_lastic : 60
+
+#######################################"
+
+c.activate("ball_sport",60)
+c.run(5)
+
+#####################################
+
+WorkersManager : 
+Time = 0
+1 workers :
+Activation of concept ball_sport by 60
+WorkersManager : 
+Time = 1
+3 workers :
+Calculating act of concept team_sport
+Calculating act of concept basketball
+Calculating act of concept football
+WorkersManager : 
+Time = 2
+2 workers :
+Calculating act of concept basketball
+Calculating act of concept football
+WorkersManager : 
+Time = 3
+2 workers :
+Calculating act of concept interest
+Calculating act of concept football
+WorkersManager : 
+Time = 4
+1 workers :
+Calculating act of concept football
+WorkersManager : 
+Time = 5
+1 workers :
+Calculating act of concept interest
+ball_sport : 60
+team_sport : 40
+basketball : 40
+interest : 7
+football : 40
+[Finished in 2.2s]

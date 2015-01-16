@@ -207,7 +207,7 @@ def perform_operation(op,nodes_file,edges_file,result,limit=1000):
 	print("loading...")
 	n=ConceptNetwork()
 	n.load_from_JSON_stream(nodes_files=[nodes_file],edges_files=[edges_file])
-	print("searching...")
+	print("working..")
 	op(n,limit)
 	print("saving...")
 	n.save_to_JSON_stream(result)
@@ -308,3 +308,4 @@ DATA_DIR="concepts_names_data/"
 
 #perform_operation(op=deactivate_nodes, nodes_file="tchoupiiii_nodes.jsons",edges_file="tchoupiiii_edges.jsons",
 #	result="tchoupiiii",limit=30000)
+

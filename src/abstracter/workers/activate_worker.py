@@ -1,6 +1,9 @@
-from workers import *
-from workers.workers_settings import *
-from workers.compute_worker import ComputeWorker
+try:
+    from workers_settings import *
+    from compute_worker import ComputeWorker
+except ImportError:
+    from abstracter.workers.workers_settings import *
+    from abstracter.workers.compute_worker import *
 
 class ActivateWorker(Worker):
     """

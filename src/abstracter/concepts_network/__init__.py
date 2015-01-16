@@ -10,7 +10,7 @@ except ImportError:
 try:
     from abstracter.concepts_network.network import Network
 except ImportError:
-    from network import Network
+    from .network import Network
 
 class ConceptNetwork(Network):
     """
