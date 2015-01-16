@@ -1,0 +1,12 @@
+This is our first real, useful conceptnetwork.
+Graph information is in wayne_edges.jsons and wayne_nodes.jsons, both json stream files.
+Concepts/names that have been looked at, successfully queried and inserted in the network are in wayne_success_list.jsons, also
+a json stream.
+Concepts/names that have been looked at but with no results are in wayne_black_list.jsons, also a json stream.
+A story of wayne's construciton is in the file construction_story.txt
+
+TO MODIFY THIS NETWORK, MAKE SURE TO HAVE A COPY OF IT
+IT IS INTENDED TO GROW, THEREFORE KEEP UPATED THE BLACK_LIST AND SUCCESS_LIST :
+-the success_list avoid checking concepts already checked before
+-the black_list could be checked another time with different methods.
+

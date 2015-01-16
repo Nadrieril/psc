@@ -1,12 +1,12 @@
 #useful edges with associated weight
 #these weights are arbitrary
 USEFUL_CONCEPTNET_EDGES = { '/r/IsA' : 1,
-'/r/CapableOf' : 0.3,
+'/r/CapableOf' : 0.4,
 '/r/AtLocation' : 0.7,
-'/r/Antonym' : 0.2,
-'/r/HasProperty' : 0.8,
-'/r/HasA' : 0.7,
-'/r/UsedFor' : 0.4
+'/r/Antonym' : 0.3,
+'/r/HasProperty' : 0.9,
+'/r/HasA' : 0.8,
+'/r/UsedFor' : 0.4,
 }
 
 NOT_USEFUL_CONCEPTNET_EDGES = ['/r/NotCapableOf','/r/ReceivesAction','/r/RelatedTo','/r/Desires']

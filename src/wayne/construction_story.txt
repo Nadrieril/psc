@@ -1,0 +1,87 @@
+Histoire du premier RC :
+
+16 jours d'articles
+7 flux rss différents
+un total de 3043 articles
+9744 noms
+env. 12000 concepts
+
+NOMS
+-> parsing d'un fichier de  9744 noms
+-> moins de 10% sont rejetés par freebase : 676
+-> 8712 sont repris OK
+-> env 7500 noeuds sont créés (chaque noms donne lieu à 1 ou 2 noeuds supplémentaires)
+rmq : certains noms comptés comme diffs lors de la recherche donnent lieu au même noeud. Ex : nom+prénom de qn et nom seul (peut apparaître)
+
+puis
+CONCEPTS
+-> ajout d'un fichier de 12726 concepts
+-> la liste noire des mots rejetés se porte à 5534
+-> la liste des mots repris est 13236
+-> le nombre de noeuds du réseau (dus aux mots ajoutés + à l'expansion préliminaire) est 23846 ce qui reste modique
+rmq : exemples dans la liste noire :
+["reimagining"]
+["money-grabbers"]
+["whoscored"]
+["impeccable"]
+["amateurish"]
+["dawkins"]
+["rat-a-tat"]
+["js-comments"]
+["nearby"]
+["single-handedly"]
+["petered"]
+["undone"]
+["buzzing"]
+["novak"]
+["temperamental"]
+["real-politik"]
+["conceding"]
+["reigning"]
+["anxious"]
+["unanswered"]
+["cringeworthy"]
+["second-phase"]
+["wealthier"]
+["lacking"]
+["exquisite"]
+["righthand"]
+["vacant"]
+["leading"]
+["astronomical"]
+["wouldn"]
+["re-tweet"]
+["throwing"]
+différentes raisons : soit ils auraient dûs être considérés comme des noms -> faire une recherche freebase
+soit ce sont des mots composés -> difficile, mais ils sont plus rares
+soit ce sont des mots qui n'auraient pas dû être gardés, et qui l'ont été suite à des erreurs (pb de tokenization, de POS...)
+soit ce sont des morceaux de code qui entourait l'article et n'a pas été correctement retiré
+
+à ce stade, 9232 noeuds ne sont pas activés (donc taggés comme inutiles ou presque)
+on va en réactiver !
+
+-> on expand 5000 noeuds pour voir ce que ça donne. Rappel : cette expansion ne va créer aucun noeud supplémentaire, le but est de reboucler sur des noeuds existants.
+D'autres opérations seront possibles, comme inverser automatiquement certaines arêtes. C'est tout à fait envisageable !
+(ex : isA s'inverse en partOf ou qch dans le genre)
+Sur ces 5000 noeuds, 2270 donnent lieu à une expansion, ce qui veut dire (en théorie), qu'on peut les reboucler sur d'autres noeuds du réseau. C'est plus que ce que je pensais.
+Il faut maintenant voir combien de cycles ont été créés...
+Il faut noter que cette étape a été particulièrement lente.
+
+A FAIRE : AUGMENTER LA RAPIDITÉ ET AJOUTER DES FONCTIONS QUI PERMETTENT DE CONSTRUIRE DE FAÇON INCRÉMENTALE, CE QUI FAIT PARTIE DU PROJET
+A FAIRE 2 : AMÉLIORER LES TECHNIQUES D'EXPANSION EN GÉNÉRAL QUI SONT TROP LENTES ; À CHAQUE FOIS ON CHERCHE DES NOEUDS DANS LE RÉSEAU, ETC !
+
+-> le réseau comporte maintenant 24475 noeuds... je ne sais pas d'où viennent les nouveaux, il faudra revoir ça
+les noeuds qui rebouclent sont taggés au passage
+
+-> on tagge les autres noeuds bien reliés (ie qui ont >1 voisin). Les autres ne servent pas à grand-chose, a priori : en plus ce sont des noeuds qui n'apparaissaient pas dans le texte de départ (ceux-là ont déjà été taggés)
+-> cette opération est instantanée. 2700 noeuds env. sont taggés.
+-> à ce stade le réseau totalise 35000 edges
+
+-> on retire les noeuds mal taggés... suspense...
+6900 noeuds sont retirés !!
+il reste 17495 noeuds, 28900 edges -> c'est logique (chaque noeud retiré n'a retiré qu'une seule edge)
+
+-> enfin, on désactive tous les noeuds (l'activation a servi de tag)
+-> il ne reste plus qu'à tester le RC !!
+
+
