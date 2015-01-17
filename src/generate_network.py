@@ -309,3 +309,7 @@ DATA_DIR="concepts_names_data/"
 #perform_operation(op=deactivate_nodes, nodes_file="tchoupiiii_nodes.jsons",edges_file="tchoupiiii_edges.jsons",
 #	result="tchoupiiii",limit=30000)
 
+
+import abstracter.conceptnet5_client.api.parallel_api as pa
+print(pa.search_concepts(['dog','toto','barack obama'],limit=10))
+

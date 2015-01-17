@@ -140,3 +140,26 @@ def search_edge(start,end):
     edges=search_edges(start='/c/'+settings.LANGUAGE+'/'+start,end='/c/'+settings.LANGUAGE+'/'+end)
     if edges:
         return edges[0]
+
+#######################################
+##test
+#######################################
+
+
+
+# #@asyncio.coroutine
+# #def do_request():
+# #    proxies = {
+# #        'http': 'http://kuzh.polytechnique.fr:8080'  # your proxy address
+#     }
+#     proxy='http://kuzh.polytechnique.fr:8080' 
+#     connector = aiohttp.ProxyConnector(proxy=proxy)
+#     response = yield from aiohttp.request(
+#         'GET', 'http://conceptnet5.media.mit.edu/data/5.3/c/en/dog?limit=10',
+#         connector=connector,
+#     )
+#     return parse_relevant_edges(response.json())
+
+# def test():
+#     loop = asyncio.get_event_loop()
+#     loop.run_until_complete(do_request())
