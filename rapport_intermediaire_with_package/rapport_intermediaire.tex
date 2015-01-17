@@ -9,13 +9,15 @@
 
 \title{Projet Scientifique Collectif X2013 \\INF02~: Synthétiseur automatique de documents} 
 \renewcommand{\petittitre}{Projet INF02}
+\newcommand{\pyt}[1]{\texttt{#1}}
+\newcommand{\ang}[1]{\textit{#1}}%noms anglais
 \author{\membres} %%\membres uniquement avec l'option psc
 \date{21 janvier 2015}
 
 %mettre les accents comme \c{c}a, sinon risque de plantage
-\index{R\'eseau S\'emantique}
-\index{Analyse Symbolique}
-\index{Analyse S\'emantique}
+\index{R\'eseau s\'emantique}
+\index{Analyse symbolique}
+\index{Analyse s\'emantique}
 \index{R\'eseau de Concepts}
 
 \makeindex
@@ -44,7 +46,7 @@
 
 \subsubsection{But du projet}
 
-Le but de notre sujet est de produire un programme capable d'analyser s\'emantiquement\index{Analyse S\'emantique} un texte ayant pour sujet le sport (et plus particulièrement encore le football) de façon à en produire un résumé. Il s'agit là d'une véritable innovation par rapport à l'état actuel du résumé automatique, dans la mesure où les programmes existants se basent prioritairement sur une analyse statistique plus ou moins poussée de fréquence d'apparition des mots pour juger de leur importance~; notre programme se baserait plutôt sur le sens pour juger de la pertinence d'un concept et savoir s'il doit le faire figurer ou non dans le résumé final.
+Le but de notre sujet est de produire un programme capable d'analyser s\'emantiquement\index{Analyse s\'emantique} un texte ayant pour sujet le sport (et plus particulièrement encore le football) de façon à en produire un résumé. Il s'agit là d'une véritable innovation par rapport à l'état actuel du résumé automatique, dans la mesure où les programmes existants se basent prioritairement sur une analyse statistique plus ou moins poussée de fréquence d'apparition des mots pour juger de leur importance~; notre programme se baserait plutôt sur le sens pour juger de la pertinence d'un concept et savoir s'il doit le faire figurer ou non dans le résumé final.
 
 Dans l'état actuel des choses, nous n'espérons pas produire un programme utilisable dans l'industrie ou plus efficace que ceux déjà existants~; nous pensons en revanche que cette autre manière d'aborder le résumé automatique est plus viable, dans la mesure où elle analyse plus directement que par la méthode statistique.
 
@@ -61,16 +63,25 @@ Pour atteindre cet objectif, plusieurs modules assez indépendants ont pu être 
 
 \subsubsection{Outils extérieurs utilisés}
 
-Le volume de travail représenté par la création et l'utilisation du réseau de concepts\index{r\'eseau de concepts} est tel que nous nous appuyons sur un certain nombre d'outils pour traiter le texte en amont de notre résumé. La construction du réseau s'appuie, elle aussi, sur des bases de connaissances déjà existantes (et libres) dont voici la liste :
+Le volume de travail représenté par la création et l'utilisation du réseau de concepts\index{R\'eseau de concepts} est tel que nous nous appuyons sur un certain nombre d'outils pour traiter le texte en amont de notre résumé. La construction du réseau s'appuie, elle aussi, sur des bases de connaissances déjà existantes (et libres) dont voici la liste :
 
 \begin{itemize}
-	\item[Wordnet~: ]Dictionnaire permettant d'obtenir la classe grammaticale des mots présents dans le réseau.
+	\item[WordNet~: ]Dictionnaire permettant d'obtenir la classe grammaticale des mots présents dans le réseau.
 	\item[Conceptnet~: ]Grande base de connaissances permettant d'établir la proximité conceptuelle entre différents termes du réseau.
 	\item[Freebase~: ]Cette base de connaissance permet d'identifier les noms propres, tels que les joueurs de foot ou les différents stades.
-	\item[Natural Language ToolKit (nltk)~: ]Divers outils grammaticaux pour l'étude du langage naturel.
+	\item[Natural Language ToolKit (\pyt{nltk})~: ]Divers outils grammaticaux pour l'étude du langage naturel.
 \end{itemize}
 
 \section{\'Etat d'avancement~: r\'ecup\'eration de donn\'ees}
+
+Nous r\'ecup\'erons des donn\'ees sur diff\'erents sites internet et flux rss, en moyenne 400 articles de sports par jour.
+
+Ces donn\'ees vont servir \`a diff\'erents niveaux :
+\begin{itemize}
+ \item Dans la cr\'eation du r\'eseau de concepts (partie suivante) ;
+ \item Dans la production de r\'esum\'es automatiques.
+\end{itemize}
+
 
 \section{Le r\'eseau de concepts}
 
@@ -79,13 +90,13 @@ Le volume de travail représenté par la création et l'utilisation du réseau d
 
 
 \begin{definition}[Réseau de concepts]
-Le réseau de concepts\index{R\'eseau de Concepts} est la ``mémoire à long terme'' de notre programme.
+Le réseau de concepts\index{R\'eseau de concepts} est la ``mémoire à long terme'' de notre programme.
 
 Ce réseau est au carrefour entre les réseaux sémantiques et les réseaux de neurones. Les n\oe{}uds du réseau ne représentent pas des concepts à proprement parler~; en revanche, les concepts sont vus comme regroupant des n\oe{}uds fortement interconnectés.
 \end{definition}
 
 
-Le RC est constitué de n\oe{}uds. Chaque n\oe{}ud comporte~:
+Le R\'eseau est constitué de n\oe{}uds. Chaque n\oe{}ud comporte~:
 \begin{itemize}
   \item Une étiquette (mot)~;
  \item Une importance conceptuelle (IC) ou profondeur conceptuelle~;
@@ -95,13 +106,11 @@ Le RC est constitué de n\oe{}uds. Chaque n\oe{}ud comporte~:
 
 Chaque lien comporte~:
 \begin{itemize}
- \item Une proximité conceptuelle (P)~;
- \item Une étiquette que nous reprenons sur le modèle de conceptnet
+ \item Une proximité conceptuelle (ou poids W)~;
+ \item Une étiquette qui le caract\'erise.
 \end{itemize}
 
-\subsection{Construction}
-
-\subsubsection{Provenance des données~?}
+\subsection{Outils pour la construction}
 
 Le but est donc de créer un réseau de concepts de base, que nous puissions utiliser comme base de connaissances dans le domaine considéré (ici le sport, mais nous pourrions avoir sélectionné un autre domaine).
 
@@ -111,44 +120,58 @@ Nous utilisons deux types de sources~:
  \item Des données sémantiques libres.
 \end{itemize}
 
-\subsubsection{Construction du réseau, première étape}
 
-Après la lecture d'un grand nombre d'articles provenant de sources diverses (flux rss et sites d'information consacrés au sport), ceux-ci sont analysés pour en retirer un certain nombre de concepts sous forme normale. Cette opération se traduit dans la pratique en~:
+\subsubsection{Traitement de donn\'ees textuelles}
+
+Les concepts que nous ins\'ererons dans le r\'eseau seront des mots sous forme normale.
+
+\begin{definition}[Forme normale]
+La forme normale d'un mot\index{Forme normale} est tout simplement celle qu'il a lorsqu'on le recherche dans le dictionnaire, par exemple :
 \begin{itemize}
- \item Découpage du texte en phrases et en mots (tokens)~;
- \item Utilisation du part-of-speech tagger par défaut de nltk~;
- \item Récupération des noms propres et mise à part de ceux-ci~;
- \item Suppression des conjonctions de coordination, pronoms et autres mots qui ne sont pas de véritables concepts~;
- \item Il reste alors des adjectifs, adverbes, noms et verbes. Nous utilisons morphy de wordnet, ainsi qu'un morceau de code déjà utilisé pour construire conceptnet5 à partir de wordnet (voir partie suivante), pour transformer chaque terme en sa forme normale. Les noms sont mis au singulier, les verbes à l'infinitif\ldots
- \item Les termes restants sont alors tous les concepts auxquels le texte fait appel. Nous savons désormais que ces concepts devront apparaître dans le réseau, sauf exception (erreur à l'une des étapes)~;
- \item De manière générale, un concept qui apparaît au moins deux fois dans l'ensemble du corpus considéré peut être considéré comme valide (il y a toujours un risque d'erreur, mais il a été minimisé).
+ \item Si c'est un verbe, on le met \`a l'infinitif ;
+ \item Au singulier si c'est un nom.
+\end{itemize}
+Mettre un mot sous forme normale permet de s'int\'eresser uniquement au sens du mot hors de tout contexte.
+\end{definition}
+
+
+\begin{definition}[Part-of-speech tagger]
+Le Part-of-speech tagger\index{Part-of-speech tagger}, abr\'eg\'e en POS, est un programme, le plus souvent entra\^in\'e sur de grandes bases de donn\'ees, qui permet d'associer \`a chaque mot dans une phrase une valeur grammaticale.
+\end{definition}
+
+\`A partir d'articles consacr\'es au sport (texte brut), les manipulations suivantes permettent de r\'ecup\'erer les noms propres et les concepts sous forme normale :
+\begin{itemize}
+ \item Découpage du texte en phrases et en mots (\textit{tokens})~;
+ \item Utilisation d'un POS, celui de \pyt{nltk}\index{Natural Language ToolKit} par d\'efaut ~;
+ \item Récupération des noms propres et mise à part de ceux-ci (qui doivent faire plus tard l'objet d'un traitement particulier)~;
+ \item Suppression des conjonctions de coordination, pronoms et autres mots qui ne sont pas de v\'eritables concepts~;
+ \item Il reste alors des adjectifs, adverbes, noms et verbes. Nous utilisons \pyt{morphy} de WordNet\index{WordNet} \`a l'int\'erieur d'un code d\'edi\'e \`a la construction de Conceptnet5 (voir partie suivante), pour transformer chaque terme en sa forme normale ;
+ \item Les termes restants sont alors tous les concepts auxquels le texte fait appel ;
+ \item Nous ne sommes pas \`a l'abri d'erreurs li\'ees \`a l'une des \'etapes. De manière générale, un concept qui apparaît au moins deux fois dans l'ensemble du corpus considéré peut être considéré comme valide.
 \end{itemize}
 
 
 \subsubsection{WordNet}
 
-WordNet est un dictionnaire complet contenant une grande quantité d'informations sur les mots.
+WordNet est une base de donn\'ees lexicale pour l'anglais, produite par l'universit\'e de Princeton.
 
-Nous l'utilisons à travers son interface nltk, pour récupérer des informations sur les mots et les mettre sous forme normale.
+Nous l'utilisons à travers son interface \pyt{nltk}, pour récupérer des informations sur les mots et les mettre sous forme normale.
 
 
 \subsubsection{Conceptnet5}
 
-ConceptNet est un projet libre de réseau sémantique représentant des connaissances usuelles, aussi bien de la vie de tous les jours, culturelles, scientifiques. Il fait partie du Commonsense Computing Initiative qui relie différents laboratoires, dont le MIT Media Lab, et entreprises.
+Conceptnet (<http://conceptnet5.media.mit.edu/>) est un projet libre de réseau sémantique représentant des connaissances usuelles, aussi bien de la vie de tous les jours que culturelles et scientifiques. Il fait partie du \ang{Commonsense Computing Initiative} qui relie différents laboratoires, dont le MIT Media Lab, et entreprises.
 
 Il est important de noter que conceptnet5 est généré à partir de données brutes. Conceptnet5 est relié à DBPedia, une grande partie de ses connaissances provient de Wiktionary, une partie de WordNet.
-``The knowledge in ConceptNet is collected from a variety of resources, including crowd-sourced resources (such as Wiktionary and Open Mind Common Sense), games with a purpose (such as Verbosity and nadya.jp), and expert-created resources (such as WordNet and JMDict).''
 
-Page web du projet~:
-http://conceptnet5.media.mit.edu/
+Nous avons utilis\'e une partie de code source provenant de la page <https://github.com/commonsense/conceptnet5>.
 
-Le code python permettant de générer conceptnet5 à partir de données brutes est sur la page~:
-https://github.com/commonsense/conceptnet5
 
-\subsubsection{Structure de conceptnet5}
+\subsubsection{Structure de Conceptnet5}
 
-Conceptnet5 est un graphe sémantique de 
-les n\oe{}uds sont des mots et de courtes phrases, dans un certain nombre de langages possibles. Les arêtes qui relient ces n\oe{}uds expriment une connaissance, elles expriment chacune une relation particulière.
+Conceptnet5\index{Conceptnet5} est un graphe sémantique contenant plusieurs millions de nœuds et d'ar\^etes.
+
+les n\oe{}uds sont des mots et de courtes phrases, pas seulement en anglais. Les arêtes qui relient ces n\oe{}uds expriment une connaissance, elles contiennent chacune une relation particulière.
 
 Une arête possède aussi une source (d'où provient l'information) et un poids en fonction de cette source, selon l'importance de l'arête.
 
@@ -158,52 +181,27 @@ Une assertion peut elle-même être utilisée comme un n\oe{}ud ou comme une ar�
 
 Les relations valables dans tout langage, pour ConceptNet5, sont par exemple~: 
 \begin{itemize}
- \item RelatedTo
- \item IsA
- \item PartOf
- \item MemberOf
- \item HasA
- \item UsedFor
- \item CapableOf
- \item AtLocation
- \item Causes
- \item HasSubevent
- \item HasFirstSubevent
- \item HasLastSubevent
- \item HasPrerequisite
- \item HasProperty
- \item MotivatedByGoal
- \item ObstructedBy
- \item Desires
- \item CreatedBy
- \item Synonym
- \item Antonym
- \item DerivedFrom
- \item TranslationOf
- \item DefinedAs
+ \item RelatedTo ;
+ \item IsA ;
+ \item PartOf ;
+ \item MemberOf ;
+ \item HasA ;
+ \item TranslationOf ;
+ \item DefinedAs...
 \end{itemize}
 
-https://github.com/commonsense/conceptnet5/wiki/Relations
+Il en existe beaucoup d'autres.
+
+Comme Conceptnet est construit en partie \`a l'aide de WordNet, il existe une correspondance entre relations de l'un et de l'autre :
 
 La correspondance entre relations de WordNet et de Conceptnet est par exemple~:
 \begin{itemize}
- \item `attribute': `Attribute',
- \item `causes': `Causes',
- \item `classifiedByRegion': `HasContext',
- \item `classifiedByUsage': `HasContext',
- \item `classifiedByTopic': `HasContext',
- \item `entails': `Entails',
- \item `hyponymOf': `IsA',
- \item `instanceOf': `InstanceOf',
- \item `memberMeronymOf': `MemberOf',
- \item `partMeronymOf': `PartOf',
- \item `sameVerbGroupAs': `SimilarTo',
- \item `similarTo': `SimilarTo',
- \item `substanceMeronymOf': `MadeOf',
- \item `antonymOf': `Antonym',
- \item `derivationallyRelated': `DerivedFrom',
- \item `pertainsTo': `PertainsTo',
- \item `seeAlso': `RelatedTo',
+ \item `attribute': `Attribute' ;
+ \item `causes': `Causes' ;
+ \item `classifiedByRegion': `HasContext' ;
+ \item `hyponymOf': `IsA' ;
+ \item `sameVerbGroupAs': `SimilarTo' ;
+ \item `seeAlso': `RelatedTo'.
 \end{itemize}
 
 Nous avons décidé après coup de conserver ces relations dans le réseau de concepts, et d'en utiliser un sous-ensemble.
@@ -212,13 +210,13 @@ Nous avons décidé après coup de conserver ces relations dans le réseau de co
 
 Nous pouvons faire un certain nombre de requêtes à Conceptnet5. Il existe trois types différents de requêtes~:
 \begin{itemize}
- \item Lookup
- \item Association
- \item Search
+ \item Lookup ;
+ \item Association ;
+ \item Search ;
 \end{itemize}
 Association permet de calculer la proximité entre deux concepts, ou de récupérer une liste de concepts proches d'un concept donné.
 
-Search permet de récupérer une liste d'arêtes (edges) entre concepts, selon les paramètres spécifiés (le plus souvent, on impose le concept de départ start ou d'arrivée end). 
+Search permet de récupérer une liste d'arêtes (\ang{edges}) entre concepts, selon les paramètres spécifiés (le plus souvent, on impose le concept de départ \ang{start} ou d'arrivée \ang{end}). 
 
 Lookup permet d'analyser un concept (on aura par exemple accès à des listes d'arêtes dans lequel il intervient).
 
@@ -226,43 +224,138 @@ Lookup permet d'analyser un concept (on aura par exemple accès à des listes d'
 \subsubsection{Utilisation de Conceptnet5}
 
 Nous utilisons en majorité Association et Search.
-Étant donné un concept dont nous savons qu'il doit être étendu, nous utilisons conceptnet5 pour créer de nouveaux concepts au sein du réseau, et pour ajoutr de nouveaux liens. Une première requête de type Search permet d'avoir accès à un certain nombre de liens vers d'autres concepts, qui sont ajoutés (on ne récupère que les plus pertinents). Une requête de type Association permet de créer de nouveaux liens vers d'autres concepts similaires.
+
+Étant donné un concept dont nous savons qu'il doit être étendu, nous utilisons conceptnet5 pour créer de nouveaux concepts au sein du réseau, et pour ajouter de nouveaux liens. Une première requête de type Search permet d'avoir accès à un certain nombre de liens vers d'autres concepts, qui sont ajoutés (on ne récupère que les plus pertinents). Une requête de type Association permet de créer de nouveaux liens vers d'autres concepts similaires.
 
 Nous ajoutons alors une arête SimilarTo.
-
-
-
     
 \subsubsection{Freebase}
 
-Freebase est une immense base de données sémantiques qui contient beaucoup d'informations sur des noms propres notamment. Le projet, repris par google mais sous une license qui laisse les données libres d'accès, de téléchargement et d'utilisation, a lui aussi une API, un peu plus complexe que celle de conceptnet5. Freebase permet notamment de récuperer des informations sur une personne à partir de son nom, et à peu de frais, de vérifier que cette personne existe bel et bien.
+Freebase\index{Freebase} est une immense base de données sémantiques qui contient beaucoup d'informations, sur des noms propres notamment. Le projet, repris par google mais sous une license qui laisse les données libres d'accès, de téléchargement et d'utilisation, a lui aussi une API, un peu plus complexe que celle de Conceptnet5. Freebase permet notamment de récup\'erer des informations sur une personne à partir de son nom, et à peu de frais, de vérifier que cette personne existe bel et bien.
 
-    
-    
+
+\subsection{Construction du r\'eseau et r\'esultats}
+
+\`A l'aide des outils susmentionn\'es, nous avons \'et\'es \`a m\^eme de construire un premier r\'eseau de concepts.
+Nous pr\'esentons dans cette partie les caract\'eristiques du r\'eseau construit, ainsi que les choix de programmation effectu\'es.
+
+\subsubsection{R\'ecup\'eration de concepts et de noms}
+
+Nous analysons un certain nombre d'articles, ici 3043 issus 7 flux rss diff\'erents sur 16 jours.
+
+Nous utilisons en partie les \ang{tokenizers} de \pyt{nltk}, et nous compl\'etons si besoin.
+
+Pour r\'ecup\'erer les noms propres, nous rep\'erons \`a l'int\'erieur d'un article les mots marqu\'es comme noms propres par le POS de \pyt{nltk}. Puis nous concat\'enons deux noms propres successifs. Enfin, nous retirons de la liste des noms propres ceux qui sont contenus \`a l'int\'erieur d'autres. Cette \'etape, largement sous-estim\'ee au d\'ebut, est cruciale puisqu'elle \'evite de consid\'erer "< nom + pr\'enom "> et "<pr\'enom"> comme deux personnes diff\'erentes.
+
+Nous comptons aussi la fr\'equence d'apparition de chaque concept. On obtient 9744 noms et environ 12700 concepts, ce qui est tr\`es raisonnable.
+
+\subsubsection{Traitement des noms avec Freebase}
+
+Nous n'utilisons pour l'instant l'API Freebase que de fa\c{c}on tr\`es superficielle. Chaque nom propre donne lieu \`a une requ\^ete. Si celle-ci aboutit, on analyse le r\'esultat et si celui-ci comporte une donn\'ee (exemple : \`a l'envoi de \verb|"scott_jamieson"|, on r\'ecup\`ere \verb|"soccer_midfielder"|), on ajoute un nouveau nœud correspondant au r\'eseau, et une ar\^ete "<IsA"> dont le poids d\'epend du r\'esultat de la requ\^ete.
+
+Dans notre exemple, 676 noms seront rejet\'es par Freebase : c'\'etaient donc des r\'esultats erron\'es de la premi\`ere \'etape.
+
+Environ 7500 nœuds sont cr\'e\'es dans le r\'eseau.
+
+\subsubsection{Traitement des concepts avec Conceptnet5}
+
+Pour chaque concept dans la liste, on envoie deux requ\^etes : l'une vise \`a trouver des ar\^etes qui partent de lui (Search), l'autre \`a trouver des concepts proches (Association). 
+
+En l'absence de r\'esultat, le concept ne sera pas ajout\'e au r\'eseau.
+
+Dans le cas contraire, de nouvelles ar\^etes sont cr\'e\'ees. Leurs poids d\'ependent des r\'esultats des requ\^etes. Pour la requ\^ete Association, nous mettons une relation "<SimilarTo">.
+
+L'importance conceptuelle d'un nouveau nœud d\'epend essentiellement de son nombre d'apparitions dans les articles. D'autres possibilit\'es sont envisageables (nombre de synonymes avec WordNet, par exemple).
+
+Dans notre exemple, sur les 12700 concepts, 4800 ne donnent lieu \`a aucun r\'esultat. Cela peut para\^itre beaucoup ; en r\'ealit\'e, quand on regarde de plus pr\`es la "<liste noire"> (que nous stockons), on a par exemple : "reimagining","money-grabbers","whoscored","impeccable","amateurish","dawkins","rat-a-tat","single-handedly","petered","real-politik","re-tweet","throwing"
+
+Ces mots sont soit compos\'es (et donc difficiles \`a analyser), soit r\'esultent d'erreurs du POS-tagger (on voit passer quelques noms propres).
+
+Cette liste pourra bien s\^ur donner lieu \`a une analyse plus fine (nouvelles requ\^etes Freebase).
+
+\`A ce stade, notre r\'eseau poss\`ede 24000 nœuds environ, ce qui reste modique.
+
+\subsubsection{Extension des nœuds du r\'eseau}
+
+Nous envisageons maintenant, par de nouvelles requ\^etes, d'\'etendre les nœuds que nous venons de cr\'eer. Le but est que le r\'eseau soit au mieux interconnect\'e, or de nombreux nœuds r\'esultant des requ\^etes pr\'ec\'edentes ne pointent vers aucun nœud.
+
+D'autres op\'erations sont possibles.
+
+Nous regardons 5000 de ces nœuds faiblement connect\'es. Apr\`es requ\^etes, 2300 sont reli\'es au r\'eseau. (Cette \'etape a \'et\'e particuli\`erement lente).
+
+\subsubsection{Suppression des nœuds inutiles}
+
+Malgr\'e les nombreux param\`etres servant \`a filtrer, les requ\^etes n'ont pas donn\'e des r\'esultats toujours pertinents. Nous choisissons de retirer du r\'eseau les nœuds faiblement reli\'es (un seul voisin). Ceux-ci seront de toute fa\c{c}on peu utiles lors de la propagation de l'activation.
+
+\`A  ce stade, le r\'eseau comporte 24000 nœuds et 35000 ar\^etes. Apr\`es nettoyage, il reste 17500 nœuds et 29000 ar\^etes.
+
+Nous disposons maintenant d'un r\'eseau utilisable (en th\'eorie).
+
+\subsubsection{Premiers tests avec ce r\'eseau}
+
+Pour chaque test, nous activons un nœud et laissons l'activation se propager \`a ses successeurs au cours du temps (sans d\'esactivation). \`A chaque \'etape (nouvel instant) se produit un calcul d'activation.
+
+\begin{itemize}
+ \item \verb|"manchester", 60|
+ \begin{verbatim}
+  [...]
+  Time=10
+  comic_book_character : 1 ; furniture : 4
+  house : 5 ; manchester : 60
+  object : 9 ; place : 11
+  thing : 6 ; desk : 4
+  location : 21 ; loft : 3
+ \end{verbatim}
+\item \verb|"francis_lastic",60|
+\begin{verbatim}
+  [...]
+  Time=5
+  coach : 23 ; francis_lastic : 60
+\end{verbatim}
+\item \verb|"ball_sport",60|
+\begin{verbatim}
+  [...]
+  Time=10
+  ball_sport : 60 ; team_sport : 40
+  basketball : 40 ; interest : 7
+  football : 40
+\end{verbatim}
+\end{itemize}
+
+\subsection{Choix de programmation et prospectives}
+
+Nous avons d'abord cru que l'utilisation massive de requ\^etes donnerait des contraintes de temps importantes \`a nos programmes. C'est en r\'ealit\'e une erreur. La parall\'elisation des requ\^etes, que nous avons commenc\'e \`a effectuer, permet un gain de temps exceptionnel et va nous conduire dans les prochaines semaines \`a am\'eliorer consid\'erablement le temps d'ex\'ecution.
+
+Le r\'eseau est pour le moment enregistr\'e sous forme de JSON Stream, un type de donn\'ees repris \`a Conceptnet5. Le nombre de nœuds \'etant rest\'e raisonnable, nous n'avons pas eu \`a abandonner pr\'ematur\'ement le package \pyt{networkx} qui nous permet de le repr\'esenter en m\'emoire.
+
+Cependant, nous envisageons de passer \`a une base de donn\'ees.
+
+Enfin, nous nous orientons maintenant vers des fonctions permettant de construire incr\'ementalement le r\'eseau, donc d'ajouter les nouveaux concepts et noms propres au fur et \`a mesure qu'ils sont lus dans les articles (notre but initial \'etait naturellement de construire un r\'eseau "<de base">).
 
 \section{Traitement du r\'eseau}
 
 Le réseau de concepts représente, comme nous l'avons déjà dit, la connaissance \textit{a priori} de notre programme sur le domaine étudié. Pour étudier un texte particulier, il s'agit maintenant de faire agir ce texte sur nos connaissances et d'interpréter l'effet que cette lecture a.
 
-Deux méthodes ont été envisagées : la première étudiait, essentiellement, la différence entre l'état du réseau de concepts avant et après la lecture et devait en déduire les faits importants. La seconde, qui a finalement été retenue, s'appuie sur une activation des concepts dans le réseau, puis une instanciation des concepts fortement activés dans un espace de travail appelé \textit{workspace}\index{workspace}. Ces concepts instanciés sont par la suite capable d'effectuer des tâches plus complexes relatives à la compréhension du texte.
+Deux méthodes ont été envisagées : la première étudiait, essentiellement, la différence entre l'état du réseau de concepts avant et après la lecture et devait en déduire les faits importants. La seconde, qui a finalement été retenue, s'appuie sur une activation des concepts dans le réseau, puis une instanciation des concepts fortement activés dans un espace de travail appelé \textit{workspace}\index{Workspace}. Ces concepts instanciés sont par la suite capable d'effectuer des tâches plus complexes relatives à la compréhension du texte.
 
-Quelle que soit la méthode employée, une analyse syntaxique\index{analyse syntaxique} préalable du texte est nécessaire pour rendre compte de sa compréhension et utiliser au mieux notre réseau de connaissance.
+Quelle que soit la méthode employée, une analyse syntaxique\index{Analyse syntaxique} préalable du texte est nécessaire pour rendre compte de sa compréhension et utiliser au mieux notre réseau de connaissance.
 
-\subsection{Workspace}\index{workspace}
+\subsection{Workspace}\index{Workspace}
 
 
-\subsection{Analyse syntaxique}\index{analyse syntaxique}
 
-Cette partie ne constituant pas le c\oe{}r de notre psc, nous avons décidé d'utiliser un outil déjà codé, faisant partie de la plus grande librairie libre nltk\index{Natural Language ToolKit}.
+\subsection{Analyse syntaxique}\index{Analyse syntaxique}
 
-\subsubsection{Description algorithmique d'une grammaire}\index{grammaire}
+Cette partie ne constituant pas le c\oe{}r de notre psc, nous avons décidé d'utiliser un outil déjà codé, faisant partie de la plus grande librairie libre \pyt{nltk}\index{Natural Language ToolKit}.
+
+\subsubsection{Description algorithmique d'une grammaire}\index{Grammaire}
 Une grammairep peut être décrite informatiquement de manière très simple. En effet, on peut la voir comme~:
 \begin{itemize}
 	\item Un ensemble de classes terminales (verbe, nom par exemple) associées à une liste de mots ou éventuellement d'expressions
 	\item Un ensemble de règles, souvent sous la forme d'une reconnaissance de motifs, permettant de découper une phrase en plusieurs éléments (et finalement en unités syntaxiques élémentaires).
 \end{itemize}
 
-Il y a par conséquent deux manières pour une grammaire d'être incomplète~: soit elle ne connaît pas assez de vocabulaire (manque d'éléments dans les cas terminaux), soit elle ne connaît pas assez de règles. La première faille est assez facile à combler par des requêtes vers WordNet\index{Wordnet} (et par ailleurs un outil automatique est inclus dans nltk\index{Natural Language ToolKit}~; il est en revanche assez indispensable d'avoir une grammaire complète en termes de règles car il est beaucoup plus difficile d'inventer des manières de découper une phrase.
+Il y a par conséquent deux manières pour une grammaire d'être incomplète~: soit elle ne connaît pas assez de vocabulaire (manque d'éléments dans les cas terminaux), soit elle ne connaît pas assez de règles. La première faille est assez facile à combler par des requêtes vers WordNet\index{WordNet} (et par ailleurs un outil automatique est inclus dans \pyt{nltk}\index{Natural Language ToolKit}~; il est en revanche assez indispensable d'avoir une grammaire complète en termes de règles car il est beaucoup plus difficile d'inventer des manières de découper une phrase.
 
 \subsubsection{\'Etat du texte en fin d'analyse}
 Les grammaires nltk sont classées selon la forme de leur sortie. Elles attendent la liste des mots dans l'ordre dans lequel ils apparaissent dans le texte à étudier, accompagnés d'une liste de classes possibles pour ces mots. En sortie, on peut trouver~:
@@ -283,13 +376,13 @@ Les n\oe{}uds internes sont en nombre fini et leurs étiquettes dépend de si on
 
 \section{Suites envisag\'ees}
 
-Dans l'ensemble le projet avance avec peu de retard sur le plan prévisionnel écrit en novembre dernier. Le réseau de concepts est prêt à être utilisé et notre attention pourra se reporter sur le développement du \textit{workspace}\index{workspace} et du déploiement de l'analyse syntaxique.
+Dans l'ensemble le projet avance avec peu de retard sur le plan prévisionnel écrit en novembre dernier. Le réseau de concepts est prêt à être utilisé et notre attention pourra se reporter sur le développement du \textit{workspace}\index{Workspace} et du déploiement de l'analyse syntaxique.
 
 Cette dernière, que nous avions prise pour à peu près acquise, s'avère requérir plus de travail que prévu (il nous faudra l'entraîner et la préparer un peu, ce qui requiert une certaine compréhension des mécanismes qui la sous-tendent).
 
 La planification pour le reste du projet est la suivante~:
 \begin{description}
-	\item[Février~: ]Mise en place d'une grammaire nltk. Responsables : Antonin Angibault, Théophane Hufschmitt, Sarah Fernandes-Pinto-Fachada.
+	\item[Février~: ]Mise en place d'une grammaire \pyt{nltk}. Responsables : Antonin Angibault, Théophane Hufschmitt, Sarah Fernandes-Pinto-Fachada.
 	\item[Février~: ]Fin de la spécification du contenu du \textit{workspace}.
 	\item[Février-Avril~: ]Implémentation du \textit{workspace} (donc, essentiellement, de ce qui manque à l'algorithme de résumé pour fonctionner).
 	\item[Avril~: ]Génération de résumé et évaluation de ceux-ci.
@@ -316,7 +409,11 @@ Compte-tenu de la simplicité de l'algorithme statistique, nous espérons que le
 \nocite{*}
 \printbibliography{}
 
+%\`a ajouter
+George A. Miller (1995). WordNet: A Lexical Database for English.
+Communications of the ACM Vol. 38, No. 11: 39-41.
 
+Christiane Fellbaum (1998, ed.) WordNet: An Electronic Lexical Database. Cambridge, MA: MIT Press.
 
 \appendix
 
