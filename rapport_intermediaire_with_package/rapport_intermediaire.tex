@@ -283,6 +283,34 @@ Les n\oe{}uds internes sont en nombre fini et leurs étiquettes dépend de si on
 
 \section{Suites envisag\'ees}
 
+Dans l'ensemble le projet avance avec peu de retard sur le plan prévisionnel écrit en novembre dernier. Le réseau de concepts est prêt à être utilisé et notre attention pourra se reporter sur le développement du \textit{workspace}\index{workspace} et du déploiement de l'analyse syntaxique.
+
+Cette dernière, que nous avions prise pour à peu près acquise, s'avère requérir plus de travail que prévu (il nous faudra l'entraîner et la préparer un peu, ce qui requiert une certaine compréhension des mécanismes qui la sous-tendent).
+
+La planification pour le reste du projet est la suivante~:
+\begin{description}
+	\item[Février~: ]Mise en place d'une grammaire nltk. Responsables : Antonin Angibault, Théophane Hufschmitt, Sarah Fernandes-Pinto-Fachada.
+	\item[Février~: ]Fin de la spécification du contenu du \textit{workspace}.
+	\item[Février-Avril~: ]Implémentation du \textit{workspace} (donc, essentiellement, de ce qui manque à l'algorithme de résumé pour fonctionner).
+	\item[Avril~: ]Génération de résumé et évaluation de ceux-ci.
+\end{description}
+
+Les différences essentielles avec la planification initiale proviennent de la complexité inattendue de la grammaire. En revanche, le temps d'exécution prévu pour la production d'un résumé d'article étant long, nous produirons finalement peu de résumés à évaluer, cela nous permet donc de les évaluer à la main et de gagner du temps sur cette partie de la planification initiale.
+
+Globalement nous pensons être capables de mener le projet à bien comme prévu. Les sections suivantes décrivent les points les plus prêts d'être mis en place.
+
+\subsection{Apprentissage du réseau de concepts}
+Le réseau de concept représente un \textit{a priori} sur le monde de notre programme. Il est donc normal que cette structure évolue au fur et à mesure des textes lus. 
+
+Les fonctions de construction du réseau peuvent sans mal être appelées après la génération du résumé pour y apporter des modifications pérennes.
+
+\subsection{\'Evaluation des résumés}
+Le faible nombre de résumés que nous prévoyons de produire nous permettra d'utiliser la méthode la plus simple parmi celles qui étaient mentionnées dans la proposition détaillée~: la comparaison à un résumé déclaré bon car produit par un humain.
+
+L'idée est la suivante~: l'un de nous résumera un texte, nous emploierons notre programme pour résumer le même texte, et enfin nous utiliserons un simple algorithme statistique (basé sur TF-IDF) pour résumer ce même texte. Nous comparerons ensuite ces résumés du point de vue de l'information qu'ils contiennent~: sont-ils des images assez fidèles du document original ?
+
+Compte-tenu de la simplicité de l'algorithme statistique, nous espérons que le résumé produit par notre programme se situera quelque part entre le résumé statistique et le résumé humain.
+
 \section{R\'ef\'erences bibliographiques}
 
 \nocite{*}
