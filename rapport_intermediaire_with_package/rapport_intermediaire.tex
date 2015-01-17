@@ -41,7 +41,34 @@
 \end{itemize}
 
 \subsection{Notre sujet}
-Analyse s\'emantique\index{Analyse S\'emantique}
+
+\subsubsection{But du projet}
+
+Le but de notre sujet est de produire un programme capable d'analyser s\'emantiquement\index{Analyse S\'emantique} un texte ayant pour sujet le sport (et plus particulièrement encore le football) de façon à en produire un résumé. Il s'agit là d'une véritable innovation par rapport à l'état actuel du résumé automatique, dans la mesure où les programmes existants se basent prioritairement sur une analyse statistique plus ou moins poussée de fréquence d'apparition des mots pour juger de leur importance~; notre programme se baserait plutôt sur le sens pour juger de la pertinence d'un concept et savoir s'il doit le faire figurer ou non dans le résumé final.
+
+Dans l'état actuel des choses, nous n'espérons pas produire un programme utilisable dans l'industrie ou plus efficace que ceux déjà existants~; nous pensons en revanche que cette autre manière d'aborder le résumé automatique est plus viable, dans la mesure où elle analyse plus directement que par la méthode statistique.
+
+\subsubsection{Modules du projet et répartition du travail}
+Pour atteindre cet objectif, plusieurs modules assez indépendants ont pu être identifiés et traités séparément~:
+
+\begin{description}
+	\item[R\'ecup\'eration de donn\'ees] à utiliser pour la création d'un réseau de concepts modélisant la connaissance \textit{a priori} du programme. Responsables : Théophane Hufschmitt, Guillaume Boisseau.
+	\item[Création du réseau de concepts] et remplissage de celui-ci. Il s'agissait ici d'une part de définir sa structure et d'autre part d'y introduire les données nécessaires. Responsables : André Schrottenloher, Guillaume Boisseau.
+	\item[Analyse syntaxique] à l'aide d'outil existants. Il s'agissait de trouver une grammaire capable d'analyser une phrase et d'en faire ressortir les relations de type verbe-objet ou nom-qualificatif. Responsables : Antonin Angibault, Théophane Hufschmitt, Sarah Fernandes-Pinto-Fachada
+	\item[Réflexion] sur l'utilisation du réseau de concepts et de l'analyse grammaticale pour produire un réseau capable de rendre compte de la compréhension du texte. Responsables : tous.
+	\item[Implémentation] d'un algorithme simple de résumé stastique (basé sur l'algorithme TF-IDF), devant servir de base de comparaison pour tester la qualité des résumés produits par notre algorithme.  Responsable : Zhixing Cao. 
+\end{description}
+
+\subsubsection{Outils extérieurs utilisés}
+
+Le volume de travail représenté par la création et l'utilisation du réseau de concepts\index{r\'eseau de concepts} est tel que nous nous appuyons sur un certain nombre d'outils pour traiter le texte en amont de notre résumé. La construction du réseau s'appuie, elle aussi, sur des bases de connaissances déjà existantes (et libres) dont voici la liste :
+
+\begin{itemize}
+	\item[Wordnet~: ]Dictionnaire permettant d'obtenir la classe grammaticale des mots présents dans le réseau.
+	\item[Conceptnet~: ]Grande base de connaissances permettant d'établir la proximité conceptuelle entre différents termes du réseau.
+	\item[Freebase~: ]Cette base de connaissance permet d'identifier les noms propres, tels que les joueurs de foot ou les différents stades.
+	\item[Natural Language ToolKit (nltk)~: ]Divers outils grammaticaux pour l'étude du langage naturel.
+\end{itemize}
 
 \section{\'Etat d'avancement~: r\'ecup\'eration de donn\'ees}
 
@@ -214,6 +241,45 @@ Freebase est une immense base de données sémantiques qui contient beaucoup d'i
     
 
 \section{Traitement du r\'eseau}
+
+Le réseau de concepts représente, comme nous l'avons déjà dit, la connaissance \textit{a priori} de notre programme sur le domaine étudié. Pour étudier un texte particulier, il s'agit maintenant de faire agir ce texte sur nos connaissances et d'interpréter l'effet que cette lecture a.
+
+Deux méthodes ont été envisagées : la première étudiait, essentiellement, la différence entre l'état du réseau de concepts avant et après la lecture et devait en déduire les faits importants. La seconde, qui a finalement été retenue, s'appuie sur une activation des concepts dans le réseau, puis une instanciation des concepts fortement activés dans un espace de travail appelé \textit{workspace}\index{workspace}. Ces concepts instanciés sont par la suite capable d'effectuer des tâches plus complexes relatives à la compréhension du texte.
+
+Quelle que soit la méthode employée, une analyse syntaxique\index{analyse syntaxique} préalable du texte est nécessaire pour rendre compte de sa compréhension et utiliser au mieux notre réseau de connaissance.
+
+\subsection{Workspace}\index{workspace}
+
+
+\subsection{Analyse syntaxique}\index{analyse syntaxique}
+
+Cette partie ne constituant pas le c\oe{}r de notre psc, nous avons décidé d'utiliser un outil déjà codé, faisant partie de la plus grande librairie libre nltk\index{Natural Language ToolKit}.
+
+\subsubsection{Description algorithmique d'une grammaire}\index{grammaire}
+Une grammairep peut être décrite informatiquement de manière très simple. En effet, on peut la voir comme~:
+\begin{itemize}
+	\item Un ensemble de classes terminales (verbe, nom par exemple) associées à une liste de mots ou éventuellement d'expressions
+	\item Un ensemble de règles, souvent sous la forme d'une reconnaissance de motifs, permettant de découper une phrase en plusieurs éléments (et finalement en unités syntaxiques élémentaires).
+\end{itemize}
+
+Il y a par conséquent deux manières pour une grammaire d'être incomplète~: soit elle ne connaît pas assez de vocabulaire (manque d'éléments dans les cas terminaux), soit elle ne connaît pas assez de règles. La première faille est assez facile à combler par des requêtes vers WordNet\index{Wordnet} (et par ailleurs un outil automatique est inclus dans nltk\index{Natural Language ToolKit}~; il est en revanche assez indispensable d'avoir une grammaire complète en termes de règles car il est beaucoup plus difficile d'inventer des manières de découper une phrase.
+
+\subsubsection{\'Etat du texte en fin d'analyse}
+Les grammaires nltk sont classées selon la forme de leur sortie. Elles attendent la liste des mots dans l'ordre dans lequel ils apparaissent dans le texte à étudier, accompagnés d'une liste de classes possibles pour ces mots. En sortie, on peut trouver~:
+
+\begin{itemize}
+	\item Un arbre représentant une structure grammaticale possible pour la phrase.
+	\item La liste de tous les arbres pouvant représenter la structure grammaticale de la phrase.
+	\item La liste de tous les arbres pouvant représenter la structure grammaticale de la phrase, et pour chaque arbre une mesure de la vraisemblance de cette structure.
+\end{itemize} 
+
+Il y a une grande différence entre les n\oe{}uds non terminaux des arbres en sortie et leurs feuilles. En effet, ces dernières seront les unités syntaxiques présentes à l'origine dans la phrase, tandis que les n\oe{}uds internes représentent la classe grammaticale des bouts de phrases représentés par les sous-arbres dont ils sont la racine.
+
+%Un exemple serait sûrement le bienvenu, je vais voir si je me chauffe pour faire un ParseTree a l'air plausible. (Antonin)
+%Cela étant n'hésitez pas à vous chauffer vous aussi.
+
+Les n\oe{}uds internes sont en nombre fini et leurs étiquettes dépend de si on considère des grammaires sans contexte (capables de séparer des composants autour d'un verbe) ou des grammaires à dépendance (dont le but est d'identifier le sujet et les compléments du verbe central).
+
 
 \section{Suites envisag\'ees}
 
