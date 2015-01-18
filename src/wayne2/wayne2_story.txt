@@ -1,0 +1,11 @@
+première étape : requêtes pour tous les concepts et les noms, 
+
+[Finished in 293.5s]
+
+deuxième étape : expand tous les noeuds par similarité
+
+beaucoup plus long (requêtes similarconcepts plus lentes)
+
+troisième étape : expand tous les noeuds par conceptnet5 et fb en recoupant sur du déjà existant
+
+ensuite : tag etc

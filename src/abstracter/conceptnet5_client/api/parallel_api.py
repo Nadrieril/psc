@@ -41,11 +41,7 @@ def search_concepts(concepts,filter='/c/en/',limit=10,**kwargs):
     urls={}
     for concept in concepts:
         urls[concept]=lookup_url(concept,filter,limit,**kwargs)
-    results={}
-    request_result=co.requests(urls)
-    for concept in request_result:
-        results[concept]=parse_relevant_edges(request_result[concept])
-    return results
+    return co.requests(urls,parsing_method=parse_relevant_edges)
 
 
 ###########################################################################
@@ -72,11 +68,7 @@ def get_similar_concepts(concepts,filter='/c/en/',limit=10,**kwargs):
     urls={}
     for concept in concepts:
         urls[concept]=association_url(concept,filter,limit,**kwargs)
-    results={}
-    request_result=co.requests(urls)
-    for concept in request_result:
-        results[concept]=parse_similar_concepts(request_result[concept])
-    return results
+    return co.requests(urls,parsing_method=parse_similar_concepts)
 
 
 ###########################################################################
@@ -103,9 +95,6 @@ def search_edges_from(concepts,filter='/c/en/',limit=10,**kwargs):
     #build urls dict
     urls={}
     for concept in concepts:
-        urls[concept]=search_url(start='/c/en/'+concept,filter,limit,**kwargs)
-    results={}
-    request_result=co.requests(urls)
-    for concept in request_result:
-        results[concept]=parse_relevant_edges(request_result[concept])
-    return results
+        concept = concept.replace(' ', '_')
+        urls[concept]=search_url(start='/c/'+settings.LANGUAGE+'/'+concept,filter=filter,limit=limit,**kwargs)
+    return co.requests(urls,parsing_method=parse_relevant_edges)

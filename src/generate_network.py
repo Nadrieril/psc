@@ -311,5 +311,7 @@ DATA_DIR="concepts_names_data/"
 
 
 import abstracter.conceptnet5_client.api.parallel_api as pa
-print(pa.search_concepts(['dog','toto','barack obama'],limit=10))
+#print(pa.search_concepts(['dog','toto','barack obama'],limit=10))
 
+#print(pa.get_similar_concepts(['dog','toto','barack obama']))
+print(pa.search_edges_from(['dog','toto','barack obama']))

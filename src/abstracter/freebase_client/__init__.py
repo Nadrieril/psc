@@ -4,6 +4,7 @@ from abstracter.util.http import *
 from abstracter.freebase_client.settings import *
 #import abstracter.requests as requests
 import requests
+import abstracter.util.concurrent as co
 
 ###WARNING : CURRENTLY USING REQUESTS BECAUSE HTTPS REQUESTS WITH URLLIB DON'T WORK THROUGH A PROXY
 
@@ -40,6 +41,44 @@ def search_name(name):
 		if 'notable' in dat:
 			res['to']=dat['notable']['name'].lower().replace(' ','_')#IsA relation
 	return res
+
+#################################
+###parallel
+################################
+
+def search_name_url(name,**kwargs):
+	data={'query' : name,'key' : USER_KEY, 'lang' : 'en', 'limit' : 2}
+	for key,val in kwargs.items():
+		if key in SEARCH_PARAMETERS:
+			data[key]=val
+		else:
+			pass
+	url_values = urllib.parse.urlencode(data)
+	return URL + '?' + url_values
+
+
+def search_names(names,**kwargs):
+	urls={}
+	for name in names:
+		urls[name]=search_name_url(name.replace(' ', '_'),**kwargs)
+	return co.requests(urls,parsing_method=parse_results)
+
+def parse_results(query_result):
+	"""
+	Parsing a json object
+	"""
+	res={}
+	data=query_result['result']
+	if data:
+		dat=data[0]
+		score=dat['score']
+		name=dat['name']
+		res['from']=name.lower().replace(' ','_')
+		res['score']=score
+		if 'notable' in dat:
+			res['to']=dat['notable']['name'].lower().replace(' ','_')#IsA relation
+	return res
+
 
 
 if __name__=="__main__":
