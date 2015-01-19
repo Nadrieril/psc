@@ -4,3 +4,4 @@
 *__pycache__
 localConfig.py
 *.backup
+*.bst
