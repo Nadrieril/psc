@@ -63,7 +63,7 @@ Pour atteindre cet objectif, plusieurs modules assez indépendants ont pu être 
 
 \subsubsection{Outils extérieurs utilisés}
 
-Le volume de travail représenté par la création et l'utilisation du réseau de concepts\index{Réseau de concepts} est tel que nous nous appuyons sur un certain nombre d'outils pour traiter le texte en amont de notre résumé. La construction du réseau s'appuie, elle aussi, sur des bases de connaissances déjà existantes (et libres) dont voici la liste~:
+Le volume de travail représenté par la création et l'utilisation du réseau de concepts\index{Réseau de concepts} est tel que nous nous appuyons sur un certain nombre d'outils pour traiter le texte en amont de notre résumé. La construction du réseau s'appuie, elle aussi, sur des bases de connaissances déjà existantes (et libres) dont voici la liste (ils seront traités dans la section suivante)~:
 
 \begin{itemize}
 	\item[WordNet~: ]Dictionnaire permettant d'obtenir la classe grammaticale des mots présents dans le réseau.
@@ -72,7 +72,20 @@ Le volume de travail représenté par la création et l'utilisation du réseau d
 	\item[Natural Language ToolKit (\pyt{nltk})~: ]Divers outils grammaticaux pour l'étude du langage naturel.
 \end{itemize}
 
-\section{\'Etat d'avancement~: récupération de données}
+
+
+\section{Avancement du projet}
+
+\subsection{Sources de données}
+
+Nous utilisons deux sources de données : des données brutes, sous forme de langage naturel (textes d'articles écrits en anglais), et des données déjà travaillées, le plus souvent mises sous la forme de graphe sémantique.\index{Graphe sémantique}
+
+\begin{definition}[Graphe sémantique]
+En première approximation, nous faisons renvoyer la notion de graphe sémantique à un graphe où les nœuds sont étiquetés par des mots et où les arêtes représentent un lien ou expriment une relation entre ces mots.
+\end{definition}
+
+
+\subsubsection{Données textuelles brutes}
 
 Nous récupérons des données sur différents sites internet et flux rss, en moyenne 400 articles de sports par jour.
 
@@ -83,48 +96,10 @@ Ces données vont servir à différents niveaux~:
 \end{itemize}
 
 
-\section{Le réseau de concepts}
-
-
-
-\subsection{Structure}
-
-
-\begin{definition}[Réseau de concepts]
-Le réseau de concepts\index{Réseau de concepts} est la ``mémoire à long terme'' de notre programme.
-
-Ce réseau est au carrefour entre les réseaux sémantiques et les réseaux de neurones. Les n\oe{}uds du réseau ne représentent pas des concepts à proprement parler~; en revanche, les concepts sont vus comme regroupant des n\oe{}uds fortement interconnectés.
-\end{definition}
-
-
-Le Réseau est constitué de n\oe{}uds. Chaque n\oe{}ud comporte~:
-\begin{itemize}
-  \item Une étiquette (mot)~;
- \item Une importance conceptuelle (IC) ou profondeur conceptuelle~;
- \item Une activation (A) initialement nulle~;
- \item Un certain nombre de liens à d'autres n\oe{}uds.
-\end{itemize}
-
-Chaque lien comporte~:
-\begin{itemize}
- \item Une proximité conceptuelle (ou poids W)~;
- \item Une étiquette qui le caractérise.
-\end{itemize}
-
-\subsection{Outils pour la construction}
-
-Le but est donc de créer un réseau de concepts de base, que nous puissions utiliser comme base de connaissances dans le domaine considéré (ici le sport, mais nous pourrions avoir sélectionné un autre domaine).
-
-Nous utilisons deux types de sources~:
-\begin{itemize}
- \item Des articles de sport (données brutes) qui contiennent entre autres ``ce qu'il faut savoir''~;
- \item Des données sémantiques libres.
-\end{itemize}
-
 
 \subsubsection{Traitement de données textuelles}
 
-Les concepts que nous insérerons dans le réseau seront des mots sous forme normale.
+Les mots présents dans les articles, pour être reliés à leur signification, doivent être mis sous forme normale.
 
 \begin{definition}[Forme normale]
 La forme normale d'un mot\index{Forme normale} est tout simplement celle qu'il a lorsqu'on le recherche dans le dictionnaire, par exemple~:
@@ -197,12 +172,12 @@ Comme Conceptnet est construit en partie à l'aide de WordNet, il existe une cor
 
 La correspondance entre relations de WordNet et de Conceptnet est par exemple~:
 \begin{itemize}
- \item `attribute': `Attribute'~;
- \item `causes': `Causes'~;
- \item `classifiedByRegion': `HasContext'~;
- \item `hyponymOf': `IsA'~;
- \item `sameVerbGroupAs': `SimilarTo'~;
- \item `seeAlso': `RelatedTo'.
+ \item attribute : Attribute~;
+ \item causes : Causes~;
+ \item classifiedByRegion : HasContext~;
+ \item hyponymOf : IsA~;
+ \item sameVerbGroupAs : SimilarTo~;
+ \item seeAlso : RelatedTo.
 \end{itemize}
 
 Nous avons décidé après coup de conserver ces relations dans le réseau de concepts, et d'en utiliser un sous-ensemble.
@@ -232,15 +207,42 @@ Nous ajoutons alors une arête SimilarTo.
     
 \subsubsection{Freebase}
 
-Freebase\index{Freebase} est une immense base de données sémantiques qui contient beaucoup d'informations, sur des noms propres notamment. Le projet, repris par google mais sous une license qui laisse les données libres d'accès, de téléchargement et d'utilisation, a lui aussi une API, un peu plus complexe que celle de Conceptnet5. Freebase permet notamment de récupérer des informations sur une personne à partir de son nom, et à peu de frais, de vérifier que cette personne existe bel et bien.
+Freebase\index{Freebase} est une immense base de données sémantiques qui contient beaucoup d'informations, sur des noms propres notamment. Le projet, repris par google mais sous une licence qui laisse les données libres d'accès, de téléchargement et d'utilisation, a lui aussi une API, un peu plus complexe que celle de Conceptnet5. Freebase permet notamment de récupérer des informations sur une personne à partir de son nom, et à peu de frais, de vérifier que cette personne existe bel et bien.
 
 
-\subsection{Construction du réseau et résultats}
 
-\`A l'aide des outils susmentionnés, nous avons étés à même de construire un premier réseau de concepts.
-Nous présentons dans cette partie les caractéristiques du réseau construit, ainsi que les choix de programmation effectués.
+\subsection{Réseau de concepts}
 
-\subsubsection{Récupération de concepts et de noms}
+\subsubsection{Structure du réseau de concepts}
+
+\begin{definition}[Réseau de concepts]
+Le réseau de concepts\index{Réseau de concepts} est la ``mémoire à long terme'' de notre programme.
+
+Ce réseau est au carrefour entre les réseaux sémantiques et les réseaux de neurones. Les n\oe{}uds du réseau ne représentent pas des concepts à proprement parler~; en revanche, les concepts sont vus comme regroupant des n\oe{}uds fortement interconnectés. Le réseau de concepts est dynamique ; les nœuds évoluent au cours du temps, lors de l'utilisation du programme.
+\end{definition}
+
+
+Le Réseau est constitué de n\oe{}uds. Chaque n\oe{}ud comporte~:
+\begin{itemize}
+  \item Une étiquette (mot)~;
+ \item Une importance conceptuelle (IC) ou profondeur conceptuelle~;
+ \item Une activation (A) initialement nulle~;
+ \item Un certain nombre de liens à d'autres n\oe{}uds.
+\end{itemize}
+
+Chaque lien comporte~:
+\begin{itemize}
+ \item Une proximité conceptuelle (ou poids W)~;
+ \item Une étiquette qui le caractérise.
+\end{itemize}
+
+
+\subsubsection{Construction du réseau}
+
+Étant donné que le réseau de concepts apporte de l'information pour mieux lire le texte, il nous faut la trouver quelque part. Nous avons eu recours à toutes les sources de données précitées. Nous présentons le premier essai grandeur nature de la construction du réseau. Celui-ci, rappelons-le, est censé contenir des données relatives au sport. Chaque concept (joueur de football, mais aussi terme courant comme "gagner") y porte une certaine importance conceptuelle, une activation qui est modifiée selon la lecture du texte, et est relié à d'autres concepts par des liens dotés d'un poids (plus celui-ci est élevé, plus le premier concept est susceptible de \textit{faire penser} au deuxième) et d'une relation sur le modèle de Conceptnet5 (RelatedTo, MemberOf, etc).
+
+
+\paragraph{Récupération de concepts et de noms}
 
 Nous analysons un certain nombre d'articles, ici 3043 issus 7 flux rss différents sur 16 jours.
 
@@ -250,7 +252,7 @@ Pour récupérer les noms propres, nous repérons à l'intérieur d'un article l
 
 Nous comptons aussi la fréquence d'apparition de chaque concept. On obtient 9744 noms et environ 12700 concepts, ce qui est très raisonnable.
 
-\subsubsection{Traitement des noms avec Freebase}
+\paragraph{Traitement des noms avec Freebase}
 
 Nous n'utilisons pour l'instant l'API Freebase que de fa\c{c}on très superficielle. Chaque nom propre donne lieu à une requête. Si celle-ci aboutit, on analyse le résultat et si celui-ci comporte une donnée (exemple~: à l'envoi de \verb|"scott_jamieson"|, on récupère \verb|"soccer_midfielder"|), on ajoute un nouveau nœud correspondant au réseau, et une arête ``<IsA>'' dont le poids dépend du résultat de la requête.
 
@@ -258,7 +260,7 @@ Dans notre exemple, 676 noms seront rejetés par Freebase~: c'étaient donc des 
 
 Environ 7500 nœuds sont créés dans le réseau.
 
-\subsubsection{Traitement des concepts avec Conceptnet5}
+\paragraph{Traitement des concepts avec Conceptnet5}
 
 Pour chaque concept dans la liste, on envoie deux requêtes~: l'une vise à trouver des arêtes qui partent de lui (Search), l'autre à trouver des concepts proches (Association). 
 
@@ -276,7 +278,7 @@ Cette liste pourra bien sûr donner lieu à une analyse plus fine (nouvelles req
 
 \`A ce stade, notre réseau possède 24000 nœuds environ, ce qui reste modique.
 
-\subsubsection{Extension des nœuds du réseau}
+\paragraph{Extension des nœuds du réseau}
 
 Nous envisageons maintenant, par de nouvelles requêtes, d'étendre les nœuds que nous venons de créer. Le but est que le réseau soit au mieux interconnecté, or de nombreux nœuds résultant des requêtes précédentes ne pointent vers aucun nœud.
 
@@ -284,7 +286,7 @@ D'autres opérations sont possibles.
 
 Nous regardons 5000 de ces nœuds faiblement connectés. Après requêtes, 2300 sont reliés au réseau. (Cette étape a été particulièrement lente).
 
-\subsubsection{Suppression des nœuds inutiles}
+\paragraph{Suppression des nœuds inutiles}
 
 Malgré les nombreux paramètres servant à filtrer, les requêtes n'ont pas donné des résultats toujours pertinents. Nous choisissons de retirer du réseau les nœuds faiblement reliés (un seul voisin). Ceux-ci seront de toute fa\c{c}on peu utiles lors de la propagation de l'activation.
 
@@ -323,7 +325,7 @@ Pour chaque test, nous activons un nœud et laissons l'activation se propager à
 \end{verbatim}
 \end{itemize}
 
-\subsection{Choix de programmation et prospectives}
+\subsubsection{Choix de programmation et prospectives}
 
 Nous avons d'abord cru que l'utilisation massive de requêtes donnerait des contraintes de temps importantes à nos programmes. C'est en réalité une erreur. La parallélisation des requêtes, que nous avons commencé à effectuer, permet un gain de temps exceptionnel et va nous conduire dans les prochaines semaines à améliorer considérablement le temps d'exécution.
 
