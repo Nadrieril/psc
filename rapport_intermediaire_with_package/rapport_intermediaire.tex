@@ -4,6 +4,7 @@
 
 \usepackage{makeidx}              %% permet de générer un index automatiquement
 \usepackage[style=numeric, backend=bibtex]{biblatex}				%% Utilisé pour la biblio
+\usepackage[hidelinks]{hyperref}
 
 
 
@@ -138,11 +139,11 @@ Nous l'utilisons à travers son interface \pyt{nltk}, pour récupérer des infor
 
 \subsubsection{Conceptnet5}
 
-Conceptnet (<http://conceptnet5.media.mit.edu/>) est un projet libre de réseau sémantique représentant des connaissances usuelles, aussi bien de la vie de tous les jours que culturelles et scientifiques. Il fait partie du \ang{Commonsense Computing Initiative} qui relie différents laboratoires, dont le MIT Media Lab, et entreprises.
+Conceptnet (\href{http://conceptnet5.media.mit.edu/}{leur site}) est un projet libre de réseau sémantique représentant des connaissances usuelles, aussi bien de la vie de tous les jours que culturelles et scientifiques. Il fait partie du \ang{Commonsense Computing Initiative} qui relie différents laboratoires, dont le MIT Media Lab, et entreprises.
 
 Il est important de noter que Conceptnet5 est généré à partir de données brutes. Conceptnet5 est relié à DBPedia, une grande partie de ses connaissances provient de Wiktionary, une partie de WordNet.
 
-Nous avons utilisé une partie de code source provenant de la page <https://github.com/commonsense/conceptnet5>.
+Nous avons utilisé une partie de code source provenant de \href{https://github.com/commonsense/conceptnet5}{<github>}.
 
 
 \subsubsection{Structure de Conceptnet5}
@@ -184,7 +185,7 @@ La correspondance entre relations de WordNet et de Conceptnet est par exemple~:
 
 Nous avons décidé après coup de conserver ces relations dans le réseau de concepts, et d'en utiliser un sous-ensemble.
 
-\subsubsection{Détail de l'API}
+\subsubsection{Détail de l'API (\ang{Application's Programmer Interface})}
 
 Nous pouvons faire un certain nombre de requêtes à Conceptnet5. Il existe trois types différents de requêtes~:
 \begin{itemize}
