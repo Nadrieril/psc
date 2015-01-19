@@ -9,7 +9,7 @@
 
 \title{Projet Scientifique Collectif X2013 \\INF02~: Synthétiseur automatique de documents} 
 \renewcommand{\petittitre}{Projet INF02}
-\newcommand{\pyt}[1]{\texttt{#1}}
+\newcommand{\pyt}[1]{\texttt{#1}}%nooms python
 \newcommand{\ang}[1]{\textit{#1}}%noms anglais
 \author{\membres} %%\membres uniquement avec l'option psc
 \date{21 janvier 2015}
@@ -83,7 +83,13 @@ Ces données vont servir à différents niveaux~:
 \end{itemize}
 
 
+<<<<<<< Updated upstream
 \section{Le réseau de concepts}
+=======
+
+
+\section{Le r\'eseau de concepts}
+>>>>>>> Stashed changes
 
 
 \subsection{Structure}
@@ -162,24 +168,29 @@ Nous l'utilisons à travers son interface \pyt{nltk}, pour récupérer des infor
 
 Conceptnet (<http://conceptnet5.media.mit.edu/>) est un projet libre de réseau sémantique représentant des connaissances usuelles, aussi bien de la vie de tous les jours que culturelles et scientifiques. Il fait partie du \ang{Commonsense Computing Initiative} qui relie différents laboratoires, dont le MIT Media Lab, et entreprises.
 
-Il est important de noter que conceptnet5 est généré à partir de données brutes. Conceptnet5 est relié à DBPedia, une grande partie de ses connaissances provient de Wiktionary, une partie de WordNet.
+Il est important de noter que Conceptnet5 est généré à partir de données brutes. Conceptnet5 est relié à DBPedia, une grande partie de ses connaissances provient de Wiktionary, une partie de WordNet.
 
 Nous avons utilisé une partie de code source provenant de la page <https://github.com/commonsense/conceptnet5>.
 
 
 \subsubsection{Structure de Conceptnet5}
 
+<<<<<<< Updated upstream
 Conceptnet5\index{Conceptnet5} est un graphe sémantique contenant plusieurs millions de nœuds et d'arêtes.
+=======
+Conceptnet5\index{Conceptnet5} est un graphe sémantique contenant de l'ordre du million de nœuds et d'ar\^etes.
+1.6 million d'assertions (ar\^etes du graphe).
+>>>>>>> Stashed changes
 
 Les n\oe{}uds sont des mots et de courtes phrases, pas seulement en anglais. Les arêtes qui relient ces n\oe{}uds expriment une connaissance, elles contiennent chacune une relation particulière.
 
 Une arête possède aussi une source (d'où provient l'information) et un poids en fonction de cette source, selon l'importance de l'arête.
 
-Une relation concept-arête-concept exprime une assertion. Une même assertion peut être exprimée de différentes manières.
+Une relation concept-arête-concept exprime une assertion\index{Assertion}. Une même assertion peut être exprimée de différentes manières. Conceptnet5 contient 1.6 million d'assertions.
 
 Une assertion peut elle-même être utilisée comme un n\oe{}ud ou comme une arête (on peut avoir des assertions d'assertions).
 
-Les relations valables dans tout langage, pour ConceptNet5, sont par exemple~: 
+Les relations valables dans tout langage, pour Conceptnet5, sont par exemple~: 
 \begin{itemize}
  \item RelatedTo~;
  \item IsA~;
@@ -409,12 +420,15 @@ Compte-tenu de la simplicité de l'algorithme statistique, nous espérons que le
 \nocite{*}
 \printbibliography{}
 
+<<<<<<< Updated upstream
 %à ajouter
 George A. Miller (1995). WordNet: A Lexical Database for English.
 Communications of the ACM Vol. 38, No. 11: 39--41.
 
 Christiane Fellbaum (1998, ed.) WordNet: An Electronic Lexical Database. Cambridge, MA\@: MIT Press.
 
+=======
+>>>>>>> Stashed changes
 \appendix
 
 \printindex

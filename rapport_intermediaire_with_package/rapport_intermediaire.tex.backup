@@ -15,9 +15,9 @@
 \date{21 janvier 2015}
 
 %mettre les accents comme \c{c}a, sinon risque de plantage
-\index{R\'eseau S\'emantique}
-\index{Analyse Symbolique}
-\index{Analyse S\'emantique}
+\index{R\'eseau s\'emantique}
+\index{Analyse symbolique}
+\index{Analyse s\'emantique}
 \index{R\'eseau de Concepts}
 
 \makeindex
@@ -46,7 +46,7 @@
 
 \subsubsection{But du projet}
 
-Le but de notre sujet est de produire un programme capable d'analyser s\'emantiquement\index{Analyse S\'emantique} un texte ayant pour sujet le sport (et plus particulièrement encore le football) de façon à en produire un résumé. Il s'agit là d'une véritable innovation par rapport à l'état actuel du résumé automatique, dans la mesure où les programmes existants se basent prioritairement sur une analyse statistique plus ou moins poussée de fréquence d'apparition des mots pour juger de leur importance~; notre programme se baserait plutôt sur le sens pour juger de la pertinence d'un concept et savoir s'il doit le faire figurer ou non dans le résumé final.
+Le but de notre sujet est de produire un programme capable d'analyser s\'emantiquement\index{Analyse s\'emantique} un texte ayant pour sujet le sport (et plus particulièrement encore le football) de façon à en produire un résumé. Il s'agit là d'une véritable innovation par rapport à l'état actuel du résumé automatique, dans la mesure où les programmes existants se basent prioritairement sur une analyse statistique plus ou moins poussée de fréquence d'apparition des mots pour juger de leur importance~; notre programme se baserait plutôt sur le sens pour juger de la pertinence d'un concept et savoir s'il doit le faire figurer ou non dans le résumé final.
 
 Dans l'état actuel des choses, nous n'espérons pas produire un programme utilisable dans l'industrie ou plus efficace que ceux déjà existants~; nous pensons en revanche que cette autre manière d'aborder le résumé automatique est plus viable, dans la mesure où elle analyse plus directement que par la méthode statistique.
 
@@ -63,7 +63,7 @@ Pour atteindre cet objectif, plusieurs modules assez indépendants ont pu être 
 
 \subsubsection{Outils extérieurs utilisés}
 
-Le volume de travail représenté par la création et l'utilisation du réseau de concepts\index{R\'eseau de Concepts} est tel que nous nous appuyons sur un certain nombre d'outils pour traiter le texte en amont de notre résumé. La construction du réseau s'appuie, elle aussi, sur des bases de connaissances déjà existantes (et libres) dont voici la liste :
+Le volume de travail représenté par la création et l'utilisation du réseau de concepts\index{R\'eseau de concepts} est tel que nous nous appuyons sur un certain nombre d'outils pour traiter le texte en amont de notre résumé. La construction du réseau s'appuie, elle aussi, sur des bases de connaissances déjà existantes (et libres) dont voici la liste :
 
 \begin{itemize}
 	\item[WordNet~: ]Dictionnaire permettant d'obtenir la classe grammaticale des mots présents dans le réseau.
@@ -90,7 +90,7 @@ Ces donn\'ees vont servir \`a diff\'erents niveaux :
 
 
 \begin{definition}[Réseau de concepts]
-Le réseau de concepts\index{R\'eseau de Concepts} est la ``mémoire à long terme'' de notre programme.
+Le réseau de concepts\index{R\'eseau de concepts} est la ``mémoire à long terme'' de notre programme.
 
 Ce réseau est au carrefour entre les réseaux sémantiques et les réseaux de neurones. Les n\oe{}uds du réseau ne représentent pas des concepts à proprement parler~; en revanche, les concepts sont vus comme regroupant des n\oe{}uds fortement interconnectés.
 \end{definition}
