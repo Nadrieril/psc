@@ -8,3 +8,5 @@
 *.log
 *.blg
 *.ind
+*.bib
+*.idx
