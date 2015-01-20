@@ -81,7 +81,7 @@ Le groupe a essentiellement travaillé sur la récupération de données pour la
 
 \subsection{Sources de données}
 
-Nous utilisons deux sources de données : des données brutes, sous forme de langage naturel (textes d'articles écrits en anglais), et des données déjà travaillées, le plus souvent mises sous la forme de graphe sémantique.\index{Graphe sémantique}
+Nous utilisons deux sources de données~: des données brutes, sous forme de langage naturel (textes d'articles écrits en anglais), et des données déjà travaillées, le plus souvent mises sous la forme de graphe sémantique.\index{Graphe sémantique}
 
 \begin{definition}[Graphe sémantique]
 En première approximation, nous faisons renvoyer la notion de graphe sémantique à un graphe où les nœuds sont étiquetés par des mots et où les arêtes représentent un lien ou expriment une relation entre ces mots.
@@ -175,12 +175,12 @@ Comme Conceptnet est construit en partie à l'aide de WordNet, il existe une cor
 
 La correspondance entre relations de WordNet et de Conceptnet est par exemple~:
 \begin{itemize}
- \item attribute : Attribute~;
- \item causes : Causes~;
- \item classifiedByRegion : HasContext~;
- \item hyponymOf : IsA~;
- \item sameVerbGroupAs : SimilarTo~;
- \item seeAlso : RelatedTo.
+ \item attribute~: Attribute~;
+ \item causes~: Causes~;
+ \item classifiedByRegion~: HasContext~;
+ \item hyponymOf~: IsA~;
+ \item sameVerbGroupAs~: SimilarTo~;
+ \item seeAlso~: RelatedTo.
 \end{itemize}
 
 Nous avons décidé après coup de conserver ces relations dans le réseau de concepts, et d'en utiliser un sous-ensemble.
@@ -221,7 +221,7 @@ Freebase\index{Freebase} est une immense base de données sémantiques qui conti
 \begin{definition}[Réseau de concepts]
 Le réseau de concepts\index{Réseau de concepts} est la ``mémoire à long terme'' de notre programme.
 
-Ce réseau est au carrefour entre les réseaux sémantiques et les réseaux de neurones. Les n\oe{}uds du réseau ne représentent pas des concepts à proprement parler~; en revanche, les concepts sont vus comme regroupant des n\oe{}uds fortement interconnectés. Le réseau de concepts est dynamique ; les nœuds évoluent au cours du temps, lors de l'utilisation du programme.
+Ce réseau est au carrefour entre les réseaux sémantiques et les réseaux de neurones. Les n\oe{}uds du réseau ne représentent pas des concepts à proprement parler~; en revanche, les concepts sont vus comme regroupant des n\oe{}uds fortement interconnectés. Le réseau de concepts est dynamique~; les nœuds évoluent au cours du temps, lors de l'utilisation du programme.
 \end{definition}
 
 
@@ -242,7 +242,7 @@ Chaque lien comporte~:
 
 \subsubsection{Construction du réseau}
 
-Étant donné que le réseau de concepts apporte de l'information pour mieux lire le texte, il nous faut la trouver quelque part. Nous avons eu recours à toutes les sources de données précitées. Nous présentons le premier essai grandeur nature de la construction du réseau. Celui-ci, rappelons-le, est censé contenir des données relatives au sport. Chaque concept (joueur de football, mais aussi terme courant comme "gagner") y porte une certaine importance conceptuelle, une activation qui est modifiée selon la lecture du texte, et est relié à d'autres concepts par des liens dotés d'un poids (plus celui-ci est élevé, plus le premier concept est susceptible de \textit{faire penser} au deuxième) et d'une relation sur le modèle de Conceptnet5 (RelatedTo, MemberOf, etc).
+Étant donné que le réseau de concepts apporte de l'information pour mieux lire le texte, il nous faut la trouver quelque part. Nous avons eu recours à toutes les sources de données précitées. Nous présentons le premier essai grandeur nature de la construction du réseau. Celui-ci, rappelons-le, est censé contenir des données relatives au sport. Chaque concept (joueur de football, mais aussi terme courant comme ``gagner'') y porte une certaine importance conceptuelle, une activation qui est modifiée selon la lecture du texte, et est relié à d'autres concepts par des liens dotés d'un poids (plus celui-ci est élevé, plus le premier concept est susceptible de \textit{faire penser} au deuxième) et d'une relation sur le modèle de Conceptnet5 (RelatedTo, MemberOf, etc).
 
 
 \paragraph{Récupération de concepts et de noms}
@@ -388,13 +388,15 @@ Les n\oe{}uds internes sont en nombre fini et leurs étiquettes dépendent de si
 
 \section{Suites envisagées}
 
-Dans l'ensemble le projet avance avec peu de retard sur le plan prévisionnel écrit en novembre dernier. Le réseau de concepts est prêt à être utilisé et notre attention pourra se reporter sur le développement du \textit{workspace}\index{Workspace} et du déploiement de l'analyse syntaxique.
+Dans l'ensemble le projet avance avec peu de retard sur le plan prévisionnel écrit en novembre dernier. Le réseau de concepts est prêt à être utilisé et notre attention pourra se reporter sur le développement du \textit{workspace}\index{Workspace} et du déploiement de l'analyse syntaxique.\index{Analyse syntaxique}
 
-Cette dernière, que nous avions prise pour à peu près acquise, s'avère requérir plus de travail que prévu (il nous faudra l'entraîner et la préparer un peu, ce qui requiert une certaine compréhension des mécanismes qui la sous-tendent).
+Cette dernière, que nous avions prise pour à peu près acquise, s'avère requérir plus de travail que prévu. En effet, l'outil que nous avions prévu d'utiliser --- les ``grammaires'' \pyt{nltk}\index{Grammaire} --- soufrent d'un manque de souplesse rédhibitoire. Elles doivent en particulier connaître en avance tous les mots de la phrase pour pouvoir l'analyser, ce qui même en construisant un dictionnaire exhaustif --- qui n'existe pas à l'heure actuelle --- est très limitant pour peu qu'une phrase contienne un néologisme où un nom propre peu connu (voire une simple faute d'orthographe). Nous penchons donc plus actuellement pour des méthodes statistiques plus souples, mais aussi plus difficiles à appréhender.
+
+\vspace{1\baselineskip}
 
 La planification pour le reste du projet est la suivante~:
 \begin{description}
-	\item[Février~: ]Mise en place d'une grammaire \pyt{nltk}. Responsables~: Antonin Angibault, Théophane Hufschmitt, Sarah Fernandes-Pinto-Fachada.
+	\item[Février~: ]Mise en place de l'analyseur syntaxique. Responsables~: Antonin Angibault, Théophane Hufschmitt, Sarah Fernandes-Pinto-Fachada.
 	\item[Février~: ]Fin de la spécification du contenu du \textit{workspace}.
 	\item[Février-Avril~: ]Implémentation du \textit{workspace} (donc, essentiellement, de ce qui manque à l'algorithme de résumé pour fonctionner).
 	\item[Avril~: ]Génération de résumé et évaluation de ceux-ci.
