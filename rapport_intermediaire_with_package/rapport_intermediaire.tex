@@ -57,7 +57,7 @@ Pour atteindre cet objectif, plusieurs modules assez indépendants ont pu être 
 \begin{description}
 	\item[Récupération de données] à utiliser pour la création d'un réseau de concepts modélisant la connaissance \textit{a priori} du programme. Responsables~: Théophane Hufschmitt, Guillaume Boisseau.
 	\item[Création du réseau de concepts] et remplissage de celui-ci. Il s'agissait ici d'une part de définir sa structure et d'autre part d'y introduire les données nécessaires. Responsables~: André Schrottenloher, Guillaume Boisseau.
-	\item[Analyse syntaxique] à l'aide d'outil existants. Il s'agissait de trouver une grammaire capable d'analyser une phrase et d'en faire ressortir les relations de type verbe-objet ou nom-qualificatif. Responsables~: Antonin Angibault, Théophane Hufschmitt, Sarah Fernandes-Pinto-Fachada
+	\item[Analyse syntaxique] à l'aide d'outil existants. Il s'agissait de trouver une grammaire capable d'analyser une phrase et d'en faire ressortir les relations de type verbe-objet ou nom-qualificatif. Responsables~: Antonin Angibault, Théophane Hufschmitt, Sarah Fernandes-Pinto-Fachada.
 	\item[Réflexion] sur l'utilisation du réseau de concepts et de l'analyse grammaticale pour produire un réseau capable de rendre compte de la compréhension du texte. Responsables~: tous.
 	\item[Implémentation] d'un algorithme simple de résumé stastique (basé sur l'algorithme TF-IDF), devant servir de base de comparaison pour tester la qualité des résumés produits par notre algorithme.  Responsable~: Zhixing Cao.
 \end{description}
@@ -224,7 +224,7 @@ Freebase\index{Freebase} est une immense base de données sémantiques qui conti
 \begin{definition}[Réseau de concepts]
 Le réseau de concepts\index{Réseau de concepts} est la ``mémoire à long terme'' de notre programme.
 
-Ce réseau est au carrefour entre les réseaux sémantiques\index{Graphe sémantique} et les réseaux de neurones. Les n\oe{}uds du réseau ne représentent pas des concepts à proprement parler~; en revanche, les concepts sont vus comme regroupant des n\oe{}uds fortement interconnectés. Le réseau de concepts est dynamique~; les nœuds évoluent au cours du temps, lors de l'utilisation du programme.
+Ce réseau est au carrefour entre les réseaux sémantiques\index{Graphe sémantique} et les réseaux de neurones. Les nœuds du réseau peuvent être vus comme représentant les concepts\index{Concept}. On peut aussi considérer que les concepts émergent à partir de groupes de n\oe{}uds fortement interconnectés. Le réseau de concepts est dynamique~; les nœuds évoluent au cours du temps, lors de l'utilisation du programme.
 \end{definition}
 
 
@@ -279,11 +279,11 @@ Dans le cas contraire, de nouvelles arêtes sont créées. Leurs poids dépenden
 
 L'importance conceptuelle d'un nouveau nœud dépend essentiellement de son nombre d'apparitions dans les articles. D'autres possibilités sont envisageables (nombre de synonymes trouvés avec WordNet, par exemple, ou nombre de sens différents : plus un mots a de sens, plus il est conceptuel).\\
 
-Dans notre exemple, sur les 12700 concepts, 4800 ne donnent lieu à aucun résultat. Cela peut paraître beaucoup~; en réalité, quand on regarde de plus près la ``<liste noire>'' (que nous stockons), on a par exemple~:``reimagining'', ``money-grabbers'', ``whoscored'', ``impeccable'', ``amateurish'', ``dawkins'', ``rat-a-tat'', ``single-handedly'', ``petered'', ``real-politik'', ``re-tweet'', ``throwing''.
+Dans notre exemple, sur les 12700 concepts, 4800 ne donnent lieu à aucun résultat. Cela peut paraître beaucoup~; en réalité, quand on regarde de plus près la ``<liste noire>'' (que nous stockons), on a par exemple~:``reimagining'', ``money-grabbers'', ``whoscored'', ``impeccable'', ``amateurish'', ``dawkins'', ``rat-a-tat'', ``petered'', ``real-politik'', ``re-tweet'', ``throwing''.
 
-Ces mots sont soit composés (et donc difficiles à analyser), soit résultent d'erreurs du POS-tagger (on voit passer quelques noms propres).
+Ce sont des mots composés pour certains, pour d'autres, des mots tout à fait compréhensibles mais qui ont dû être considérés à tort comme des noms propres (respectivement, comme des noms communs).
 
-Cette liste pourra bien sûr donner lieu à une analyse plus fine (nouvelles requêtes Freebase).
+Cette liste pourra bien sûr donner lieu à une analyse plus fine (nouvelles requêtes Freebase, Concepnet).
 
 \`A ce stade, notre réseau possède 24000 nœuds environ, ce qui reste modique.
 
