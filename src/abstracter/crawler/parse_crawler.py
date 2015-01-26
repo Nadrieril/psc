@@ -24,6 +24,8 @@ def download_crawler_data(date):
 	print("downloading : "+full_url)
 	r = make_http_request(full_url)#requests.get(full_url,proxies=PROXY)
 	#print(len(r.content))
+	if not os.path.isdir(DEFAULT_DATA_DIRECTORY):
+		os.makedirs(DEFAULT_DATA_DIRECTORY)
 	with open(DEFAULT_DATA_DIRECTORY+date+".tar.gz",'wb') as f:
 		#f.write(r.content)
 		f.write(r.content)

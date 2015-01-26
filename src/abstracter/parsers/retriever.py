@@ -67,10 +67,12 @@ def _links_to(entity_list,name):
     :rtype: boolean
     """
     if entity_list:
+        temp=name
         for e in entity_list:
-            if name in e:
-                return True
-    return False
+            if temp in e:
+                temp=e
+        return temp
+    return None
 
 
 def get_names(sents):
@@ -117,7 +119,7 @@ def retrieve_words_only(sents):
     #return the dictionary
     return concepts
 
-def retrieve_names_only(sents):
+def old_retrieve_names_only(sents):
 	"""
 	Get a list of all names in the text.
 	Every name appear only once.
@@ -131,6 +133,24 @@ def retrieve_names_only(sents):
 			res.append(name)
 			names.append(name)  
 	return res  
+
+def retrieve_names_only(sents):
+    """
+    Get a list of all names in the text.
+    Every name appear only once.
+    """
+    names=list(s.lower() for s in get_names(sents))
+    namescopy=names.copy()
+    res={}
+    for name in namescopy:
+        #names.remove(name)
+        name2=_links_to(names,name)
+        if not name2 in res:
+            res[name2]=1
+        else:
+            res[name2]=res[name2]+1
+            #names.append(name)  
+    return res 
 
 
 def retrieve_words_names(text):
