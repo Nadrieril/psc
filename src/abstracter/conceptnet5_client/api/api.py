@@ -1,10 +1,7 @@
 import urllib.parse
-
 from abstracter.conceptnet5_client.api.result import parse_relevant_edges,parse_similar_concepts
-from abstracter.util.http import *
+from abstracter.util.http import make_http_request
 import abstracter.conceptnet5_client.api.settings as settings
-
-
 
 """
 Conceptnet5 supports 3 API :
@@ -36,7 +33,7 @@ def search_concept(concept,limit=1,**kwargs):
     enc_query_args = urllib.parse.urlencode(query_args)
     concept = concept.replace(' ', '_')
     url = ''.join(['%s/c/%s/%s?' % (settings.BASE_LOOKUP_URL, settings.LANGUAGE, concept)]) + enc_query_args
-    json_data = make_http_request(url)
+    json_data = make_http_request(url).json()
     return parse_relevant_edges(json_data)
 
 
@@ -126,7 +123,6 @@ def search_edges(filter='/c/en/',limit=10,**kwargs):
     enc_query_args = urllib.parse.urlencode(query_args)   
     url = ''.join(['%s%s' % (settings.BASE_SEARCH_URL, '?')]) + enc_query_args
     json_data = make_http_request(url)
-    #json_data = make_simple_request(url)
     return parse_relevant_edges(json_data)
 
 

@@ -1,16 +1,15 @@
 from abstracter.parsers.retriever import retrieve_words_names
 from abstracter.util.json_stream import *
+from abstracter.util.http import make_http_request
 import json
 import os
 import tarfile,sys
-import requests
 import shutil
 
 DEFAULT_DATA_DIRECTORY="crawlerpsc/"
 DEFAULT_RESULTS_DIRECTORY="concepts/"
 CONCEPTS_NAMES_DATA_DIRECTORY="concepts_names_data/"
 CRAWLER_URL='http://nadrieril.fr/dropbox/crawlerpsc/'
-PROXY={'http' : 'http://kuzh.polytechnique.fr:8080'}
 #or None
 #default location of the data directory when it is downloaded and uncompressed
 DEFAULT_LOCATION="srv/ftp/crawlerpsc/"
@@ -23,7 +22,7 @@ def download_crawler_data(date):
 	"""
 	full_url=CRAWLER_URL+date+".tar.gz"
 	print("downloading : "+full_url)
-	r = requests.get(full_url,proxies=PROXY)
+	r = make_http_request(full_url)#requests.get(full_url,proxies=PROXY)
 	#print(len(r.content))
 	with open(DEFAULT_DATA_DIRECTORY+date+".tar.gz",'wb') as f:
 		#f.write(r.content)

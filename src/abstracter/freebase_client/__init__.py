@@ -1,12 +1,7 @@
-import urllib.request
-import urllib.parse
 from abstracter.util.http import *
 from abstracter.freebase_client.settings import *
-#import abstracter.requests as requests
-import requests
+from abstracter.util.http import make_https_request
 import abstracter.util.concurrent as co
-
-###WARNING : CURRENTLY USING REQUESTS BECAUSE HTTPS REQUESTS WITH URLLIB DON'T WORK THROUGH A PROXY
 
 
 def keep_relevant(query_response):
@@ -24,8 +19,7 @@ def search(lang='en',limit=10,**kwargs):
 			pass
 	url_values = urllib.parse.urlencode(data)
 	full_url = URL + '?' + url_values
-	#resp=make_http_request(full_url)
-	resp=requests.get(full_url,proxies={'https' : 'http://kuzh.polytechnique.fr:8080'}).json()
+	resp=make_https_request(full_url).json()
 	return resp['result']
 
 
@@ -43,7 +37,7 @@ def search_name(name):
 	return res
 
 #################################
-###parallel
+###concurrent requests
 ################################
 
 def search_name_url(name,**kwargs):
