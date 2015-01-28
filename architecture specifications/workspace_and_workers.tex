@@ -1,0 +1,333 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[latin1]{inputenc}%%seul package à charger : pour éviter les problèmes sordides d'encodage
+\usepackage[fiche,psc]{andre}%%bon eh bien sûr...
+%%fiche, psc pour faire une fiche
+%%rapport, psc pour faire un rapport
+
+\title{Document de travail - Workspace, Textspace, Workers}
+\author{\membres} %%\membres uniquement avec l'option psc
+\date{12 novembre 2014}
+
+\begin{document}
+
+%\titrelong%%une page complète
+\titrecourt %titre plus court, typiquement pour les fiches
+
+
+\section*{Important}
+
+MODIDIFIEZ CE DOCUMENT AUTANT QUE VOUS VOULEZ SELON VOS IDÉES DU MOMENT, C'EST QUELQUE CHOSE DE FULLY COLLABORATIF
+
+\section{Présentation}
+
+Le Workspace est la structure la plus importante ; plus encore que le réseau de concept. Il nous faut la définir rigoureusement, ainsi que ce que font les workers, afin d'être sûrs à quoi nous arrivons.
+
+C'est aussi ici que nous allons le plus nous démarquer de Copycat notamment, puisque nous voulons faire du résumé automatique : pour ce qui était du réseau de concepts, nous étions encore dans la continuité.
+
+
+\paragraph{Cahier des charges du workspace}
+
+\begin{itemize}
+ \item Contenir des instances des n\oe uds du réseau de concepts (ie : des concepts signifiants) ;
+ \item Reprendre les informations importantes du texte ;
+ \item Ajouter de l'information ne provenant pas directement du texte, mais jugée importante ! (Ex. trivial des n\oe uds fortement activés dans le RC)
+ \item Ne pas contenir d'information trop évidente : ex. il ne faut pas répéter que Wayne Rooney est un joueur de football, même si c'était un sous-entendu du texte. C'était sous-entendu justement parce que ça ne sert pas de le répéter, a priori ;
+ \item Contenir une information exploitable ;
+ \item Tracer du début à la fin du programme le rôle grammatical des concepts tirés du texte, dans leur contexte. Exemple : Wayne Rooney est un sujet. Il faut savoir tout au long du programme, y compris lorsque le n\oe ud Wayne Rooney sera créé dans le Workspace, que c'est un sujet. Cela permet de ne pas jeter de l'information par la fenêtre.
+\end{itemize}
+ 
+\paragraph{Cahier des charges des workers}
+Il nous en faut pour :
+\begin{itemize}
+ \item Créer des instances de n\oe uds du RC dans le W ;
+ \item Activer des n\oe uds du RC ;
+ \item Faire des liens entre les n\oe uds du W ;
+ \item \textbf{Prendre en compte toute l'information grammaticale/syntaxique} et la transférer au W, car elle n'apparaît pas dans le RC. Exemple : un worker spécial qui crée un sujet (Wayne Rooney) dans le W, et va ensuite spécifiquement chercher "ce que fait Wayne Rooney". Un worker spécial qui crée un objet (World Cup) dans le W, et va ensuite chercher "ce qui arrive à" ou "ce qu'on dit sur" World Cup.
+ 
+\end{itemize}
+
+\section{Idées provenant de Copycat/Bascet}
+ 
+\subsection{Copycat}
+
+\paragraph{Workspace}
+Le workspace contient des instances du réseau de concepts (Slipnet) organisées en : 
+\begin{itemize}
+ \item \textbf{Description} d'objets
+ \item \textbf{Relations} entre objets (lien de succession entre lettres par ex.)
+ \item \textbf{Groupes} d'objets
+ \item Correspondances entre objets de chaînes différentes ("est analogue à")
+ \item Règles qui décrivent le changement entre la chaîne initiale et la chaîne modifiée
+ \item Règle traduite qui décrit comment modifier la chaîne cible (peut être issue de la règle précédente en remplaçant des concepts, par exemple)
+\end{itemize}
+
+Je retiens : description, relations, groupes d'objets.
+
+\paragraph{coderack}
+Le coderack contient les codelets, agents choisis stochastiquement mais pas n'importe comment.
+
+Ces agents (codelets) représentent des pressions.
+\begin{itemize}
+ \item Codelets ascendants : pressions présentes dans toutes les situations (trouver des relations...)
+ \item Codelets descendants : pressions provenant de la situation courante
+\end{itemize}
+
+À chaque pas d'exécution, un codelet est exécuté et supprimé du coderack. Chaque codelet a une certaine urgence, mais elle ne détermine pas sa priorité (le choix se fait en partie au hasard) (elle représente l'intérêt de sa tâche).
+
+\begin{itemize}
+ \item Les codelets activent les noeuds du Slipnet
+ \item Les noeuds actifs ajoutent des codelets dans le Coderack (descendants, par exemple)
+ \item Les codelets lancent d'autres codelets
+ \item Des codelets ascendants sont créés en permanence
+\end{itemize}
+
+Je laisse pour plus tard le problème de la température.
+
+\subsection{Bascet}
+
+\paragraph{Agents}
+
+\begin{itemize}
+ \item Chacun a son \textbf{urgence}
+ \item Chacun a un \textbf{n\oe ud père} qui l'a lancé (RC)
+ \item Ils peuvent lire et créer les objets du Blackboard (active les n\oe uds du RC dont l'objet est une instance)
+ \item \textbf{Opinionnent} sur la validité d'un objet
+\end{itemize}
+
+
+\paragraph{Blackboard}
+Contient des objets, instances des noeuds du RC :
+\begin{itemize}
+ \item Contenu
+ \item Père (noeud dont il est instance)
+ \item Importance (dépend du père et des liens avec les autres objets)
+ \item Satisfaction (dépend des agents)
+ \item Eminence (objet à traiter)
+\end{itemize}
+
+\section{Notre architecture}
+
+Je pense reprendre dans un premier temps un mélange de ces caractéristiques, et adapter ensuite à notre problème.
+
+
+\begin{definition}[Textspace]
+
+Le textspace [nom à changer, par pitié !] est un espace intermédiaire dans lequel l'information est stockée sous forme d'arbres sémantiques. Cette information est :
+\begin{itemize}
+ \item Décomposée par les workers ;
+ \item Envoyée par les workers dans le workspace, avant d'être reconstruite.
+\end{itemize}
+
+\end{definition}
+
+\begin{definition}[Workspace]
+
+Le Workspace est une structure constituée de :
+\begin{itemize}
+ \item N\oe uds issus de l'instantiation de concepts ;
+ \item Relations entre ces n\oe uds.
+\end{itemize}
+
+\end{definition}
+
+
+\begin{definition}[N\oe ud du Workspace]
+
+Un tel n\oe ud comporte :
+\begin{itemize}
+ \item Un \textbf{n\oe ud père} dans le RC et une étiquette identique à son père ;
+ \item Une \textbf{satisfaction} calculée par les workers, selon le rôle, et les liens qu'ils ont réussi à créer (par exemple, pour un sujet, on s'attend à ce que celui-ci agisse) ;
+\end{itemize}
+
+\end{definition}
+
+Moins le n\oe ud est satisfait, plus il faut chercher, donc lancer des workers qui traitent de lui OU augmenter l'urgence de ces workers.
+
+\begin{definition}[Lien du Workspace]
+
+Lien entre deux n\oe uds du workspace. Ce lien exprime :
+\begin{itemize}
+ \item Une relation (sujet-objet, objet-caractéristique), cf concepnet5
+ \item Un concept ? (le lien est donc labellisé par un n\oe ud du RC)
+\end{itemize}
+
+
+\end{definition}
+
+
+\begin{definition}[Worker]
+Un worker correspond à une tâche. De manière générale, il agit à la fois sur le Workspace et sur le RC. Un worker comporte toujours :
+\begin{itemize}
+ \item Une urgence ;
+ \item Une mission définie ;
+\end{itemize}
+
+Il existe différents types de workers.
+\end{definition}
+
+\begin{definition}[Worker descendant]
+Le texte initial (phrase) étant entré dans le textspace sous forme d'arbre sémantique, un worker descendant est un worker qui se charge de décomposer cette structure pour en déduire des relations simples entre objets.
+
+Les workers descendants doivent dépendre foncièrement de la représentation de la phrase.
+\end{definition}
+
+\begin{definition}[Worker ascendant ou Builder]
+Un builder, comme son nom l'indique, est un worker qui travaille sur le workspace pour construire des structures. Il peut :
+\begin{itemize}
+ \item Créer un n\oe ud dans le workspace ;
+ \item Créer un lien dans le workspace ;
+ \item Rechercher des liens possibles ;
+\end{itemize}
+
+Le builder s'appuie sur différentes informations : l'activation du RC et le texte initial (décomposé grâce aux workers descendants).
+
+\end{definition}
+
+\section{Étapes-clés}
+
+Priorité 1  : reconstruire l'information de la phrase à l'intérieur du workspace, avec le moins de perte possibles
+
+Priorité 2 : élaguer le workspace pour garder l'info pertinente et non-redondante.
+
+Priorité 3 : faire les deux en même temps parce que ça s'y prête bien
+
+\section{Liste actualisée des workers et détail de leur activité}
+
+
+Remarques générales :
+\begin{itemize}
+ \item Moins un n\oe ud est satisfait, plus il doit générer de workers constructeurs
+ \item La satisfaction d'un n\oe ud doit augmenter lorsque quelque chose est construit sur ce n\oe ud (par exemple lorsqu'on crée des liens)
+ \item Les workers les plus importants sont ceux qui activent les concepts
+ \item Ensuite viennent ceux qui construisent quelque chose
+ \item Ceux qui font des calculs généraux
+ \item etc
+\end{itemize}
+
+
+\subsubsection{Worker}
+Classe-mère. Augmente le temps lors du lancement du worker.
+
+
+\subsection{Workers qui n'agissent directement que sur le RC}
+
+\subsubsection{Activate}
+Urgence : 100
+Active un n\oe ud du RC avec un certain montant (l'activation d'un n\oe ud ne peut pas dépasser 100).
+
+\begin{itemize}
+ \item Si le n\oe ud activé dépasse un certain seuil (80), push un WriteNode correspondant ;
+ \item Dans tous les cas, push des workers Compute pour tous les n\oe uds dans les liens de sortie.
+\end{itemize}
+
+
+\subsubsection{Compute}
+Urgence : 50
+
+Recalcule l'activation d'un n\oe ud du RC. Push des workers Compute pour tous les n\oe uds dans les liens de sortie.
+
+
+\subsection{Workers descendants, qui agissent sur le textspace}
+
+Ce sont eux qui vont chercher les concepts du RC à partir des mots de la phrase, avant d'envoyer des informations intelligibles dans le workspace. Ce sont eux qui initialisent la lecture de la phrase, envoient des workers activate pour travailler sur le RC. 
+
+\subsubsection{ReadPhrase}
+
+Urgence : 100
+
+Lit une unité complète.
+
+\begin{itemize}
+ \item Pour chaque mot, activer le RC
+\end{itemize}
+
+Il n'est pas exclu de lire plusieurs phrases en même temps !!
+
+
+
+\subsection{Builders : workers ascendants (up)}
+
+
+Il y a trois possibilités :
+\begin{itemize}
+ \item Soit on active le RC quand on construit des structures ;
+ \item Soit, au contraire, on le désactive ;
+ \item Soit on n'active rien du tout.
+\end{itemize}
+Je préfère la première possibilité : cela donne plus de chances d'agrandir les structures qu'on est en train de construire. En revanche, il faut activer avec modération, sinon on va commencer à faire n'importe quoi.
+
+
+\subsubsection{NodeBuilder}
+Worker chargé de créer un n\oe ud.
+
+\begin{itemize}
+ \item On lui donne un n\oe ud du RC très activé
+ \item Si ce n\oe ud est déjà instancié, il ne fait rien (à voir : il créé une nouvelle instance ???)
+ \item Si ce n\oe ud n'est pas instancié, il créé une instance et désactive le n\oe ud
+ \item Il cherche les instances des prédécesseurs activés et construit des liens pour chacune d'entre elles
+ \item Il push un LinkBuilder qui va chercher de l'information supplémentaire du textspace
+\end{itemize}
+
+
+\subsubsection{NodeFinder}
+Worker chargé de trouver un n\oe ud du workspace correspondant à un n\oe ud du RC.
+
+Lorsque nous ferons des instanciations multiples de n\oe uds du RC, nous aurons bien besoin de lui pour décider à quel n\oe ud du W s'intéresser...
+Pour le moment, on s'en fiche pas mal.
+
+
+\subsubsection{LinkBuilder}
+
+Worker chargé de trouver des liens partant d'un n\oe ud déjà instancié dans le workspace.
+
+Le worker recherche dans le textspace (mettons par exemple qu'on a décomposé la phrase en petits bouts) des liens possibles. Différentes possibilités s'offrent alors :
+\begin{itemize}
+ \item S'il trouve un lien avec un n\oe ud instancié et activé dans le RC, il faut :
+ \begin{itemize}
+  \item Activer encore ce n\oe ud
+  \item Créer le lien dans le W
+  \item Supprimer le lien dans les informations accessibles (à voir)
+ \end{itemize}
+ 
+  \item S'il trouve un lien avec un n\oe ud instancié mais pas activé dans le RC, il faut :
+  \begin{itemize}
+   \item Instancier à nouveau le concept du RC considéré
+   \item Créer un lien avec cette instance
+   \item Activer le n\oe ud du RC
+  \end{itemize}
+  Il faut aussi comprendre que désormais, lorsqu'il sera question de ce concept, c'est à cette instance qu'on fera appel (concrètement, c'est difficile).
+
+  \item S'il trouve un lien avec un n\oe ud ni instancié, ni activé, il faut :
+  \begin{itemize}
+   \item Instancier ce n\oe ud
+   \item Activer le concept
+  \end{itemize}
+
+  
+\end{itemize}
+Dans tous les cas où un lien est créé, la satisfaction des membres du lien augmente.
+
+
+
+\section{Fonctionnement général}
+
+\begin{enumerate}
+ \item La phrase est lue, parsée etc ;
+ \item L'arbre sémantique correspondant est envoyé dans le textspace ;
+ \item Un worker initial est appelé sur l'arbre sémantique ;
+ \item Le worker décortique l'arbre sémantique en activant les uns après les autres les n\oe uds correspondants du RC ; et en créant des infos simples qu'il met dans le textspace ;
+ \item Les activations se propagent au fur et à mesure et dès qu'un n\oe ud est assez activé, il est instancié, l'ordre de lecture importe donc ;
+ \item Lorsqu'un n\oe ud est instancié, il est désactivé ;
+ \item Lorsqu'une relation du RC entre deux n\oe uds semble pertinente (ie : ces deux n\oe uds sont activés, ils sont déjà instanciés), on crée un lien dans le workspace entre ces deux instances. Ce peut être une relation conceptuelle (ie : il y a une étiquette sur le lien) mais pas sujet-objet. Il faudra ensuite travailler ça ;
+ \item Pour les n\oe uds instanciés, on récupère et on insère dans le workspace les infos pré-digérées du textspace ;
+ \item Étant donné un n\oe ud qui vient d'être instancié, on crée un worker chargé de trouver des liens partant de ce n\oe ud.
+ \item Un calcul global de satisfaction des différents n\oe uds permet de se rendre compte de l'avancée du travail.
+ (Si la satisfaction stagne, on n'a plus qu'à arrêter)
+\end{enumerate}
+
+
+
+\end{document}
+
+
+

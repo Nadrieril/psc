@@ -5,6 +5,7 @@ from abstracter.conceptnet5_client.api import api as cn5
 import abstracter.freebase_client as fb
 import re
 from abstracter.conceptnet5_client.api.result import *
+import os
 
 """
 Generate network or expand it.
@@ -354,8 +355,6 @@ def use_method_on_network(network,expand_method,max,not_act_only=False):
 		expand_method(network=network,words=list)	
 
 
-
-import os
 
 def create_network(names_file,concepts_file,name,max=1000):
 	"""

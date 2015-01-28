@@ -5,7 +5,7 @@ from abstracter.crawler.parse_crawler import download_and_parse_data,unify
 #et faire des listes de concepts + de noms
 #il crée aussi de nouveaux fichiers dans concepts_names_data
 
-#download_and_parse_data("2015_01_16")
+download_and_parse_data("2015_01_17")
 #download_and_parse_data("2015_01_14")
 #unify()
 

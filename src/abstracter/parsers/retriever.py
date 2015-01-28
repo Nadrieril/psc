@@ -140,16 +140,13 @@ def retrieve_names_only(sents):
     Every name appear only once.
     """
     names=list(s.lower() for s in get_names(sents))
-    namescopy=names.copy()
     res={}
-    for name in namescopy:
-        #names.remove(name)
+    for name in names:
         name2=_links_to(names,name)
         if not name2 in res:
             res[name2]=1
         else:
             res[name2]=res[name2]+1
-            #names.append(name)  
     return res 
 
 

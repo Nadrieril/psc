@@ -104,9 +104,9 @@ def unify_all_names(directory=DEFAULT_RESULTS_DIRECTORY,max_files=10,subdirector
 			if temp:
 				for c in temp:
 					if c in all_names:
-						all_names[c]+=1
+						all_names[c]+=temp[c]
 					else:
-						all_names[c]=1
+						all_names[c]=temp[c]
 			j+=1
 		j=0
 		i+=1	
