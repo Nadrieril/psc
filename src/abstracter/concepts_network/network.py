@@ -77,6 +77,9 @@ class Network:
     def nodes(self,data=True):
         return self.network.nodes(data)
 
+    def edges(self):
+        return self.network.edges()
+
     ###########################################################
     ###JSON generating and decoding
     ##############################################

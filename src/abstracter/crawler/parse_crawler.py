@@ -161,7 +161,7 @@ def unify_all_concepts(directory=DEFAULT_RESULTS_DIRECTORY,max_files=10,subdirec
 from re import match
 from glob import glob
 
-def unify(directory=CONCEPTS_NAMES_DATA_DIRECTORY,max_files=10,names_file="names.jsons",concepts_file="concepts.jsons"):
+def unify(directory=CONCEPTS_NAMES_DATA_DIRECTORY,max_files=1000,names_file="names.jsons",concepts_file="concepts.jsons"):
 	"""
 	Unifies all dicts of concepts and list of names into two single files.
 	Retrieves all data from the default directory, with a maximum number of files.

@@ -14,7 +14,8 @@ example :
 
 HTTPS_PROXY={'https' : 'http://kuzh.polytechnique.fr:8080'}
 HTTP_PROXY={'http' : 'http://kuzh.polytechnique.fr:8080'}
-
+#HTTP_PROXY=None
+#HTTPS_PROXY=None
 
 ########################################################
 

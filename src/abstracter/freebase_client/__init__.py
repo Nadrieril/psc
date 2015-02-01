@@ -1,3 +1,4 @@
+import urllib.parse
 from abstracter.util.http import *
 from abstracter.freebase_client.settings import *
 from abstracter.util.http import make_https_request
