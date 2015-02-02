@@ -1,0 +1,115 @@
+\documentclass{beamer}
+\usepackage{pgfpages}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm}
+\usepackage{amsfonts,amssymb}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%THEMES DU DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%– th`emes globaux~: albatross, beetle, crane, fly, seagull.
+%– th`emes internes~: lily  orchid, rose.
+%– th`emes externes~: whale, seahorse, dolphin
+%JuanLesPins Malmoe PaloAlto Berlin Boadilla Copenhagen Hannover Goettingen Montpellier Rochester
+%Madrid Antibes Singapore Szeged Warsaw, thème par défaut Ilmenau Luebeck AnnArbor CambridgeUS Dresden
+
+%themes de polices~: professionalfonts serif structurebold structureitalicserif structuresmallcapsserif
+
+
+\usetheme{Warsaw}
+%\usecolortheme{dolphin}
+\usefonttheme{structurebold}
+%\useinnertheme{nom du theme interne}
+%\useoutertheme{split}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%AUTRES COMMANDES PRÉLIMINAIRES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\AtBeginSection[]{% génère une tableofcontents au début de chaque section
+  \begin{frame}
+  \frametitle{Sommaire}
+	\tableofcontents[sectionstyle = show/shaded,subsectionstyle = show/show/shaded]
+  \end{frame}
+}
+
+\setbeamertemplate{itemize item}[triangle]
+\setbeamertemplate{enumerate item}[square]
+\setbeamertemplate{blocks} [rounded] [shadow=true]
+
+\setbeameroption{show notes}%%ou hide notes
+%%\setbeameroption{show notes on second screen=right}
+
+
+\title{Réunion intermédiaire}
+\subtitle{PSC INF02~: Synthétiseur automatique de documents}
+\author{}
+\institute{École polytechnique}
+\date{}
+
+\logo{\includegraphics[height=0.8cm]{logohori.eps}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%DEBUT DU DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+
+
+
+%%page de titre
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+%% sommaire %%
+% \begin{frame}
+% \frametitle{Sommaire}
+% \tableofcontents
+% \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%VRAI DEBUT DU DOCUMENT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Point d'avancement}
+
+\begin{frame}
+\frametitle{Point d'avancement}
+	\begin{block}
+		\begin{itemize}
+			\item Traitement syntaxique offert par systran.
+			\item Réseau de concepts opérationnel
+			\item TF-IDF opérationnel
+			\item Workspace en cours de développement
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Changements remarquables}
+	\begin{block}
+		\begin{itemize}
+			\item Les workers ne semblent plus indispensables à notre travail
+			\item Nous nous orientons désormais vers des résumés très synthétiques (une ou deux phrases au plus)
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+\section{Ce qui est fait}
+% Disons, une sous section par sujet ? Avec une ou deux diapo par sujet, aussi.
+
+\section{Prochaines étapes}
+% Cf supra.
+% En particulier : le workspace, l'importance conceptuelle.
+
+
+\section{Synthèse}
+% Un petit résumé, ça fait pas de mal !
+
+\end{document}
