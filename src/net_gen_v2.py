@@ -354,9 +354,6 @@ def print_network_status():
 
 ##end of example
 
-import sys
-oldout=sys.stdout
-sys.stdout = open('log.txt', 'w')
 
 load_dir("wayne_3")
 
@@ -377,8 +374,8 @@ load_dir("wayne_3")
 
 #clear_ic(limit=100000)
 #clear_act(limit=100000)
-#deactivate_nodes(limit=10000)
-print_network_status()
+#deactivate_nodes(limit=100000)
+#print_network_status()
 
 
-save_dir("wayne_test")
+save_dir("wayne_4")

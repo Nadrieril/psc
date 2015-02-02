@@ -27,9 +27,15 @@ class Context:
     def activate(self,node,activation):
         self.workersManager.push(ActivateWorker(node,activation))
 
+    def print_activated_nodes(self):
+        for n,d in self.network.nodes():
+            if d['a'] > 0:
+                print(n+" : "+d['a'].__str__())
+
     def run(self,max_time):
         while self.workersManager.time<max_time and not self.workersManager.isEmpty():
             print(self.workersManager)
+            #self.print_activated_nodes()
             self.workersManager.runWorker(self)
         print(self.workersManager)
 
