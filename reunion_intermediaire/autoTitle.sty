@@ -1,0 +1,9 @@
+\NeedsTeXFormat{LaTeX2e}[1994/06/01]
+\ProvidesPackage{autoTitle}[2015/01/21 Custom Package]
+
+\addtobeamertemplate{frametitle}{\let\insertframetitle\insertsubsectionhead}{}
+\CheckCommand*\beamer@checkframetitle{\@ifnextchar\bgroup\beamer@inlineframetitle{}}
+\renewcommand*\beamer@checkframetitle{\global\let\beamer@frametitle\relax\@ifnextchar\bgroup\beamer@inlineframetitle{}}
+
+\endinput
+
