@@ -16,19 +16,23 @@ def idf(word,bloblist):
 
 s=time.strftime("%x")
 path=""
-files=glob.glob(s)
+files=glob.glob("7/*")
 bloblist=[]
 word=[]
 idf=[]
 frequency=[]
-f=open('word',encoding='utf-8').read()
-contain=f.readlines(1)
+f=open('word',encoding='utf-8')
+contain=int(f.readline())
 for line in f.readlines():
-    word.append(line.split()[0])
-    frequency.append(line.split()[1])
+    if line.split()!=[]:
+        word.append((line.split()[0]))
+        frequency.append(int(line.split()[1]))
+        idf.append(line.split()[2])
 f.close;
-for f in files:
-    blob=open(f,encoding='utf-8').read()
+
+for ff in files:
+    print ff
+    blob=open(ff,encoding='utf-8')
     article=""
     for line in blob.readlines():
         if line!="" and line!="\n":
@@ -37,24 +41,24 @@ for f in files:
     blob.close()
 k=len(word)
 bloblistlength=len(bloblist)+contain
-wordoccur=[]               
+wordoccur=[]             
 for i,blob in enumerate(bloblist):
-    for words in blob.word:
+    for words in blob.words:
         if(wordoccur.count(words)==0):
             wordoccur.append(words)
             if word.count(words)==0:
                 word.append(words)
                 j=k
                 k=k+1
-                frequency.append(n_containing(word, bloblist))
-                idf.append(math.log(bloblistlength)/(1+frequency[k-1]))
+                frequency.append(n_containing(words, bloblist))
+                idf.append(math.log(bloblistlength/(1+frequency[k-1])))
             else:
                 j=word.index(words)
-                frequency[j]=frequency[j]+n_containing(word, bloblist)
-                idf[j]=math.log(bloblistlength)/(1+frequency[k-1])
+                frequency[j]=frequency[j]+n_containing(words, bloblist)
+                idf[j]=math.log(bloblistlength/(1+frequency[k-1]))
 for i in range(len(word)):
     for j in range(i+1,len(word)):
-        if idf[j]>idf[i]:
+        if idf[j]<idf[i]:
             temp=idf[j]
             idf[j]=idf[i]
             idf[i]=temp
@@ -64,8 +68,8 @@ for i in range(len(word)):
             temp=frequency[i]
             frequency[i]=frequency[j]
             frequency[j]=temp
-writeword=file('word','w')
-writeword.write(bloblistlength+"\n")
+writeword=open('word','w',encoding='utf-8')
+writeword.write(str(bloblistlength)+"\n")
 for i in range(len(word)):
-    writeword.write(word[i]+' '+frequency[i]+idf[i]+"\n")
+    writeword.write(word[i]+' '+str(frequency[i])+' '+str(idf[i])+"\n")
 writeword.close()
